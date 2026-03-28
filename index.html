@@ -14,9 +14,9 @@ background:#0f0f0f;
 color:white;
 }
 
-/* LOGIN */
+/* LOGIN & REGISTER */
 
-#loginPage{
+#loginPage,#registerPage{
 position:fixed;
 top:0;
 left:0;
@@ -30,7 +30,11 @@ align-items:center;
 z-index:5000;
 }
 
-#loginPage input{
+#registerPage{
+display:none;
+}
+
+input{
 padding:12px;
 margin:10px;
 border-radius:8px;
@@ -38,13 +42,14 @@ border:none;
 width:220px;
 }
 
-#loginPage button{
-padding:10px 25px;
+button{
+padding:10px;
 border:none;
 border-radius:8px;
 background:#00c853;
 color:white;
 font-weight:bold;
+cursor:pointer;
 }
 
 /* HEADER */
@@ -113,26 +118,6 @@ color:#aaa;
 margin-top:5px;
 }
 
-button{
-width:100%;
-padding:10px;
-border:none;
-border-radius:8px;
-background:#00c853;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:30px;
-color:#888;
-margin-top:40px;
-}
-
 /* CART */
 
 #cartBox{
@@ -145,7 +130,7 @@ background:#111;
 border-top-left-radius:20px;
 border-top-right-radius:20px;
 padding:20px;
-overflow-y:auto;
+overflow:auto;
 transition:0.3s;
 z-index:2000;
 }
@@ -161,21 +146,26 @@ margin:10px 0;
 border-radius:10px;
 }
 
-/* WHATSAPP FLOAT */
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+color:#888;
+}
+
+/* WA FLOAT */
 
 .waFloat{
-
 position:fixed;
 bottom:80px;
 right:20px;
 background:#25D366;
-color:white;
 padding:14px 18px;
 border-radius:30px;
-font-weight:bold;
+color:white;
 text-decoration:none;
-z-index:3000;
-
+font-weight:bold;
 }
 
 </style>
@@ -193,6 +183,27 @@ z-index:3000;
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
+
+<p>Belum punya akun?
+<span onclick="showRegister()" style="color:#00e676;cursor:pointer;">Daftar</span>
+</p>
+
+</div>
+
+<!-- REGISTER -->
+
+<div id="registerPage">
+
+<h2>Daftar Akun</h2>
+
+<input id="regUser" placeholder="Username">
+<input id="regPass" type="password" placeholder="Password">
+
+<button onclick="register()">Daftar</button>
+
+<p>Sudah punya akun?
+<span onclick="showLogin()" style="color:#00e676;cursor:pointer;">Login</span>
+</p>
 
 </div>
 
@@ -251,13 +262,9 @@ Fashion Store Online
 
 </footer>
 
-<!-- FLOAT WA -->
-
 <a class="waFloat" href="https://wa.me/6281220549530" target="_blank">
 Chat WhatsApp
 </a>
-
-<!-- CART -->
 
 <div id="cartBox">
 
@@ -282,11 +289,11 @@ let totalItem=0
 function login(){
 
 let user=document.getElementById("username").value
+let pass=document.getElementById("password").value
 
-if(user==""){
-alert("Masukkan username")
-return
-}
+let savedPass=localStorage.getItem("akun_"+user)
+
+if(pass===savedPass){
 
 localStorage.setItem("juandyUser",user)
 
@@ -294,16 +301,47 @@ document.getElementById("loginPage").style.display="none"
 
 document.getElementById("userText").innerText="Halo "+user
 
+}else{
+
+alert("Username atau password salah")
+
 }
 
-window.onload=function(){
+}
 
-let user=localStorage.getItem("juandyUser")
+/* REGISTER */
 
-if(user){
+function register(){
+
+let user=document.getElementById("regUser").value
+let pass=document.getElementById("regPass").value
+
+if(user=="" || pass==""){
+alert("Isi username dan password")
+return
+}
+
+localStorage.setItem("akun_"+user,pass)
+
+alert("Akun berhasil dibuat!")
+
+showLogin()
+
+}
+
+/* SWITCH FORM */
+
+function showRegister(){
+
 document.getElementById("loginPage").style.display="none"
-document.getElementById("userText").innerText="Halo "+user
+document.getElementById("registerPage").style.display="flex"
+
 }
+
+function showLogin(){
+
+document.getElementById("registerPage").style.display="none"
+document.getElementById("loginPage").style.display="flex"
 
 }
 
@@ -325,7 +363,7 @@ document.getElementById(id).innerText=cart[nama].qty+" pcs"
 
 }
 
-/* BUKA CART */
+/* CART */
 
 function openCart(){
 
