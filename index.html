@@ -3,6 +3,7 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>JUANDY BUTIK</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -75,6 +76,29 @@ cursor:pointer;
 font-size:14px;
 }
 
+.shop{
+display:none;
+padding:20px;
+}
+
+.product{
+background:white;
+padding:15px;
+margin-bottom:10px;
+border-radius:10px;
+}
+
+.logout{
+position:fixed;
+top:10px;
+right:10px;
+background:red;
+color:white;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -102,7 +126,6 @@ font-size:14px;
 
 </div>
 </div>
-
 
 <!-- DAFTAR -->
 
@@ -135,8 +158,42 @@ font-size:14px;
 </div>
 </div>
 
+<!-- HALAMAN TOKO -->
+
+<div id="shopPage" class="shop">
+
+<div class="logout" onclick="logout()">Logout</div>
+
+<h2>Halaman Belanja</h2>
+
+<div class="product">
+Baju wanita<br>
+Harga : Rp120.000
+</div>
+
+<div class="product">
+Tas wanita<br>
+Harga : Rp250.000
+</div>
+
+<div class="product">
+Sepatu wanita<br>
+Harga : Rp300.000
+</div>
+
+</div>
+
 
 <script>
+
+/* cek stay login */
+
+if(localStorage.getItem("login")=="yes"){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("shopPage").style.display="block"
+
+}
 
 /* pindah halaman */
 
@@ -211,11 +268,26 @@ if(u==localStorage.getItem("user") && p==localStorage.getItem("pass")){
 
 alert("Login berhasil")
 
+localStorage.setItem("login","yes")
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("shopPage").style.display="block"
+
 }else{
 
 alert("Username atau password salah")
 
 }
+
+}
+
+/* logout */
+
+function logout(){
+
+localStorage.removeItem("login")
+
+location.reload()
 
 }
 
