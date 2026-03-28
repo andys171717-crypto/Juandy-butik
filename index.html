@@ -3,6 +3,7 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>JUANDY SHOP</title>
 
 <style>
@@ -23,7 +24,7 @@ align-items:center;
 .box{
 background:white;
 padding:25px;
-border-radius:10px;
+border-radius:12px;
 width:300px;
 }
 
@@ -64,6 +65,17 @@ border-radius:10px;
 margin-bottom:10px;
 }
 
+.logout{
+position:fixed;
+top:10px;
+right:10px;
+background:red;
+color:white;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
 .cart{
 position:fixed;
 top:10px;
@@ -74,14 +86,16 @@ padding:8px 12px;
 border-radius:6px;
 }
 
-.logout{
-position:fixed;
-top:10px;
+.password{
+position:relative;
+}
+
+.password span{
+position:absolute;
 right:10px;
-background:red;
-color:white;
-padding:8px 12px;
-border-radius:6px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
 }
 
 </style>
@@ -98,11 +112,16 @@ border-radius:6px;
 <h2>Login</h2>
 
 <input id="loginUser" placeholder="Username">
+
+<div class="password">
 <input id="loginPass" type="password" placeholder="Password">
+<span onclick="lihat('loginPass')">👁</span>
+</div>
 
 <button onclick="login()">Login</button>
 
 <div class="link" onclick="showDaftar()">Daftar akun</div>
+<div class="link" onclick="lupa()">Lupa password?</div>
 
 </div>
 </div>
@@ -117,11 +136,24 @@ border-radius:6px;
 <h2>Daftar</h2>
 
 <input id="user" placeholder="Username">
+
+<div class="password">
 <input id="pass" type="password" placeholder="Password">
+<span onclick="lihat('pass')">👁</span>
+</div>
+
+<input id="q1" placeholder="Pertanyaan 1: Nama ibu kamu?">
+<input id="a1" placeholder="Jawaban">
+
+<input id="q2" placeholder="Pertanyaan 2: Nama hewan peliharaan?">
+<input id="a2" placeholder="Jawaban">
+
+<input id="q3" placeholder="Pertanyaan 3: Kota kelahiran kamu?">
+<input id="a3" placeholder="Jawaban">
 
 <button onclick="daftar()">Daftar</button>
 
-<div class="link" onclick="showLogin()">Kembali Login</div>
+<div class="link" onclick="showLogin()">Kembali login</div>
 
 </div>
 </div>
@@ -132,47 +164,32 @@ border-radius:6px;
 <div id="shopPage" class="shop">
 
 <div class="cart">
-Cart : <span id="jumlahCart">0</span>
+Keranjang : <span id="jumlahCart">0</span>
 </div>
 
 <div class="logout" onclick="logout()">Logout</div>
 
 <h2>Halaman Belanja</h2>
 
-
 <div class="product">
-
 Baju wanita  
 <br>Harga : Rp120000
-
-<button onclick="tambahCart('Baju wanita',120000)">
-Tambah keranjang
-</button>
-
+<br>
+<button onclick="tambahCart('Baju wanita',120000)">Tambah</button>
 </div>
 
-
 <div class="product">
-
 Tas wanita  
 <br>Harga : Rp250000
-
-<button onclick="tambahCart('Tas wanita',250000)">
-Tambah keranjang
-</button>
-
+<br>
+<button onclick="tambahCart('Tas wanita',250000)">Tambah</button>
 </div>
 
-
 <div class="product">
-
 Sepatu wanita  
 <br>Harga : Rp300000
-
-<button onclick="tambahCart('Sepatu wanita',300000)">
-Tambah keranjang
-</button>
-
+<br>
+<button onclick="tambahCart('Sepatu wanita',300000)">Tambah</button>
 </div>
 
 <br>
@@ -184,11 +201,17 @@ Tambah keranjang
 
 <script>
 
-/* login tetap */
+/* lihat password */
 
-if(localStorage.getItem("login")=="yes"){
+function lihat(id){
 
-loginSukses()
+let x=document.getElementById(id)
+
+if(x.type=="password"){
+x.type="text"
+}else{
+x.type="password"
+}
 
 }
 
@@ -214,8 +237,24 @@ loginPage.style.display="flex"
 
 function daftar(){
 
+if(pass.value.length<5){
+
+alert("Password minimal 5 digit")
+return
+
+}
+
 localStorage.setItem("user",user.value)
 localStorage.setItem("pass",pass.value)
+
+localStorage.setItem("q1",q1.value)
+localStorage.setItem("a1",a1.value)
+
+localStorage.setItem("q2",q2.value)
+localStorage.setItem("a2",a2.value)
+
+localStorage.setItem("q3",q3.value)
+localStorage.setItem("a3",a3.value)
 
 alert("Akun berhasil dibuat")
 
@@ -237,7 +276,7 @@ loginSukses()
 
 }else{
 
-alert("Login gagal")
+alert("Username atau password salah")
 
 }
 
@@ -248,6 +287,19 @@ function loginSukses(){
 
 loginPage.style.display="none"
 shopPage.style.display="block"
+
+}
+
+
+/* auto login */
+
+window.onload=function(){
+
+if(localStorage.getItem("login")=="yes"){
+
+loginSukses()
+
+}
 
 }
 
@@ -263,7 +315,41 @@ location.reload()
 }
 
 
-/* cart */
+/* lupa password */
+
+function lupa(){
+
+let j1=prompt(localStorage.getItem("q1"))
+let j2=prompt(localStorage.getItem("q2"))
+let j3=prompt(localStorage.getItem("q3"))
+
+if(j1==localStorage.getItem("a1") &&
+j2==localStorage.getItem("a2") &&
+j3==localStorage.getItem("a3")){
+
+let baru=prompt("Masukkan password baru")
+
+if(baru.length<5){
+
+alert("Password minimal 5 digit")
+return
+
+}
+
+localStorage.setItem("pass",baru)
+
+alert("Password berhasil diganti")
+
+}else{
+
+alert("Jawaban salah")
+
+}
+
+}
+
+
+/* keranjang */
 
 let cart=[]
 
@@ -273,14 +359,19 @@ cart.push({nama,harga})
 
 jumlahCart.innerText=cart.length
 
-alert("Ditambahkan ke keranjang")
-
 }
 
 
 /* checkout */
 
 function checkout(){
+
+if(cart.length==0){
+
+alert("Keranjang kosong")
+return
+
+}
 
 let pesan="Pesanan:%0A"
 
