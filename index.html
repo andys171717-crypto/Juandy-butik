@@ -9,7 +9,7 @@
 body{
 margin:0;
 font-family:Arial;
-background:#111;
+background:#0f0f0f;
 color:white;
 }
 
@@ -23,20 +23,21 @@ justify-content:center;
 height:100vh;
 }
 
-input,select{
+input{
 padding:10px;
-margin:5px;
+margin:8px;
 border-radius:8px;
 border:none;
 width:220px;
 }
 
 button{
-padding:10px;
+padding:10px 16px;
 border:none;
 border-radius:8px;
 background:#00c853;
 color:white;
+cursor:pointer;
 }
 
 header{
@@ -66,30 +67,36 @@ width:100%;
 border-radius:10px;
 }
 
+.cartItem{
+background:#1a1a1a;
+padding:15px;
+margin:10px;
+border-radius:10px;
+}
+
 footer{
 background:black;
 padding:20px;
 text-align:center;
-margin-top:30px;
+margin-top:60px;
+margin-bottom:120px;
 }
 
 .wa{
 position:fixed;
-bottom:70px;
+bottom:120px;
 right:20px;
 background:#25D366;
-padding:15px;
-border-radius:30px;
-color:white;
-text-decoration:none;
-font-weight:bold;
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-.cartItem{
-background:#1a1a1a;
-margin:10px;
-padding:10px;
-border-radius:10px;
+.wa img{
+width:35px;
 }
 
 </style>
@@ -142,13 +149,13 @@ border-radius:10px;
 
 <header>
 
-<div>JUANDY BUTIK</div>
+<div><b>JUANDY BUTIK</b></div>
 
 <div>
 
 <span id="userName"></span>
 
-<span onclick="openCart()" style="margin-left:10px;cursor:pointer;">
+<span onclick="openCart()" style="cursor:pointer">
 🛒 <span id="cartCount">0</span>
 </span>
 
@@ -185,7 +192,7 @@ border-radius:10px;
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1551028719-00167b16eac5">
+<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
 <h3>Jaket Pria</h3>
 <p>Rp250000</p>
 <button onclick="addCart('Jaket Pria',250000,'p4')">Tambah</button>
@@ -203,7 +210,7 @@ border-radius:10px;
 
 </div>
 
-<!-- CART PAGE -->
+<!-- CART -->
 
 <div id="cartPage" class="page">
 
@@ -219,13 +226,17 @@ border-radius:10px;
 
 <center>
 
+<h2 id="totalHarga"></h2>
+
 <button onclick="checkout()">Checkout WhatsApp</button>
 
 </center>
 
 </div>
 
-<a class="wa" href="https://wa.me/">Chat WhatsApp</a>
+<a class="wa" href="https://wa.me/6281220549530" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</a>
 
 <script>
 
@@ -233,56 +244,53 @@ let cart={}
 let totalItem=0
 
 function hideAll(){
-
-document.getElementById("loginPage").style.display="none"
-document.getElementById("registerPage").style.display="none"
-document.getElementById("storePage").style.display="none"
-document.getElementById("cartPage").style.display="none"
-
+loginPage.style.display="none"
+registerPage.style.display="none"
+storePage.style.display="none"
+cartPage.style.display="none"
 }
 
 function showLogin(){
-
 hideAll()
-document.getElementById("loginPage").style.display="flex"
-
+loginPage.style.display="flex"
 }
 
 function showRegister(){
-
 hideAll()
-document.getElementById("registerPage").style.display="flex"
-
+registerPage.style.display="flex"
 }
 
 function showStore(){
-
 hideAll()
-document.getElementById("storePage").style.display="block"
-
+storePage.style.display="block"
 }
 
 function openCart(){
 
 hideAll()
-document.getElementById("cartPage").style.display="block"
+cartPage.style.display="block"
 
 let list=""
+let total=0
 
 for(let name in cart){
 
 let item=cart[name]
+let sub=item.qty*item.price
+total+=sub
 
 list+=`
 <div class="cartItem">
 <h3>${name}</h3>
 <p>${item.qty} pcs</p>
+<p>Rp ${sub}</p>
 </div>
 `
 
 }
 
-document.getElementById("cartList").innerHTML=list
+cartList.innerHTML=list
+totalHarga.innerText="Total Rp "+total
 
 }
 
@@ -292,10 +300,8 @@ let user=regUser.value
 let pass=regPass.value
 
 if(pass.length<5){
-
 alert("Password minimal 5 digit")
 return
-
 }
 
 localStorage.setItem("user",user)
@@ -303,7 +309,7 @@ localStorage.setItem("pass",pass)
 localStorage.setItem("question",question.value)
 localStorage.setItem("answer",answer.value)
 
-alert("Daftar berhasil")
+alert("Pendaftaran berhasil")
 
 showLogin()
 
@@ -319,7 +325,7 @@ pass===localStorage.getItem("pass")){
 
 localStorage.setItem("login","true")
 
-document.getElementById("userName").innerText="Hi "+user
+userName.innerText="Hi "+user
 
 showStore()
 
@@ -346,13 +352,9 @@ let q=localStorage.getItem("question")
 let a=prompt(q)
 
 if(a===localStorage.getItem("answer")){
-
 alert("Password: "+localStorage.getItem("pass"))
-
 }else{
-
 alert("Jawaban salah")
-
 }
 
 }
@@ -360,50 +362,36 @@ alert("Jawaban salah")
 function addCart(name,price,id){
 
 if(!cart[name]){
-
 cart[name]={qty:0,price:price}
-
 }
 
 cart[name].qty++
 
+document.getElementById(id).innerText=cart[name].qty+" pcs"
+
 totalItem++
 
-document.getElementById("cartCount").innerText=totalItem
-
-document.getElementById(id).innerText=cart[name].qty+" pcs"
+cartCount.innerText=totalItem
 
 }
 
 function checkout(){
 
-let text="Pesanan JUANDY BUTIK%0A"
+let text="Pesanan JUANDY BUTIK:%0A"
 
 for(let name in cart){
 
-text+=name+" "+cart[name].qty+" pcs%0A"
+let item=cart[name]
+
+text+=name+" "+item.qty+" pcs%0A"
 
 }
 
-window.open("https://wa.me/?text="+text)
+window.open("https://wa.me/6281220549530?text="+text)
 
 }
-
-window.onload=function(){
-
-if(localStorage.getItem("login")==="true"){
-
-document.getElementById("userName").innerText="Hi "+localStorage.getItem("user")
-
-showStore()
-
-}else{
 
 showLogin()
-
-}
-
-}
 
 </script>
 
