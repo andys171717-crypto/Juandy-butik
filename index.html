@@ -9,63 +9,64 @@
 
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:#0f0f0f;
 color:white;
 }
+
+/* HEADER */
 
 header{
 background:black;
 padding:15px;
 text-align:center;
-font-size:26px;
+font-size:24px;
+font-weight:bold;
+letter-spacing:2px;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+/* CART */
+
+.cart{
+position:absolute;
+right:15px;
+top:12px;
+background:#00c853;
+padding:8px 15px;
+border-radius:20px;
 font-weight:bold;
 }
 
+/* BANNER */
+
 .banner{
-background: linear-gradient(135deg,#ff006a,#7a00ff,#0099ff);
-background-size:400% 400%;
-animation:gradientMove 10s ease infinite;
+background: linear-gradient(135deg,#6a11cb,#2575fc);
 padding:60px 20px;
 text-align:center;
 border-bottom-left-radius:30px;
 border-bottom-right-radius:30px;
 }
 
-.banner h1{
-font-size:40px;
-margin:0;
-}
-
 .banner p{
-margin-top:10px;
+font-size:18px;
+opacity:0.9;
 }
 
 .banner button{
 margin-top:20px;
-padding:12px 30px;
+padding:12px 25px;
 border:none;
 border-radius:30px;
 background:white;
 color:black;
 font-weight:bold;
+cursor:pointer;
 }
 
-@keyframes gradientMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-.cart{
-position:fixed;
-top:15px;
-right:15px;
-background:#00c853;
-padding:10px 15px;
-border-radius:20px;
-font-weight:bold;
-}
+/* SEARCH */
 
 .search{
 padding:20px;
@@ -73,44 +74,60 @@ text-align:center;
 }
 
 .search input{
-width:85%;
+width:90%;
 padding:12px;
 border-radius:10px;
 border:none;
+font-size:15px;
 }
 
+/* PRODUK GRID */
+
 .container{
-padding:20px;
+padding:15px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 
 .card{
 background:#1a1a1a;
 border-radius:15px;
-padding:15px;
-margin-bottom:25px;
+padding:10px;
 text-align:center;
 }
 
 .card img{
 width:100%;
+height:180px;
+object-fit:cover;
 border-radius:10px;
+}
+
+.card h3{
+margin:10px 0 5px 0;
+font-size:16px;
 }
 
 .price{
 color:#00e676;
-font-size:20px;
-margin:10px;
+font-size:16px;
+font-weight:bold;
+margin-bottom:8px;
 }
 
 button{
-padding:10px 20px;
-margin:5px;
+width:100%;
+padding:10px;
 border:none;
 border-radius:8px;
 background:#00c853;
 color:white;
 font-weight:bold;
+cursor:pointer;
 }
+
+/* CHECKOUT */
 
 .checkout{
 position:fixed;
@@ -118,10 +135,26 @@ bottom:20px;
 left:50%;
 transform:translateX(-50%);
 background:#00c853;
-padding:15px 25px;
+padding:15px 30px;
 border-radius:30px;
 font-weight:bold;
+cursor:pointer;
 }
+
+/* TOAST */
+
+.toast{
+position:fixed;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+background:#00c853;
+padding:12px 20px;
+border-radius:10px;
+font-weight:bold;
+}
+
+/* FOOTER */
 
 footer{
 text-align:center;
@@ -129,27 +162,17 @@ padding:20px;
 color:#888;
 }
 
-.toast{
-position:fixed;
-bottom:80px;
-left:50%;
-transform:translateX(-50%);
-background:#00c853;
-padding:12px 20px;
-border-radius:10px;
-}
-
 </style>
 </head>
 
 <body>
 
-<header>JUANDY BUTIK</header>
-
+<header>
+JUANDY BUTIK
 <div class="cart">🛒 <span id="cart">0</span></div>
+</header>
 
 <div class="banner">
-<h1>JUANDY BUTIK</h1>
 <p>Fashion Trend • Harga Terbaik • Kualitas Premium</p>
 <button onclick="scrollProduk()">Belanja Sekarang</button>
 </div>
@@ -192,7 +215,9 @@ border-radius:10px;
 
 <div class="checkout" onclick="checkout()">Checkout WhatsApp</div>
 
-<footer>© 2026 JUANDY BUTIK</footer>
+<footer>
+© 2026 JUANDY BUTIK
+</footer>
 
 <script>
 
