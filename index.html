@@ -3,7 +3,6 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>JUANDY BUTIK</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,7 +12,6 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f4f4f4;
 }
 
 /* LOGIN */
@@ -78,12 +76,16 @@ button{
 
 width:100%;
 padding:12px;
-margin-top:15px;
+margin-top:10px;
 border:none;
 border-radius:8px;
 background:#ff512f;
 color:white;
 
+}
+
+a{
+font-size:13px;
 }
 
 /* TOKO */
@@ -174,6 +176,8 @@ font-size:22px;
 <button onclick="login()">Login</button>
 
 <button onclick="daftar()">Daftar</button>
+
+<a href="#" onclick="lupa()">Lupa password?</a>
 
 </div>
 
@@ -268,11 +272,13 @@ shop.style.display="block"
 
 }else{
 
-alert("Login gagal")
+alert("Username atau password salah")
 
 }
 
 }
+
+/* DAFTAR */
 
 function daftar(){
 
@@ -283,10 +289,37 @@ return
 
 }
 
+let q=prompt("Pertanyaan keamanan: Nama ibu kamu?")
+let a=prompt("Jawaban?")
+
 localStorage.user=user.value
 localStorage.pass=pass.value
+localStorage.q=q
+localStorage.a=a
 
 alert("Akun berhasil dibuat")
+
+}
+
+/* LUPA PASSWORD */
+
+function lupa(){
+
+let jawab=prompt(localStorage.q)
+
+if(jawab==localStorage.a){
+
+let baru=prompt("Masukkan password baru")
+
+localStorage.pass=baru
+
+alert("Password berhasil diganti")
+
+}else{
+
+alert("Jawaban salah")
+
+}
 
 }
 
@@ -307,10 +340,12 @@ pass.type="password"
 let cart={}
 let total=0
 
-function add(name,price){
+function add(name){
 
 if(!cart[name]){
+
 cart[name]={qty:0}
+
 }
 
 cart[name].qty++
@@ -320,8 +355,6 @@ total++
 count.innerText=total
 
 }
-
-/* CHECKOUT WA */
 
 function checkout(){
 
