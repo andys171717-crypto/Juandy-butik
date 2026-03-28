@@ -12,128 +12,108 @@
 body{
 font-family:Arial;
 margin:0;
+background:#f4f4f4;
 }
 
 /* LOGIN */
 
 #loginPage{
-
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-
 background:linear-gradient(270deg,#ff512f,#ff9966,#ff512f);
 background-size:600% 600%;
 animation:bg 8s infinite;
-
 }
 
 @keyframes bg{
-
 0%{background-position:0%}
 50%{background-position:100%}
 100%{background-position:0%}
-
 }
 
 .box{
-
 background:white;
-padding:30px;
-border-radius:15px;
+padding:25px;
+border-radius:12px;
 width:300px;
-
+text-align:center;
 }
 
 input{
-
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:10px;
 border-radius:8px;
 border:1px solid #ccc;
-
 }
 
 .password{
-
 position:relative;
-
 }
 
 .password i{
-
 position:absolute;
 right:10px;
 top:50%;
 transform:translateY(-50%);
 cursor:pointer;
-
 }
 
 button{
-
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:10px;
 border:none;
 border-radius:8px;
 background:#ff512f;
 color:white;
-
+font-size:15px;
 }
 
-a{
+.link{
+margin-top:8px;
 font-size:13px;
+color:blue;
+cursor:pointer;
 }
 
 /* TOKO */
 
 #shop{
-
 display:none;
-
 }
 
 header{
-
 background:#ff512f;
 color:white;
 padding:15px;
 display:flex;
 justify-content:space-between;
-
 }
 
 .container{
-
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:12px;
-padding:12px;
-
+gap:10px;
+padding:10px;
 }
 
 .card{
-
 background:white;
 border-radius:10px;
 padding:10px;
-
 }
 
 .card img{
-
 width:100%;
 border-radius:10px;
 height:140px;
 object-fit:cover;
-
 }
 
 .cart{
-
 position:fixed;
 bottom:20px;
 right:20px;
@@ -146,7 +126,13 @@ justify-content:center;
 align-items:center;
 color:white;
 font-size:22px;
+}
 
+.logout{
+background:black;
+padding:5px 10px;
+border-radius:6px;
+cursor:pointer;
 }
 
 </style>
@@ -155,13 +141,11 @@ font-size:22px;
 
 <body>
 
-<!-- LOGIN -->
-
 <div id="loginPage">
 
 <div class="box">
 
-<h2>Login</h2>
+<h2>JUANDY BUTIK</h2>
 
 <input id="user" placeholder="Username">
 
@@ -174,16 +158,13 @@ font-size:22px;
 </div>
 
 <button onclick="login()">Login</button>
-
 <button onclick="daftar()">Daftar</button>
 
-<a href="#" onclick="lupa()">Lupa password?</a>
+<div class="link" onclick="lupa()">Lupa password?</div>
 
 </div>
 
 </div>
-
-<!-- TOKO -->
 
 <div id="shop">
 
@@ -192,9 +173,8 @@ font-size:22px;
 JUANDY BUTIK
 
 <div>
-
 Keranjang <span id="count">0</span>
-
+<span class="logout" onclick="logout()">Logout</span>
 </div>
 
 </header>
@@ -202,70 +182,57 @@ Keranjang <span id="count">0</span>
 <div class="container">
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
-
 <h3>Baju Fashion</h3>
-
 <p>Rp120000</p>
-
-<button onclick="add('Baju Fashion',120000)">Tambah</button>
-
+<button onclick="add('Baju Fashion')">Tambah</button>
 </div>
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7">
-
 <h3>Tas Wanita</h3>
-
 <p>Rp150000</p>
-
-<button onclick="add('Tas Wanita',150000)">Tambah</button>
-
+<button onclick="add('Tas Wanita')">Tambah</button>
 </div>
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
-
 <h3>Sepatu Trend</h3>
-
 <p>Rp200000</p>
-
-<button onclick="add('Sepatu Trend',200000)">Tambah</button>
-
+<button onclick="add('Sepatu Trend')">Tambah</button>
 </div>
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
-
 <h3>Jaket Pria</h3>
-
 <p>Rp250000</p>
-
-<button onclick="add('Jaket Pria',250000)">Tambah</button>
-
+<button onclick="add('Jaket Pria')">Tambah</button>
 </div>
 
 </div>
 
 <div class="cart" onclick="checkout()">
-
 <i class="fa fa-shopping-cart"></i>
-
 </div>
 
 </div>
 
 <script>
 
+/* AUTO LOGIN */
+
+if(localStorage.login=="true"){
+loginPage.style.display="none"
+shop.style.display="block"
+}
+
 /* LOGIN */
 
 function login(){
 
 if(user.value==localStorage.user && pass.value==localStorage.pass){
+
+localStorage.login="true"
 
 loginPage.style.display="none"
 shop.style.display="block"
@@ -283,19 +250,17 @@ alert("Username atau password salah")
 function daftar(){
 
 if(pass.value.length<5){
-
 alert("Password minimal 5 digit")
 return
-
 }
 
-let q=prompt("Pertanyaan keamanan: Nama ibu kamu?")
-let a=prompt("Jawaban?")
+let tanya=prompt("Pertanyaan keamanan (contoh: nama ibu?)")
+let jawab=prompt("Jawaban pertanyaan")
 
 localStorage.user=user.value
 localStorage.pass=pass.value
-localStorage.q=q
-localStorage.a=a
+localStorage.tanya=tanya
+localStorage.jawab=jawab
 
 alert("Akun berhasil dibuat")
 
@@ -305,9 +270,9 @@ alert("Akun berhasil dibuat")
 
 function lupa(){
 
-let jawab=prompt(localStorage.q)
+let jawab=prompt(localStorage.tanya)
 
-if(jawab==localStorage.a){
+if(jawab==localStorage.jawab){
 
 let baru=prompt("Masukkan password baru")
 
@@ -335,6 +300,15 @@ pass.type="password"
 
 }
 
+/* LOGOUT */
+
+function logout(){
+
+localStorage.login="false"
+location.reload()
+
+}
+
 /* CART */
 
 let cart={}
@@ -343,18 +317,17 @@ let total=0
 function add(name){
 
 if(!cart[name]){
-
 cart[name]={qty:0}
-
 }
 
 cart[name].qty++
-
 total++
 
 count.innerText=total
 
 }
+
+/* CHECKOUT */
 
 function checkout(){
 
