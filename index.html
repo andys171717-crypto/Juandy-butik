@@ -12,16 +12,6 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f4f4f4;
-}
-
-/* LOGIN */
-
-#loginPage{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 background:linear-gradient(270deg,#ff512f,#ff9966,#ff512f);
 background-size:600% 600%;
 animation:bg 8s infinite;
@@ -33,12 +23,18 @@ animation:bg 8s infinite;
 100%{background-position:0%}
 }
 
+.page{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
 .box{
 background:white;
 padding:25px;
 border-radius:12px;
 width:300px;
-text-align:center;
 }
 
 input{
@@ -69,173 +65,151 @@ border:none;
 border-radius:8px;
 background:#ff512f;
 color:white;
-font-size:15px;
 }
 
 .link{
-margin-top:8px;
-font-size:13px;
+margin-top:10px;
+text-align:center;
 color:blue;
 cursor:pointer;
-}
-
-/* TOKO */
-
-#shop{
-display:none;
-}
-
-header{
-background:#ff512f;
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-}
-
-.container{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-padding:10px;
-}
-
-.card{
-background:white;
-border-radius:10px;
-padding:10px;
-}
-
-.card img{
-width:100%;
-border-radius:10px;
-height:140px;
-object-fit:cover;
-}
-
-.cart{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-width:55px;
-height:55px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-font-size:22px;
-}
-
-.logout{
-background:black;
-padding:5px 10px;
-border-radius:6px;
-cursor:pointer;
+font-size:14px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div id="loginPage">
+<!-- LOGIN -->
+
+<div id="loginPage" class="page">
 
 <div class="box">
 
-<h2>JUANDY BUTIK</h2>
+<h2>Login</h2>
+
+<input id="loginUser" placeholder="Username">
+
+<div class="password">
+<input id="loginPass" type="password" placeholder="Password">
+<i class="fa fa-eye" onclick="lihat('loginPass')"></i>
+</div>
+
+<button onclick="login()">Login</button>
+
+<div class="link" onclick="showDaftar()">Daftar akun</div>
+<div class="link" onclick="lupa()">Lupa password?</div>
+
+</div>
+</div>
+
+
+<!-- DAFTAR -->
+
+<div id="daftarPage" class="page" style="display:none">
+
+<div class="box">
+
+<h2>Daftar Akun</h2>
 
 <input id="user" placeholder="Username">
 
 <div class="password">
-
 <input id="pass" type="password" placeholder="Password">
-
-<i class="fa fa-eye" onclick="lihat()"></i>
-
+<i class="fa fa-eye" onclick="lihat('pass')"></i>
 </div>
 
-<button onclick="login()">Login</button>
+<input id="q1" placeholder="Pertanyaan 1: Nama ibu kamu?">
+<input id="a1" placeholder="Jawaban">
+
+<input id="q2" placeholder="Pertanyaan 2: Nama hewan peliharaan?">
+<input id="a2" placeholder="Jawaban">
+
+<input id="q3" placeholder="Pertanyaan 3: Kota kelahiran kamu?">
+<input id="a3" placeholder="Jawaban">
+
 <button onclick="daftar()">Daftar</button>
 
-<div class="link" onclick="lupa()">Lupa password?</div>
+<div class="link" onclick="showLogin()">Kembali Login</div>
 
 </div>
-
 </div>
 
-<div id="shop">
-
-<header>
-
-JUANDY BUTIK
-
-<div>
-Keranjang <span id="count">0</span>
-<span class="logout" onclick="logout()">Logout</span>
-</div>
-
-</header>
-
-<div class="container">
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
-<h3>Baju Fashion</h3>
-<p>Rp120000</p>
-<button onclick="add('Baju Fashion')">Tambah</button>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7">
-<h3>Tas Wanita</h3>
-<p>Rp150000</p>
-<button onclick="add('Tas Wanita')">Tambah</button>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
-<h3>Sepatu Trend</h3>
-<p>Rp200000</p>
-<button onclick="add('Sepatu Trend')">Tambah</button>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
-<h3>Jaket Pria</h3>
-<p>Rp250000</p>
-<button onclick="add('Jaket Pria')">Tambah</button>
-</div>
-
-</div>
-
-<div class="cart" onclick="checkout()">
-<i class="fa fa-shopping-cart"></i>
-</div>
-
-</div>
 
 <script>
 
-/* AUTO LOGIN */
+/* pindah halaman */
 
-if(localStorage.login=="true"){
-loginPage.style.display="none"
-shop.style.display="block"
+function showDaftar(){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("daftarPage").style.display="flex"
+
 }
 
-/* LOGIN */
+function showLogin(){
+
+document.getElementById("daftarPage").style.display="none"
+document.getElementById("loginPage").style.display="flex"
+
+}
+
+/* lihat password */
+
+function lihat(id){
+
+let x=document.getElementById(id)
+
+if(x.type=="password"){
+x.type="text"
+}else{
+x.type="password"
+}
+
+}
+
+/* daftar */
+
+function daftar(){
+
+let username=document.getElementById("user").value
+let password=document.getElementById("pass").value
+
+if(password.length<5){
+
+alert("Password minimal 5 digit")
+return
+
+}
+
+localStorage.setItem("user",username)
+localStorage.setItem("pass",password)
+
+localStorage.setItem("q1",q1.value)
+localStorage.setItem("a1",a1.value)
+
+localStorage.setItem("q2",q2.value)
+localStorage.setItem("a2",a2.value)
+
+localStorage.setItem("q3",q3.value)
+localStorage.setItem("a3",a3.value)
+
+alert("Akun berhasil dibuat")
+
+showLogin()
+
+}
+
+/* login */
 
 function login(){
 
-if(user.value==localStorage.user && pass.value==localStorage.pass){
+let u=document.getElementById("loginUser").value
+let p=document.getElementById("loginPass").value
 
-localStorage.login="true"
+if(u==localStorage.getItem("user") && p==localStorage.getItem("pass")){
 
-loginPage.style.display="none"
-shop.style.display="block"
+alert("Login berhasil")
 
 }else{
 
@@ -245,38 +219,28 @@ alert("Username atau password salah")
 
 }
 
-/* DAFTAR */
-
-function daftar(){
-
-if(pass.value.length<5){
-alert("Password minimal 5 digit")
-return
-}
-
-let tanya=prompt("Pertanyaan keamanan (contoh: nama ibu?)")
-let jawab=prompt("Jawaban pertanyaan")
-
-localStorage.user=user.value
-localStorage.pass=pass.value
-localStorage.tanya=tanya
-localStorage.jawab=jawab
-
-alert("Akun berhasil dibuat")
-
-}
-
-/* LUPA PASSWORD */
+/* lupa password */
 
 function lupa(){
 
-let jawab=prompt(localStorage.tanya)
+let j1=prompt(localStorage.getItem("q1"))
+let j2=prompt(localStorage.getItem("q2"))
+let j3=prompt(localStorage.getItem("q3"))
 
-if(jawab==localStorage.jawab){
+if(j1==localStorage.getItem("a1") &&
+j2==localStorage.getItem("a2") &&
+j3==localStorage.getItem("a3")){
 
 let baru=prompt("Masukkan password baru")
 
-localStorage.pass=baru
+if(baru.length<5){
+
+alert("Password minimal 5 digit")
+return
+
+}
+
+localStorage.setItem("pass",baru)
 
 alert("Password berhasil diganti")
 
@@ -285,61 +249,6 @@ alert("Password berhasil diganti")
 alert("Jawaban salah")
 
 }
-
-}
-
-/* LIHAT PASSWORD */
-
-function lihat(){
-
-if(pass.type=="password"){
-pass.type="text"
-}else{
-pass.type="password"
-}
-
-}
-
-/* LOGOUT */
-
-function logout(){
-
-localStorage.login="false"
-location.reload()
-
-}
-
-/* CART */
-
-let cart={}
-let total=0
-
-function add(name){
-
-if(!cart[name]){
-cart[name]={qty:0}
-}
-
-cart[name].qty++
-total++
-
-count.innerText=total
-
-}
-
-/* CHECKOUT */
-
-function checkout(){
-
-let text="Pesanan JUANDY BUTIK:%0A"
-
-for(let x in cart){
-
-text+=x+" "+cart[x].qty+" pcs%0A"
-
-}
-
-window.open("https://wa.me/6281234567890?text="+text)
 
 }
 
