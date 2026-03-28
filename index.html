@@ -13,9 +13,7 @@ background:#111;
 color:white;
 }
 
-.page{
-display:none;
-}
+.page{display:none}
 
 .center{
 display:flex;
@@ -39,12 +37,12 @@ border:none;
 border-radius:8px;
 background:#00c853;
 color:white;
-margin-top:5px;
 }
 
 header{
 display:flex;
 justify-content:space-between;
+align-items:center;
 background:black;
 padding:15px;
 }
@@ -68,9 +66,16 @@ width:100%;
 border-radius:10px;
 }
 
+footer{
+background:black;
+padding:20px;
+text-align:center;
+margin-top:30px;
+}
+
 .wa{
 position:fixed;
-bottom:20px;
+bottom:70px;
 right:20px;
 background:#25D366;
 padding:15px;
@@ -78,6 +83,13 @@ border-radius:30px;
 color:white;
 text-decoration:none;
 font-weight:bold;
+}
+
+.cartItem{
+background:#1a1a1a;
+margin:10px;
+padding:10px;
+border-radius:10px;
 }
 
 </style>
@@ -92,13 +104,11 @@ font-weight:bold;
 <h2>Login JUANDY BUTIK</h2>
 
 <input id="loginUser" placeholder="Username">
-
 <input id="loginPass" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
 <p onclick="showRegister()">Daftar akun</p>
-
 <p onclick="forgot()">Lupa password</p>
 
 </div>
@@ -110,7 +120,6 @@ font-weight:bold;
 <h2>Daftar Akun</h2>
 
 <input id="regUser" placeholder="Username">
-
 <input id="regPass" type="password" placeholder="Password minimal 5 digit">
 
 <select id="question">
@@ -137,7 +146,11 @@ font-weight:bold;
 
 <div>
 
-<span onclick="openCart()">🛒 <span id="cartCount">0</span></span>
+<span id="userName"></span>
+
+<span onclick="openCart()" style="margin-left:10px;cursor:pointer;">
+🛒 <span id="cartCount">0</span>
+</span>
 
 <button onclick="logout()">Logout</button>
 
@@ -181,6 +194,35 @@ font-weight:bold;
 
 </div>
 
+<footer>
+
+<p>© 2026 JUANDY BUTIK</p>
+<p>Toko Fashion Online</p>
+
+</footer>
+
+</div>
+
+<!-- CART PAGE -->
+
+<div id="cartPage" class="page">
+
+<header>
+
+<div>Keranjang Belanja</div>
+
+<button onclick="showStore()">Kembali</button>
+
+</header>
+
+<div id="cartList"></div>
+
+<center>
+
+<button onclick="checkout()">Checkout WhatsApp</button>
+
+</center>
+
 </div>
 
 <a class="wa" href="https://wa.me/">Chat WhatsApp</a>
@@ -195,6 +237,7 @@ function hideAll(){
 document.getElementById("loginPage").style.display="none"
 document.getElementById("registerPage").style.display="none"
 document.getElementById("storePage").style.display="none"
+document.getElementById("cartPage").style.display="none"
 
 }
 
@@ -219,19 +262,34 @@ document.getElementById("storePage").style.display="block"
 
 }
 
-function register(){
+function openCart(){
 
-let user=document.getElementById("regUser").value
-let pass=document.getElementById("regPass").value
-let question=document.getElementById("question").value
-let answer=document.getElementById("answer").value
+hideAll()
+document.getElementById("cartPage").style.display="block"
 
-if(user==""||pass==""||answer==""){
+let list=""
 
-alert("Semua data wajib diisi")
-return
+for(let name in cart){
+
+let item=cart[name]
+
+list+=`
+<div class="cartItem">
+<h3>${name}</h3>
+<p>${item.qty} pcs</p>
+</div>
+`
 
 }
+
+document.getElementById("cartList").innerHTML=list
+
+}
+
+function register(){
+
+let user=regUser.value
+let pass=regPass.value
 
 if(pass.length<5){
 
@@ -242,10 +300,10 @@ return
 
 localStorage.setItem("user",user)
 localStorage.setItem("pass",pass)
-localStorage.setItem("question",question)
-localStorage.setItem("answer",answer)
+localStorage.setItem("question",question.value)
+localStorage.setItem("answer",answer.value)
 
-alert("Pendaftaran berhasil")
+alert("Daftar berhasil")
 
 showLogin()
 
@@ -253,21 +311,21 @@ showLogin()
 
 function login(){
 
-let user=document.getElementById("loginUser").value
-let pass=document.getElementById("loginPass").value
+let user=loginUser.value
+let pass=loginPass.value
 
-let savedUser=localStorage.getItem("user")
-let savedPass=localStorage.getItem("pass")
-
-if(user===savedUser && pass===savedPass){
+if(user===localStorage.getItem("user") &&
+pass===localStorage.getItem("pass")){
 
 localStorage.setItem("login","true")
+
+document.getElementById("userName").innerText="Hi "+user
 
 showStore()
 
 }else{
 
-alert("Username atau password salah")
+alert("Login gagal")
 
 }
 
@@ -284,29 +342,16 @@ showLogin()
 function forgot(){
 
 let q=localStorage.getItem("question")
+
 let a=prompt(q)
 
 if(a===localStorage.getItem("answer")){
 
-alert("Password kamu: "+localStorage.getItem("pass"))
+alert("Password: "+localStorage.getItem("pass"))
 
 }else{
 
 alert("Jawaban salah")
-
-}
-
-}
-
-window.onload=function(){
-
-if(localStorage.getItem("login")==="true"){
-
-showStore()
-
-}else{
-
-showLogin()
 
 }
 
@@ -330,27 +375,33 @@ document.getElementById(id).innerText=cart[name].qty+" pcs"
 
 }
 
-function openCart(){
+function checkout(){
 
 let text="Pesanan JUANDY BUTIK%0A"
 
-let total=0
-
 for(let name in cart){
 
-let item=cart[name]
-
-let sub=item.qty*item.price
-
-total+=sub
-
-text+=name+" "+item.qty+"pcs Rp"+sub+"%0A"
+text+=name+" "+cart[name].qty+" pcs%0A"
 
 }
 
-text+="Total Rp"+total
-
 window.open("https://wa.me/?text="+text)
+
+}
+
+window.onload=function(){
+
+if(localStorage.getItem("login")==="true"){
+
+document.getElementById("userName").innerText="Hi "+localStorage.getItem("user")
+
+showStore()
+
+}else{
+
+showLogin()
+
+}
 
 }
 
