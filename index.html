@@ -9,9 +9,9 @@
 <style>
 
 body{
-background:#000;
-font-family:Arial;
 margin:0;
+font-family:Arial;
+background:#0a0a0a;
 color:white;
 }
 
@@ -21,6 +21,9 @@ padding:15px;
 text-align:center;
 font-size:28px;
 font-weight:bold;
+position:sticky;
+top:0;
+z-index:999;
 }
 
 .cart{
@@ -29,14 +32,15 @@ right:15px;
 top:15px;
 background:#00c853;
 padding:10px 15px;
-border-radius:10px;
+border-radius:20px;
+font-weight:bold;
 }
 
 .banner{
-background:linear-gradient(45deg,#ff0066,#7b00ff);
 padding:40px;
 text-align:center;
 font-size:22px;
+background:linear-gradient(45deg,#ff006a,#7a00ff);
 }
 
 .search{
@@ -45,7 +49,7 @@ text-align:center;
 }
 
 .search input{
-width:90%;
+width:80%;
 padding:12px;
 border-radius:10px;
 border:none;
@@ -56,10 +60,10 @@ padding:20px;
 }
 
 .card{
-background:#111;
+background:#151515;
+padding:15px;
 border-radius:15px;
 margin-bottom:25px;
-padding:15px;
 text-align:center;
 }
 
@@ -71,17 +75,17 @@ border-radius:10px;
 .price{
 color:#00e676;
 font-size:20px;
-margin:10px 0;
+margin:10px;
 }
 
-.btn{
-background:#00c853;
-border:none;
+button{
 padding:10px 20px;
-border-radius:8px;
-color:white;
-font-size:16px;
 margin:5px;
+border:none;
+border-radius:8px;
+background:#00c853;
+color:white;
+font-weight:bold;
 cursor:pointer;
 }
 
@@ -91,9 +95,23 @@ padding:20px;
 color:#aaa;
 }
 
-</style>
+.chat{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#00c853;
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+}
 
+</style>
 </head>
+
 <body>
 
 <header>
@@ -109,65 +127,45 @@ JUANDY BUTIK
 </div>
 
 <div class="search">
-<input type="text" id="search" placeholder="Cari produk...">
+<input type="text" id="search" placeholder="Cari produk..." onkeyup="cariProduk()">
 </div>
 
-<div class="container" id="products">
+<div class="container" id="produk">
 
-<!-- BAJU -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1520975922284-1f1c2f2c4e9c">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
 <h2>Baju Fashion</h2>
 <div class="price">Rp120.000</div>
 
-<button class="btn" onclick="tambahCart()">Tambah</button>
-
-<button class="btn"
-onclick="beliProduk('Baju Fashion','120000')">
-Beli
-</button>
+<button onclick="tambah()">Tambah</button>
+<button onclick="beli('Baju Fashion','120000')">Beli</button>
 </div>
 
-<!-- TAS -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1591561954557-26941169b49e">
+<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
 <h2>Tas Wanita</h2>
 <div class="price">Rp150.000</div>
 
-<button class="btn" onclick="tambahCart()">Tambah</button>
-
-<button class="btn"
-onclick="beliProduk('Tas Wanita','150000')">
-Beli
-</button>
+<button onclick="tambah()">Tambah</button>
+<button onclick="beli('Tas Wanita','150000')">Beli</button>
 </div>
 
-<!-- SEPATU -->
 <div class="card">
 <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
 <h2>Sepatu Trend</h2>
 <div class="price">Rp200.000</div>
 
-<button class="btn" onclick="tambahCart()">Tambah</button>
-
-<button class="btn"
-onclick="beliProduk('Sepatu Trend','200000')">
-Beli
-</button>
+<button onclick="tambah()">Tambah</button>
+<button onclick="beli('Sepatu Trend','200000')">Beli</button>
 </div>
 
-<!-- JAKET -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1593032465171-8c1c5d9b8e7e">
+<img src="https://images.unsplash.com/photo-1551028719-00167b16eac5">
 <h2>Jaket Pria</h2>
 <div class="price">Rp250.000</div>
 
-<button class="btn" onclick="tambahCart()">Tambah</button>
-
-<button class="btn"
-onclick="beliProduk('Jaket Pria','250000')">
-Beli
-</button>
+<button onclick="tambah()">Tambah</button>
+<button onclick="beli('Jaket Pria','250000')">Beli</button>
 </div>
 
 </div>
@@ -176,26 +174,60 @@ Beli
 © 2026 JUANDY BUTIK
 </footer>
 
+<a class="chat"
+href="https://wa.me/6281220549530"
+target="_blank">💬</a>
+
 <script>
 
-let cart=0
+let cart=0;
 
-function tambahCart(){
-cart++
-document.getElementById("cart").innerText=cart
+function tambah(){
+
+cart++;
+
+document.getElementById("cart").innerText=cart;
+
+alert("Produk ditambahkan ke keranjang");
+
 }
 
-function beliProduk(nama,harga){
+function beli(nama,harga){
 
 let pesan="Halo saya ingin membeli:%0A%0A"+
 "Produk: "+nama+"%0A"+
 "Harga: Rp"+harga+"%0A%0A"+
-"Link Toko:%0A"+
-window.location.href
+"Link toko:%0A"+
+window.location.href;
 
 window.open(
-"https://wa.me/6281220549530?text="+pesan
-)
+"https://wa.me/6281220549530?text="+pesan,
+"_blank"
+);
+
+}
+
+function cariProduk(){
+
+let input=document.getElementById("search").value.toLowerCase();
+
+let card=document.getElementsByClassName("card");
+
+for(let i=0;i<card.length;i++){
+
+let text=card[i].innerText.toLowerCase();
+
+if(text.includes(input)){
+
+card[i].style.display="block";
+
+}else{
+
+card[i].style.display="none";
+
+}
+
+}
 
 }
 
