@@ -1,54 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>JUANDY BUTIK</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JUANDY BUTIK</title>
 
 <style>
 
 body{
+background:#000;
+font-family:Arial;
 margin:0;
-font-family:Arial, sans-serif;
-background:#0f0f0f;
 color:white;
 }
 
-/* HEADER */
-
 header{
 background:black;
-padding:20px;
+padding:15px;
 text-align:center;
-font-size:26px;
+font-size:28px;
 font-weight:bold;
-position:sticky;
-top:0;
-z-index:100;
 }
-
-/* CART */
 
 .cart{
-position:absolute;
+position:fixed;
 right:15px;
 top:15px;
-background:#00cc66;
-padding:8px 12px;
-border-radius:8px;
-font-size:14px;
+background:#00c853;
+padding:10px 15px;
+border-radius:10px;
 }
-
-/* BANNER */
 
 .banner{
-background:linear-gradient(45deg,#ff0077,#6600ff);
-padding:35px;
+background:linear-gradient(45deg,#ff0066,#7b00ff);
+padding:40px;
 text-align:center;
-font-size:20px;
+font-size:22px;
 }
-
-/* SEARCH */
 
 .search{
 padding:20px;
@@ -57,143 +46,128 @@ text-align:center;
 
 .search input{
 width:90%;
-max-width:400px;
 padding:12px;
-border-radius:6px;
+border-radius:10px;
 border:none;
-font-size:16px;
 }
 
-/* PRODUCT GRID */
-
 .container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
 padding:20px;
 }
 
-.product{
-background:#1c1c1c;
-border-radius:12px;
+.card{
+background:#111;
+border-radius:15px;
+margin-bottom:25px;
 padding:15px;
 text-align:center;
-transition:0.3s;
 }
 
-.product:hover{
-transform:scale(1.04);
-}
-
-.product img{
+.card img{
 width:100%;
-height:200px;
-object-fit:cover;
 border-radius:10px;
 }
 
-.product h3{
+.price{
+color:#00e676;
+font-size:20px;
 margin:10px 0;
 }
 
-.price{
-color:#00ff99;
-font-size:18px;
-margin-bottom:10px;
-}
-
-/* BUTTON */
-
-button{
-background:#00cc66;
+.btn{
+background:#00c853;
 border:none;
-padding:10px 14px;
-border-radius:6px;
+padding:10px 20px;
+border-radius:8px;
 color:white;
+font-size:16px;
+margin:5px;
 cursor:pointer;
-font-size:14px;
-margin:4px;
 }
-
-button:hover{
-background:#00ff99;
-}
-
-/* WHATSAPP FLOAT */
-
-.wa{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-padding:16px;
-border-radius:50%;
-font-size:20px;
-text-decoration:none;
-color:white;
-}
-
-/* FOOTER */
 
 footer{
 text-align:center;
 padding:20px;
-background:black;
-margin-top:20px;
-font-size:14px;
+color:#aaa;
 }
 
 </style>
-</head>
 
+</head>
 <body>
 
 <header>
 JUANDY BUTIK
-<div class="cart">🛒 Cart: <span id="cart">0</span></div>
 </header>
 
+<div class="cart">
+🛒 Cart: <span id="cart">0</span>
+</div>
+
 <div class="banner">
-🔥 Promo Fashion Terbaru 🔥 <br>
-Belanja murah langsung dari toko kami
+🔥 Promo Fashion Terbaru 🔥
 </div>
 
 <div class="search">
-<input type="text" id="search" placeholder="Cari produk..." onkeyup="searchProduct()">
+<input type="text" id="search" placeholder="Cari produk...">
 </div>
 
-<div class="container">
+<div class="container" id="products">
 
-<div class="product">
-<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
-<h3>Baju Fashion</h3>
+<!-- BAJU -->
+<div class="card">
+<img src="https://images.unsplash.com/photo-1520975922284-1f1c2f2c4e9c">
+<h2>Baju Fashion</h2>
 <div class="price">Rp120.000</div>
-<button onclick="addCart()">Tambah</button>
-<button onclick="order('Baju Fashion')">Beli</button>
+
+<button class="btn" onclick="tambahCart()">Tambah</button>
+
+<button class="btn"
+onclick="beliProduk('Baju Fashion','120000')">
+Beli
+</button>
 </div>
 
-<div class="product">
-<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-<h3>Tas Wanita</h3>
+<!-- TAS -->
+<div class="card">
+<img src="https://images.unsplash.com/photo-1591561954557-26941169b49e">
+<h2>Tas Wanita</h2>
 <div class="price">Rp150.000</div>
-<button onclick="addCart()">Tambah</button>
-<button onclick="order('Tas Wanita')">Beli</button>
+
+<button class="btn" onclick="tambahCart()">Tambah</button>
+
+<button class="btn"
+onclick="beliProduk('Tas Wanita','150000')">
+Beli
+</button>
 </div>
 
-<div class="product">
-<img src="https://images.unsplash.com/photo-1549298916-b41d501d3772">
-<h3>Sepatu Trend</h3>
+<!-- SEPATU -->
+<div class="card">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
+<h2>Sepatu Trend</h2>
 <div class="price">Rp200.000</div>
-<button onclick="addCart()">Tambah</button>
-<button onclick="order('Sepatu Trend')">Beli</button>
+
+<button class="btn" onclick="tambahCart()">Tambah</button>
+
+<button class="btn"
+onclick="beliProduk('Sepatu Trend','200000')">
+Beli
+</button>
 </div>
 
-<div class="product">
-<img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea">
-<h3>Jaket Pria</h3>
+<!-- JAKET -->
+<div class="card">
+<img src="https://images.unsplash.com/photo-1593032465171-8c1c5d9b8e7e">
+<h2>Jaket Pria</h2>
 <div class="price">Rp250.000</div>
-<button onclick="addCart()">Tambah</button>
-<button onclick="order('Jaket Pria')">Beli</button>
+
+<button class="btn" onclick="tambahCart()">Tambah</button>
+
+<button class="btn"
+onclick="beliProduk('Jaket Pria','250000')">
+Beli
+</button>
 </div>
 
 </div>
@@ -202,44 +176,26 @@ Belanja murah langsung dari toko kami
 © 2026 JUANDY BUTIK
 </footer>
 
-<a class="wa" href="https://wa.me/628123456789">💬</a>
-
 <script>
 
-let total=0;
+let cart=0
 
-function addCart(){
-total++;
-document.getElementById("cart").innerText=total;
+function tambahCart(){
+cart++
+document.getElementById("cart").innerText=cart
 }
 
-function order(product){
+function beliProduk(nama,harga){
 
-let nomor="628123456789";
+let pesan="Halo saya ingin membeli:%0A%0A"+
+"Produk: "+nama+"%0A"+
+"Harga: Rp"+harga+"%0A%0A"+
+"Link Toko:%0A"+
+window.location.href
 
-let pesan="Halo saya mau beli "+product;
-
-window.open("https://wa.me/"+nomor+"?text="+encodeURIComponent(pesan));
-
-}
-
-function searchProduct(){
-
-let input=document.getElementById("search").value.toLowerCase();
-
-let products=document.getElementsByClassName("product");
-
-for(let i=0;i<products.length;i++){
-
-let text=products[i].innerText.toLowerCase();
-
-if(text.includes(input)){
-products[i].style.display="block";
-}else{
-products[i].style.display="none";
-}
-
-}
+window.open(
+"https://wa.me/6281220549530?text="+pesan
+)
 
 }
 
