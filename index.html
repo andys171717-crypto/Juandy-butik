@@ -69,7 +69,7 @@ border-radius:8px;
 border:none;
 }
 
-/* SLIDER */
+/* BANNER SLIDER */
 
 .banner{
 width:100%;
@@ -78,7 +78,6 @@ overflow:hidden;
 
 .slider{
 display:flex;
-transition:transform 0.5s ease;
 }
 
 .slide{
@@ -288,9 +287,10 @@ color:#aaa;
 <input type="text" placeholder="Cari produk..." onkeyup="searchProduk(this.value)">
 </div>
 
-<!-- SLIDER -->
+<!-- BANNER -->
 
 <div class="banner">
+
 <div class="slider" id="slider">
 
 <div class="slide">
@@ -306,6 +306,7 @@ color:#aaa;
 </div>
 
 </div>
+
 </div>
 
 <div class="filter">
@@ -545,42 +546,35 @@ function closePopup(){
 document.getElementById("popup").style.display="none"
 }
 
-/* SLIDER */
+/* SLIDER SATU ARAH */
 
 let slider=document.getElementById("slider")
+let slides=document.querySelectorAll(".slide")
 let index=0
-let totalSlide=document.querySelectorAll(".slide").length
+let totalSlide=slides.length
 
 function autoSlide(){
 
 index++
-if(index>=totalSlide) index=0
 
+slider.style.transition="transform 0.7s ease"
 slider.style.transform="translateX(-"+index*100+"%)"
+
+if(index==totalSlide){
+
+setTimeout(()=>{
+
+slider.style.transition="none"
+index=0
+slider.style.transform="translateX(0)"
+
+},700)
 
 }
 
-setInterval(autoSlide,4000)
+}
 
-let startX=0
-
-slider.addEventListener("touchstart",e=>{
-startX=e.touches[0].clientX
-})
-
-slider.addEventListener("touchend",e=>{
-
-let endX=e.changedTouches[0].clientX
-
-if(startX-endX>50) index++
-if(endX-startX>50) index--
-
-if(index<0) index=0
-if(index>=totalSlide) index=totalSlide-1
-
-slider.style.transform="translateX(-"+index*100+"%)"
-
-})
+setInterval(autoSlide,3500)
 
 </script>
 
