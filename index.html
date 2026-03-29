@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,18 +20,32 @@ color:white;
 
 /* HEADER */
 
-header{
-background:#000;
-padding:15px;
+.header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-size:18px;
+background:#000;
+padding:15px;
 font-weight:bold;
 }
 
+.logo{
+font-size:18px;
+}
+
 .cart-icon{
+font-size:20px;
 cursor:pointer;
+display:flex;
+align-items:center;
+gap:5px;
+}
+
+.cart-icon span{
+background:#25D366;
+padding:2px 7px;
+border-radius:20px;
+font-size:12px;
 }
 
 /* PRODUK */
@@ -47,7 +62,6 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
 .card img{
@@ -67,7 +81,7 @@ color:#ccc;
 margin-bottom:10px;
 }
 
-button{
+.tambah{
 background:#00c853;
 border:none;
 padding:10px 20px;
@@ -121,7 +135,11 @@ margin-top:5px;
 }
 
 .qty button{
+background:#00c853;
+border:none;
 padding:5px 10px;
+border-radius:5px;
+color:white;
 }
 
 .total{
@@ -140,6 +158,7 @@ border:none;
 border-radius:8px;
 margin-top:10px;
 font-weight:bold;
+color:white;
 }
 
 .backshop{
@@ -183,19 +202,23 @@ font-size:14px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header>
+<div class="header">
 
+<div class="logo">
 JUANDY BUTIK
-
-<div class="cart-icon" onclick="toggleCart()">
-🛒 <span id="cartCount">0</span>
 </div>
 
-</header>
+<div class="cart-icon" onclick="toggleCart()">
+<i class="fa-solid fa-cart-shopping"></i>
+<span id="cartCount">0</span>
+</div>
+
+</div>
 
 <div class="container" id="produk"></div>
 
@@ -219,7 +242,7 @@ Checkout WhatsApp
 </button>
 
 <button class="backshop" onclick="toggleCart()">
-⬅ Kembali Belanja
+← Kembali Belanja
 </button>
 
 </div>
@@ -289,7 +312,9 @@ html+=`
 
 <div class="harga">Rp ${p.harga}</div>
 
-<button onclick="tambah(${p.id})">Tambah</button>
+<button class="tambah" onclick="tambah(${p.id})">
+Tambah
+</button>
 
 </div>
 
@@ -404,7 +429,6 @@ function checkout(){
 if(cart.length==0){
 
 alert("Keranjang kosong")
-
 return
 
 }
