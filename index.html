@@ -78,13 +78,11 @@ position:relative;
 
 .slider{
 display:flex;
-width:300%;
 transition:transform 0.5s ease;
 }
 
 .slide{
-width:100%;
-flex-shrink:0;
+min-width:100%;
 }
 
 .slide img{
@@ -92,6 +90,28 @@ width:100%;
 height:180px;
 object-fit:cover;
 display:block;
+}
+
+/* DOT */
+
+.dots{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:6px;
+}
+
+.dot{
+width:8px;
+height:8px;
+background:#aaa;
+border-radius:50%;
+}
+
+.dot.active{
+background:#25D366;
 }
 
 /* PRODUK */
@@ -177,9 +197,22 @@ transform:translateX(0);
 }
 
 .cartItem{
+display:flex;
+gap:10px;
+margin-bottom:15px;
 border-bottom:1px solid #333;
 padding-bottom:10px;
-margin-bottom:15px;
+}
+
+.cartItem img{
+width:50px;
+height:50px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.cartInfo{
+flex:1;
 }
 
 .cartQty{
@@ -194,6 +227,15 @@ border:none;
 padding:4px 8px;
 border-radius:5px;
 color:white;
+}
+
+.remove{
+background:red;
+border:none;
+padding:3px 6px;
+border-radius:4px;
+color:white;
+margin-top:5px;
 }
 
 .checkout{
@@ -287,7 +329,7 @@ color:#aaa;
 </div>
 
 <div class="search">
-<input type="text" placeholder="Cari produk..." onkeyup="searchProduk(this.value)">
+<input type="text" placeholder="Cari produk...">
 </div>
 
 <!-- BANNER -->
@@ -297,17 +339,23 @@ color:#aaa;
 <div class="slider" id="slider">
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
+<img loading="lazy" src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
+<img loading="lazy" src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
 </div>
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
+<img loading="lazy" src="https://images.unsplash.com/photo-1521334884684-d80222895322">
 </div>
 
+</div>
+
+<div class="dots">
+<div class="dot active"></div>
+<div class="dot"></div>
+<div class="dot"></div>
 </div>
 
 </div>
@@ -366,8 +414,6 @@ function rupiah(n){
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
 
-/* PRODUK */
-
 let produk=[
 
 {id:1,nama:"Baju Fashion",harga:120000,rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
@@ -392,7 +438,7 @@ html+=`
 
 ${p.sale?'<div class="sale">SALE</div>':''}
 
-<img src="${p.img}" onclick="detailProduk(${p.id})">
+<img loading="lazy" src="${p.img}" onclick="detailProduk(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
@@ -425,13 +471,12 @@ tampilProduk()
 
 function plus(id){cart[id]=(cart[id]||0)+1;save()}
 function minus(id){if(cart[id]>0)cart[id]--;save()}
+function removeItem(id){delete cart[id];save()}
 
 function save(){
 localStorage.setItem("cart",JSON.stringify(cart))
 tampilProduk()
 }
-
-/* CART */
 
 function updateCart(){
 
@@ -454,6 +499,10 @@ html+=`
 
 <div class="cartItem">
 
+<img src="${p.img}">
+
+<div class="cartInfo">
+
 <b>${p.nama}</b>
 
 <div>${rupiah(p.harga)}</div>
@@ -469,6 +518,10 @@ html+=`
 </div>
 
 <div>Subtotal : ${rupiah(sub)}</div>
+
+<button class="remove" onclick="removeItem(${p.id})">Hapus</button>
+
+</div>
 
 </div>
 
@@ -487,8 +540,6 @@ document.getElementById("cartCount").innerText=jumlah
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
 }
-
-/* POPUP */
 
 function detailProduk(id){
 
@@ -512,8 +563,6 @@ closePopup()
 function closePopup(){
 document.getElementById("popup").style.display="none"
 }
-
-/* CHECKOUT */
 
 function checkout(){
 
@@ -542,20 +591,59 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* BANNER SLIDER */
+/* SLIDER */
 
 let slider=document.getElementById("slider")
+let dots=document.querySelectorAll(".dot")
+
 let index=0
+let totalSlide=3
 
-setInterval(()=>{
-
-index++
-
-if(index>2) index=0
+function showSlide(){
 
 slider.style.transform="translateX(-"+index*100+"%)"
 
-},3500)
+dots.forEach(d=>d.classList.remove("active"))
+dots[index].classList.add("active")
+
+}
+
+function nextSlide(){
+
+index++
+if(index>=totalSlide) index=0
+
+showSlide()
+
+}
+
+setInterval(nextSlide,3000)
+
+/* swipe */
+
+let startX=0
+
+slider.addEventListener("touchstart",(e)=>{
+startX=e.touches[0].clientX
+})
+
+slider.addEventListener("touchend",(e)=>{
+
+let endX=e.changedTouches[0].clientX
+
+if(startX-endX>50){
+index++
+if(index>=totalSlide) index=0
+}
+
+if(endX-startX>50){
+index--
+if(index<0) index=totalSlide-1
+}
+
+showSlide()
+
+})
 
 </script>
 
