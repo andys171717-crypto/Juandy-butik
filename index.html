@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
@@ -69,11 +70,25 @@ border-radius:8px;
 border:none;
 }
 
-/* BANNER */
+/* SLIDER */
 
-.banner img{
+.banner{
 width:100%;
-height:160px;
+overflow:hidden;
+}
+
+.slider{
+display:flex;
+transition:transform 0.5s ease;
+}
+
+.slide{
+min-width:100%;
+}
+
+.slide img{
+width:100%;
+height:180px;
 object-fit:cover;
 }
 
@@ -240,6 +255,7 @@ color:#aaa;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -259,8 +275,26 @@ color:#aaa;
 <input type="text" placeholder="Cari produk..." onkeyup="searchProduk(this.value)">
 </div>
 
+<!-- BANNER SLIDER -->
+
 <div class="banner">
+
+<div class="slider" id="slider">
+
+<div class="slide">
 <img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
+</div>
+
+</div>
+
 </div>
 
 <div class="filter">
@@ -291,6 +325,7 @@ color:#aaa;
 <!-- POPUP -->
 
 <div class="popup" id="popup">
+
 <div class="popupContent">
 
 <img id="popupImg">
@@ -302,6 +337,7 @@ color:#aaa;
 <button onclick="closePopup()">Tutup</button>
 
 </div>
+
 </div>
 
 <div class="wa" onclick="checkout()">
@@ -314,9 +350,13 @@ color:#aaa;
 
 <script>
 
+/* FORMAT RUPIAH */
+
 function rupiah(n){
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
+
+/* PRODUK */
 
 let produk=[
 {id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
@@ -326,6 +366,8 @@ let produk=[
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
+
+/* TAMPIL PRODUK */
 
 function tampilProduk(data){
 
@@ -368,6 +410,8 @@ updateCart()
 
 tampilProduk(produk)
 
+/* QTY */
+
 function plus(id){
 cart[id]=(cart[id]||0)+1
 save()
@@ -387,6 +431,8 @@ function save(){
 localStorage.setItem("cart",JSON.stringify(cart))
 tampilProduk(produk)
 }
+
+/* CART */
 
 function updateCart(){
 
@@ -421,6 +467,8 @@ function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
 }
 
+/* CHECKOUT */
+
 function checkout(){
 
 let pesan="Halo saya ingin memesan:%0A%0A"
@@ -448,6 +496,8 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
+/* SEARCH */
+
 function searchProduk(k){
 
 k=k.toLowerCase()
@@ -473,7 +523,6 @@ function detailProduk(id){
 let p=produk.find(x=>x.id==id)
 
 document.getElementById("popup").style.display="flex"
-
 document.getElementById("popupImg").src=p.img
 document.getElementById("popupNama").innerText=p.nama
 document.getElementById("popupHarga").innerText=rupiah(p.harga)
@@ -483,6 +532,48 @@ document.getElementById("popupHarga").innerText=rupiah(p.harga)
 function closePopup(){
 document.getElementById("popup").style.display="none"
 }
+
+/* SLIDER */
+
+let slider=document.getElementById("slider")
+let index=0
+let totalSlide=document.querySelectorAll(".slide").length
+
+function autoSlide(){
+
+index++
+
+if(index>=totalSlide){
+index=0
+}
+
+slider.style.transform="translateX(-"+index*100+"%)"
+
+}
+
+setInterval(autoSlide,4000)
+
+/* SWIPE */
+
+let startX=0
+
+slider.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX
+})
+
+slider.addEventListener("touchend",e=>{
+
+let endX=e.changedTouches[0].clientX
+
+if(startX-endX>50) index++
+if(endX-startX>50) index--
+
+if(index<0) index=0
+if(index>=totalSlide) index=totalSlide-1
+
+slider.style.transform="translateX(-"+index*100+"%)"
+
+})
 
 </script>
 
