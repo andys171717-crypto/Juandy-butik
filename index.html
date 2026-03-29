@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JUANDY BUTIK</title>
 
 <style>
 
 body{
-font-family:Arial;
 margin:0;
-background:#111;
+font-family:Arial;
+background:#0f0f0f;
 color:white;
 }
 
@@ -19,69 +20,100 @@ padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+font-weight:bold;
 }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+.container{
 padding:15px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 
 .card{
-background:#1c1c1c;
+background:#1b1b1b;
 border-radius:10px;
-padding:10px;
+overflow:hidden;
 text-align:center;
+padding-bottom:10px;
 }
 
 .card img{
 width:100%;
 height:150px;
 object-fit:cover;
-border-radius:8px;
+}
+
+.nama{
+margin-top:8px;
+font-weight:bold;
+}
+
+.harga{
+color:#ccc;
+font-size:14px;
 }
 
 button{
 background:#00c853;
 border:none;
 padding:8px 12px;
-border-radius:6px;
 color:white;
+border-radius:5px;
 margin-top:5px;
 }
 
-.cart{
-cursor:pointer;
-}
-
-.cartPage{
-display:none;
-padding:20px;
-}
-
-.total{
-font-size:20px;
-color:#00e676;
-margin-top:10px;
+.keranjang{
+position:fixed;
+top:15px;
+right:15px;
+background:red;
+padding:3px 7px;
+border-radius:50%;
+font-size:12px;
 }
 
 .wa{
 position:fixed;
 bottom:20px;
 right:20px;
-width:60px;
-height:60px;
 background:#25D366;
+width:55px;
+height:55px;
 border-radius:50%;
 display:flex;
-align-items:center;
 justify-content:center;
-box-shadow:0 0 10px rgba(0,0,0,0.5);
+align-items:center;
+font-size:28px;
+color:white;
+text-decoration:none;
 }
 
-.wa img{
-width:35px;
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal-box{
+background:#1b1b1b;
+padding:20px;
+border-radius:10px;
+width:90%;
+max-width:350px;
+}
+
+.checkout{
+background:#00c853;
+width:100%;
+padding:10px;
+margin-top:10px;
 }
 
 </style>
@@ -90,51 +122,52 @@ width:35px;
 <body>
 
 <header>
-<b>JUANDY BUTIK</b>
-
-<div class="cart" onclick="bukaCart()">
-🛒 <span id="cartCount">0</span>
-</div>
-
+JUANDY BUTIK
+<div>🛒 <span id="jumlah">0</span></div>
 </header>
 
-<div id="produk" class="grid"></div>
+<div class="container" id="produk"></div>
 
-<div id="cartPage" class="cartPage">
+<a class="wa" href="https://wa.me/" target="_blank">📱</a>
 
-<h2>Keranjang Belanja</h2>
-
-<div id="cartList"></div>
-
-<div class="total" id="totalHarga"></div>
-
-<br>
-
-<button onclick="checkout()">Checkout WhatsApp</button>
-
-<br><br>
-
-<button onclick="tutupCart()">Kembali</button>
-
+<div class="modal" id="cartModal">
+<div class="modal-box">
+<h3>Keranjang</h3>
+<div id="isiCart"></div>
+<button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
 </div>
-
-<a href="https://wa.me/6281220549530" class="wa">
-<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-</a>
+</div>
 
 <script>
 
 let produk=[
-
-{nama:"Baju Fashion",harga:120000,img:"https://images.unsplash.com/photo-1520975922284-8b456906c813",pcs:0},
-
-{nama:"Tas Wanita",harga:150000,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",pcs:0},
-
-{nama:"Sepatu Trend",harga:200000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff",pcs:0},
-
-{nama:"Jaket Pria",harga:250000,img:"https://images.unsplash.com/photo-1520974735194-9c7e70c4b6f7",pcs:0}
-
+{
+nama:"Baju Fashion",
+harga:120000,
+img:"https://picsum.photos/300?1",
+pcs:0
+},
+{
+nama:"Tas Wanita",
+harga:150000,
+img:"https://picsum.photos/300?2",
+pcs:0
+},
+{
+nama:"Sepatu Trend",
+harga:200000,
+img:"https://picsum.photos/300?3",
+pcs:0
+},
+{
+nama:"Jaket Pria",
+harga:250000,
+img:"https://picsum.photos/300?4",
+pcs:0
+}
 ]
+
+let cart=[]
 
 function tampilProduk(){
 
@@ -148,13 +181,11 @@ html+=`
 
 <img src="${p.img}">
 
-<h3>${p.nama}</h3>
+<div class="nama">${p.nama}</div>
 
-<p>Rp ${p.harga}</p>
+<div class="harga">Rp ${p.harga}</div>
 
 <button onclick="tambah(${i})">Tambah</button>
-
-<p>${p.pcs} pcs</p>
 
 </div>
 
@@ -164,94 +195,47 @@ html+=`
 
 document.getElementById("produk").innerHTML=html
 
-updateCart()
-
 }
 
 function tambah(i){
 
-produk[i].pcs++
+cart.push(produk[i])
 
-tampilProduk()
+updateCart()
 
 }
 
 function updateCart(){
 
-let total=0
-
-produk.forEach(p=>{
-
-total+=p.pcs
-
-})
-
-document.getElementById("cartCount").innerText=total
-
-}
-
-function bukaCart(){
-
-document.getElementById("produk").style.display="none"
-document.getElementById("cartPage").style.display="block"
+document.getElementById("jumlah").innerText=cart.length
 
 let html=""
-let total=0
 
-produk.forEach(p=>{
+cart.forEach(p=>{
 
-if(p.pcs>0){
-
-let harga=p.harga*p.pcs
-
-total+=harga
-
-html+=`
-
-<p>${p.nama} - ${p.pcs} pcs - Rp ${harga}</p>
-
-`
-
-}
+html+=`<div>${p.nama} - Rp ${p.harga}</div>`
 
 })
 
-document.getElementById("cartList").innerHTML=html
-
-document.getElementById("totalHarga").innerText="Total Rp "+total
-
-}
-
-function tutupCart(){
-
-document.getElementById("produk").style.display="grid"
-document.getElementById("cartPage").style.display="none"
+document.getElementById("isiCart").innerHTML=html
 
 }
 
 function checkout(){
 
-let pesan="Halo saya ingin pesan:%0A"
+let text="Halo saya ingin pesan:%0A"
 
-let total=0
+cart.forEach(p=>{
+text+=p.nama+" - Rp "+p.harga+"%0A"
+})
 
-produk.forEach(p=>{
-
-if(p.pcs>0){
-
-let harga=p.harga*p.pcs
-
-total+=harga
-
-pesan+=p.nama+" "+p.pcs+" pcs - Rp "+harga+"%0A"
+window.open("https://wa.me/?text="+text)
 
 }
 
-})
+document.querySelector("header").onclick=function(){
 
-pesan+="Total: Rp "+total
-
-window.open("https://wa.me/6281220549530?text="+pesan)
+document.getElementById("cartModal").style.display="flex"
 
 }
 
