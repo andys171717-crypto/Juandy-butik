@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>JUANDY BUTIK</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+
+/* =========================
+GLOBAL
+========================= */
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
@@ -18,25 +28,25 @@ background:#0f0f0f;
 color:white;
 }
 
-/* HEADER */
+/* =========================
+HEADER
+========================= */
 
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:14px;
-background:black;
+background:#000;
 position:sticky;
 top:0;
 z-index:1000;
 }
 
 .logo{
-font-weight:bold;
 font-size:18px;
+font-weight:bold;
 }
-
-/* CART BUTTON */
 
 .cartBtn{
 background:#25D366;
@@ -51,12 +61,14 @@ position:absolute;
 top:-5px;
 right:-5px;
 background:red;
-padding:2px 6px;
 font-size:12px;
+padding:3px 6px;
 border-radius:50%;
 }
 
-/* SEARCH */
+/* =========================
+SEARCH
+========================= */
 
 .search{
 padding:10px;
@@ -70,12 +82,14 @@ border:none;
 border-radius:8px;
 }
 
-/* KATEGORI */
+/* =========================
+KATEGORI
+========================= */
 
 .kategori{
 display:flex;
-gap:8px;
 overflow:auto;
+gap:8px;
 padding:10px;
 background:#111;
 }
@@ -87,9 +101,12 @@ color:white;
 padding:8px 12px;
 border-radius:20px;
 white-space:nowrap;
+cursor:pointer;
 }
 
-/* BANNER */
+/* =========================
+BANNER
+========================= */
 
 .banner{
 width:100%;
@@ -112,7 +129,7 @@ height:180px;
 object-fit:cover;
 }
 
-/* DOT */
+/* dots */
 
 .dots{
 position:absolute;
@@ -126,15 +143,17 @@ gap:6px;
 .dot{
 width:8px;
 height:8px;
-background:#bbb;
 border-radius:50%;
+background:#aaa;
 }
 
 .dot.active{
 background:#25D366;
 }
 
-/* PRODUK */
+/* =========================
+PRODUK GRID
+========================= */
 
 .container{
 display:grid;
@@ -148,6 +167,11 @@ background:#1a1a1a;
 border-radius:12px;
 overflow:hidden;
 box-shadow:0 2px 6px rgba(0,0,0,.5);
+transition:.2s;
+}
+
+.card:active{
+transform:scale(.97);
 }
 
 .card img{
@@ -176,7 +200,9 @@ color:#fbc02d;
 padding:0 8px;
 }
 
-/* QTY */
+/* =========================
+QTY
+========================= */
 
 .qty{
 display:flex;
@@ -192,6 +218,7 @@ border:none;
 background:#00c853;
 color:white;
 border-radius:6px;
+cursor:pointer;
 }
 
 .qtyInput{
@@ -203,7 +230,9 @@ color:white;
 border-radius:6px;
 }
 
-/* CART */
+/* =========================
+CART
+========================= */
 
 .cartBox{
 position:fixed;
@@ -223,7 +252,7 @@ z-index:2000;
 transform:translateX(0);
 }
 
-/* CART HEADER */
+/* header cart */
 
 .cartHeader{
 display:flex;
@@ -239,11 +268,10 @@ color:white;
 width:35px;
 height:35px;
 border-radius:8px;
-font-size:16px;
 cursor:pointer;
 }
 
-/* CART ITEM */
+/* cart item */
 
 .cartItem{
 display:flex;
@@ -256,8 +284,8 @@ padding-bottom:10px;
 .cartItem img{
 width:50px;
 height:50px;
-object-fit:cover;
 border-radius:6px;
+object-fit:cover;
 }
 
 .remove{
@@ -266,10 +294,10 @@ border:none;
 padding:3px 6px;
 border-radius:4px;
 color:white;
-margin-top:5px;
+cursor:pointer;
 }
 
-/* BUTTON */
+/* checkout */
 
 .checkout{
 background:#25D366;
@@ -280,12 +308,16 @@ border-radius:8px;
 margin-top:10px;
 color:white;
 font-weight:bold;
+cursor:pointer;
 }
 
 </style>
+
 </head>
 
 <body>
+
+<!-- HEADER -->
 
 <div class="header">
 
@@ -298,9 +330,13 @@ font-weight:bold;
 
 </div>
 
+<!-- SEARCH -->
+
 <div class="search">
 <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProduk()">
 </div>
+
+<!-- KATEGORI -->
 
 <div class="kategori">
 <button onclick="filterKategori('all')">Semua</button>
@@ -337,6 +373,8 @@ font-weight:bold;
 
 </div>
 
+<!-- PRODUK -->
+
 <div class="container" id="produk"></div>
 
 <!-- CART -->
@@ -363,13 +401,19 @@ font-weight:bold;
 
 <script>
 
-/* FORMAT RUPIAH */
+/* =========================
+FORMAT RUPIAH
+========================= */
 
 function rupiah(n){
+
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
+
 }
 
-/* DATA PRODUK */
+/* =========================
+DATA PRODUK
+========================= */
 
 let produk=[
 
@@ -381,7 +425,15 @@ let produk=[
 
 ]
 
+/* =========================
+CART STORAGE
+========================= */
+
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
+
+/* =========================
+RENDER PRODUK
+========================= */
 
 function renderProduk(data){
 
@@ -405,7 +457,9 @@ html+=`
 
 <button onclick="minus(${p.id})">-</button>
 
-<input class="qtyInput" type="number" min="0" value="${cart[p.id]||0}" onchange="setQty(${p.id},this.value)">
+<input class="qtyInput" type="number" min="0"
+value="${cart[p.id]||0}"
+onchange="setQty(${p.id},this.value)">
 
 <button onclick="plus(${p.id})">+</button>
 
@@ -425,14 +479,24 @@ updateCart()
 
 renderProduk(produk)
 
+/* =========================
+QTY
+========================= */
+
 function plus(id){
+
 cart[id]=(cart[id]||0)+1
+
 save()
+
 }
 
 function minus(id){
+
 if(cart[id]>0) cart[id]--
+
 save()
+
 }
 
 function setQty(id,val){
@@ -446,6 +510,10 @@ save()
 
 }
 
+/* =========================
+SAVE CART
+========================= */
+
 function save(){
 
 localStorage.setItem("cart",JSON.stringify(cart))
@@ -453,6 +521,10 @@ localStorage.setItem("cart",JSON.stringify(cart))
 renderProduk(produk)
 
 }
+
+/* =========================
+UPDATE CART
+========================= */
 
 function updateCart(){
 
@@ -472,14 +544,24 @@ total+=sub
 jumlah+=q
 
 html+=`
+
 <div class="cartItem">
+
 <img src="${p.img}">
+
 <div>
+
 <b>${p.nama}</b>
+
 <div>${rupiah(sub)}</div>
-<button class="remove" onclick="removeItem(${p.id})">Hapus</button>
+
+<button class="remove"
+onclick="removeItem(${p.id})">Hapus</button>
+
 </div>
+
 </div>
+
 `
 
 }
@@ -492,6 +574,10 @@ document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 
 }
 
+/* =========================
+REMOVE ITEM
+========================= */
+
 function removeItem(id){
 
 delete cart[id]
@@ -500,11 +586,19 @@ save()
 
 }
 
+/* =========================
+TOGGLE CART
+========================= */
+
 function toggleCart(){
 
 document.getElementById("cartBox").classList.toggle("active")
 
 }
+
+/* =========================
+CHECKOUT WHATSAPP
+========================= */
 
 function checkout(){
 
@@ -526,19 +620,24 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* SEARCH */
+/* =========================
+SEARCH
+========================= */
 
 function filterProduk(){
 
 let key=document.getElementById("searchInput").value.toLowerCase()
 
-let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
+let hasil=produk.filter(p=>
+p.nama.toLowerCase().includes(key))
 
 renderProduk(hasil)
 
 }
 
-/* KATEGORI */
+/* =========================
+KATEGORI
+========================= */
 
 function filterKategori(k){
 
@@ -553,10 +652,13 @@ renderProduk(hasil)
 
 }
 
-/* BANNER */
+/* =========================
+BANNER AUTO SLIDE
+========================= */
 
 let slider=document.getElementById("slider")
 let dots=document.querySelectorAll(".dot")
+
 let index=0
 
 function showSlide(){
