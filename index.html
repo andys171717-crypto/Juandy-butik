@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>JUANDY BUTIK</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
@@ -69,45 +66,34 @@ margin-bottom:15px;
 font-weight:bold;
 }
 
-button:active{
-transform:scale(0.95);
-}
-
 .wa{
 position:fixed;
 bottom:20px;
 right:20px;
 background:#25D366;
-width:60px;
-height:60px;
+width:65px;
+height:65px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
 font-size:30px;
 cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
-
 JUANDY BUTIK
-
-<div>
-🛒 <span id="cart">0</span>
-</div>
-
+<div>🛒 <span id="cart">0</span></div>
 </header>
 
 <div class="container" id="produk"></div>
 
-<div class="wa" onclick="checkout()">💬</div>
+<div class="wa" onclick="checkout()">☎</div>
 
 <script>
 
@@ -116,25 +102,25 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+img:"https://picsum.photos/400/300?1"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+img:"https://picsum.photos/400/300?2"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+img:"https://picsum.photos/400/300?3"
 },
 
 {
 nama:"Jaket Pria",
 harga:250000,
-img:"https://images.unsplash.com/photo-1551028719-00167b16eac5"
+img:"https://picsum.photos/400/300?4"
 }
 
 ]
@@ -148,25 +134,17 @@ let html=""
 produk.forEach((p,i)=>{
 
 html+=`
-
 <div class="card">
-
 <img src="${p.img}">
-
 <div class="nama">${p.nama}</div>
-
 <div class="harga">Rp ${p.harga}</div>
-
 <button onclick="tambah(${i})">Tambah</button>
-
 </div>
-
 `
 
 })
 
 document.getElementById("produk").innerHTML=html
-
 updateCart()
 
 }
@@ -192,19 +170,14 @@ document.getElementById("cart").innerText=cart.length
 function checkout(){
 
 if(cart.length==0){
-
 alert("Keranjang kosong")
-
 return
-
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
-
 pesan+=item.nama+" - Rp "+item.harga+"%0A"
-
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
