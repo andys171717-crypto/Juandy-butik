@@ -86,22 +86,26 @@ margin-bottom:10px;
 display:flex;
 justify-content:center;
 align-items:center;
-gap:10px;
+gap:8px;
 margin-bottom:12px;
 }
 
 .qty button{
 background:#00c853;
 border:none;
-padding:6px 12px;
+padding:6px 10px;
 border-radius:6px;
 color:white;
-font-weight:bold;
 font-size:16px;
 }
 
-.qty span{
-font-size:15px;
+.qty input{
+width:40px;
+text-align:center;
+border:none;
+border-radius:6px;
+padding:6px;
+font-weight:bold;
 }
 
 /* CART */
@@ -322,7 +326,10 @@ html+=`
 
 <button onclick="minusProduk(${p.id})">-</button>
 
-<span>${qty}</span>
+<input type="number"
+value="${qty}"
+min="0"
+onchange="inputQty(${p.id},this.value)">
 
 <button onclick="plusProduk(${p.id})">+</button>
 
@@ -338,7 +345,46 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-/* PLUS PRODUK */
+/* INPUT QTY */
+
+function inputQty(id,value){
+
+value=parseInt(value)
+
+if(isNaN(value)||value<=0){
+
+cart=cart.filter(x=>x.id!==id)
+
+}else{
+
+let item=cart.find(x=>x.id===id)
+
+if(item){
+
+item.qty=value
+
+}else{
+
+let p=produk.find(x=>x.id===id)
+
+cart.push({
+id:p.id,
+nama:p.nama,
+harga:p.harga,
+img:p.img,
+qty:value
+})
+
+}
+
+}
+
+saveCart()
+updateCart()
+
+}
+
+/* PLUS */
 
 function plusProduk(id){
 
@@ -367,7 +413,7 @@ updateCart()
 
 }
 
-/* MINUS PRODUK */
+/* MINUS */
 
 function minusProduk(id){
 
@@ -452,7 +498,7 @@ updateCart()
 
 }
 
-/* TOGGLE CART */
+/* CART */
 
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
@@ -479,7 +525,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* WA DIRECT */
+/* WA */
 
 function waDirect(){
 window.open("https://wa.me/6281220549530")
