@@ -38,7 +38,7 @@ font-weight:bold;
 cursor:pointer;
 display:flex;
 align-items:center;
-gap:5px;
+gap:6px;
 }
 
 .cart span{
@@ -87,7 +87,13 @@ padding:10px 20px;
 border-radius:8px;
 color:white;
 cursor:pointer;
-margin-bottom:15px;
+margin-bottom:5px;
+}
+
+.jumlah{
+font-size:13px;
+color:#aaa;
+margin-bottom:12px;
 }
 
 /* CART */
@@ -159,6 +165,16 @@ color:white;
 font-weight:bold;
 }
 
+.kembali{
+background:#333;
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+margin-top:10px;
+color:white;
+}
+
 /* WA */
 
 .wa{
@@ -211,7 +227,7 @@ JUANDY BUTIK
 
 <div class="cartBox" id="cartBox">
 
-<h3>Keranjang</h3>
+<h2>Keranjang</h2>
 
 <div id="cartItems"></div>
 
@@ -221,6 +237,10 @@ Total: Rp <span id="totalHarga">0</span>
 
 <button class="checkout" onclick="checkout()">
 Checkout WhatsApp
+</button>
+
+<button class="kembali" onclick="toggleCart()">
+Kembali Belanja
 </button>
 
 </div>
@@ -238,7 +258,7 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
-/* RESET DATA RUSAK */
+/* DATA CART */
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
@@ -277,6 +297,9 @@ let html=""
 
 produk.forEach(p=>{
 
+let item=cart.find(x=>x.id===p.id)
+let qty=item?item.qty:0
+
 html+=`
 
 <div class="card">
@@ -290,6 +313,10 @@ html+=`
 <button class="btn" onclick="tambah(${p.id})">
 Tambah
 </button>
+
+<div class="jumlah">
+Dipilih: <span id="qty-${p.id}">${qty}</span>
+</div>
 
 </div>
 
@@ -308,9 +335,7 @@ function tambah(id){
 let item=cart.find(x=>x.id===id)
 
 if(item){
-
 item.qty++
-
 }else{
 
 let p=produk.find(x=>x.id===id)
@@ -340,10 +365,7 @@ let jumlah=0
 
 cart.forEach(item=>{
 
-if(!item.qty)item.qty=1
-
 let subtotal=item.harga*item.qty
-
 total+=subtotal
 jumlah+=item.qty
 
@@ -383,6 +405,8 @@ Hapus
 document.getElementById("cartItems").innerHTML=html
 document.getElementById("totalHarga").innerText=total
 document.getElementById("cartCount").innerText=jumlah
+
+tampilProduk()
 
 }
 
