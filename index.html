@@ -21,45 +21,27 @@ color:white;
 /* HEADER */
 
 .header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:black;
 position:sticky;
 top:0;
-background:#000;
-padding:10px;
 z-index:1000;
 }
 
-.headerTop{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
 .logo{
+font-size:20px;
 font-weight:bold;
-font-size:18px;
-}
-
-.searchBox{
-flex:1;
-}
-
-.searchBox input{
-width:100%;
-padding:10px;
-border-radius:20px;
-border:none;
 }
 
 .cartBtn{
 background:#25D366;
-width:40px;
-height:40px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-position:relative;
+padding:10px 14px;
+border-radius:20px;
 cursor:pointer;
+position:relative;
 }
 
 .cartBtn.shake{
@@ -67,53 +49,74 @@ animation:shake .4s;
 }
 
 @keyframes shake{
+
 0%{transform:rotate(0)}
 25%{transform:rotate(10deg)}
 50%{transform:rotate(-10deg)}
 75%{transform:rotate(10deg)}
 100%{transform:rotate(0)}
+
 }
 
 .cartCount{
 position:absolute;
-top:-5px;
-right:-5px;
+top:-6px;
+right:-6px;
 background:red;
-font-size:11px;
-padding:2px 5px;
+font-size:12px;
+padding:2px 6px;
 border-radius:50%;
+}
+
+/* SEARCH */
+
+.search{
+padding:10px;
+background:#111;
+}
+
+.search input{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
 }
 
 /* KATEGORI */
 
 .kategori{
 display:flex;
+gap:8px;
 overflow:auto;
-gap:10px;
 padding:10px;
+background:#111;
 }
 
 .kategori button{
-background:#1c1c1c;
+background:#222;
 border:none;
 color:white;
-padding:8px 14px;
+padding:8px 12px;
 border-radius:20px;
 cursor:pointer;
 white-space:nowrap;
 }
 
+.kategori button:hover{
+background:#25D366;
+}
+
 /* BANNER */
 
 .banner{
-padding:10px;
+width:100%;
+overflow:hidden;
+position:relative;
 }
 
 .slider{
 display:flex;
-transition:transform .5s;
-border-radius:10px;
-overflow:hidden;
+transition:transform .5s ease;
 }
 
 .slide{
@@ -129,16 +132,18 @@ object-fit:cover;
 /* DOT */
 
 .dots{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
 display:flex;
-justify-content:center;
 gap:6px;
-margin-top:5px;
 }
 
 .dot{
 width:8px;
 height:8px;
-background:#888;
+background:#aaa;
 border-radius:50%;
 }
 
@@ -157,18 +162,19 @@ padding:12px;
 
 .card{
 background:#1c1c1c;
-border-radius:14px;
+border-radius:15px;
 overflow:hidden;
+text-align:center;
 position:relative;
 }
 
 .sale{
 position:absolute;
-top:8px;
-left:8px;
+top:10px;
+left:10px;
 background:red;
+padding:4px 8px;
 font-size:12px;
-padding:3px 6px;
 border-radius:5px;
 }
 
@@ -179,38 +185,32 @@ object-fit:cover;
 cursor:pointer;
 }
 
-.info{
-padding:10px;
-}
-
 .nama{
-font-size:14px;
 font-weight:bold;
+margin-top:8px;
 }
 
 .harga{
-color:#25D366;
-font-weight:bold;
+color:#ccc;
 }
 
 .rating{
 color:gold;
-font-size:12px;
 }
 
 .qty{
 display:flex;
 justify-content:center;
 gap:10px;
-margin-top:8px;
+margin:10px;
 }
 
 .qty button{
-background:#25D366;
+background:#00c853;
 border:none;
-padding:5px 8px;
-border-radius:5px;
 color:white;
+padding:6px 10px;
+border-radius:6px;
 }
 
 /* CART */
@@ -219,12 +219,12 @@ color:white;
 position:fixed;
 top:0;
 right:0;
+transform:translateX(100%);
 width:320px;
 height:100%;
 background:#111;
-transform:translateX(100%);
-transition:.3s;
 padding:20px;
+transition:.3s;
 overflow:auto;
 z-index:2000;
 }
@@ -236,14 +236,43 @@ transform:translateX(0);
 .cartItem{
 display:flex;
 gap:10px;
-margin-bottom:12px;
+margin-bottom:15px;
+border-bottom:1px solid #333;
+padding-bottom:10px;
 }
 
 .cartItem img{
 width:50px;
 height:50px;
-border-radius:6px;
 object-fit:cover;
+border-radius:6px;
+}
+
+.cartInfo{
+flex:1;
+}
+
+.cartQty{
+display:flex;
+gap:10px;
+margin-top:5px;
+}
+
+.cartQty button{
+background:#00c853;
+border:none;
+padding:4px 8px;
+border-radius:5px;
+color:white;
+}
+
+.remove{
+background:red;
+border:none;
+padding:3px 6px;
+border-radius:4px;
+color:white;
+margin-top:5px;
 }
 
 .checkout{
@@ -253,6 +282,18 @@ padding:12px;
 width:100%;
 border-radius:8px;
 margin-top:10px;
+color:white;
+font-weight:bold;
+}
+
+.closeCart{
+background:#333;
+border:none;
+padding:12px;
+width:100%;
+border-radius:8px;
+margin-top:10px;
+color:white;
 }
 
 /* POPUP */
@@ -288,16 +329,24 @@ border-radius:10px;
 
 .wa{
 position:fixed;
-bottom:80px;
+bottom:90px;
 right:20px;
 background:#25D366;
 width:60px;
 height:60px;
 border-radius:50%;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 font-size:28px;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:20px;
+color:#aaa;
 }
 
 </style>
@@ -307,21 +356,17 @@ font-size:28px;
 
 <div class="header">
 
-<div class="headerTop">
-
 <div class="logo">JUANDY BUTIK</div>
 
-<div class="searchBox">
-<input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProduk()">
-</div>
-
 <div class="cartBtn" onclick="toggleCart()">
-<i class="fa fa-shopping-cart"></i>
+<i class="fa-solid fa-cart-shopping"></i>
 <div class="cartCount" id="cartCount">0</div>
 </div>
 
 </div>
 
+<div class="search">
+<input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProduk()">
 </div>
 
 <div class="kategori">
@@ -334,20 +379,22 @@ font-size:28px;
 
 </div>
 
+<!-- BANNER -->
+
 <div class="banner">
 
 <div class="slider" id="slider">
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
+<img loading="lazy" src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
+<img loading="lazy" src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
 </div>
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
+<img loading="lazy" src="https://images.unsplash.com/photo-1521334884684-d80222895322">
 </div>
 
 </div>
@@ -368,9 +415,11 @@ font-size:28px;
 
 <div id="cartItems"></div>
 
-<h3 id="totalHarga"></h3>
+<h3 id="totalHarga">Total : Rp 0</h3>
 
-<button class="checkout" onclick="checkout()">Checkout</button>
+<button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
+
+<button class="closeCart" onclick="toggleCart()">Tutup</button>
 
 </div>
 
@@ -385,7 +434,9 @@ font-size:28px;
 <p id="popupHarga"></p>
 
 <button onclick="tambahPopup()">Tambah ke Keranjang</button>
+
 <br><br>
+
 <button onclick="closePopup()">Tutup</button>
 
 </div>
@@ -395,6 +446,10 @@ font-size:28px;
 <div class="wa" onclick="checkout()">
 <i class="fa-brands fa-whatsapp"></i>
 </div>
+
+<footer>
+© 2026 JUANDY BUTIK
+</footer>
 
 <script>
 
@@ -419,7 +474,6 @@ let produk=[
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
-
 let currentProduk=null
 
 /* RENDER PRODUK */
@@ -436,9 +490,7 @@ html+=`
 
 ${p.sale?'<div class="sale">SALE</div>':''}
 
-<img src="${p.img}" onclick="detailProduk(${p.id})">
-
-<div class="info">
+<img loading="lazy" src="${p.img}" onclick="detailProduk(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
@@ -453,8 +505,6 @@ ${p.sale?'<div class="sale">SALE</div>':''}
 <span>${cart[p.id]||0}</span>
 
 <button onclick="plus(${p.id})">+</button>
-
-</div>
 
 </div>
 
@@ -477,7 +527,9 @@ function filterProduk(){
 
 let key=document.getElementById("searchInput").value.toLowerCase()
 
-let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
+let hasil=produk.filter(p=>
+p.nama.toLowerCase().includes(key)
+)
 
 renderProduk(hasil)
 
@@ -485,11 +537,14 @@ renderProduk(hasil)
 
 /* KATEGORI */
 
-function filterKategori(k){
+function filterKategori(kat){
 
-if(k=="all"){renderProduk(produk);return}
+if(kat=="all"){
+renderProduk(produk)
+return
+}
 
-let hasil=produk.filter(p=>p.kategori==k)
+let hasil=produk.filter(p=>p.kategori==kat)
 
 renderProduk(hasil)
 
@@ -501,12 +556,11 @@ function plus(id){
 
 cart[id]=(cart[id]||0)+1
 
-document.querySelector(".cartBtn").classList.add("shake")
+let cartBtn=document.querySelector(".cartBtn")
+cartBtn.classList.add("shake")
 
 setTimeout(()=>{
-
-document.querySelector(".cartBtn").classList.remove("shake")
-
+cartBtn.classList.remove("shake")
 },400)
 
 save()
@@ -562,17 +616,23 @@ html+=`
 
 <img src="${p.img}">
 
-<div>
+<div class="cartInfo">
 
 <b>${p.nama}</b>
 
-<br>
+<div>${rupiah(p.harga)}</div>
 
-${q} x ${rupiah(p.harga)}
+<div class="cartQty">
 
-<br>
+<button onclick="minus(${p.id})">-</button>
+<span>${q}</span>
+<button onclick="plus(${p.id})">+</button>
 
-<button onclick="removeItem(${p.id})">Hapus</button>
+</div>
+
+<div>Subtotal : ${rupiah(sub)}</div>
+
+<button class="remove" onclick="removeItem(${p.id})">Hapus</button>
 
 </div>
 
@@ -585,8 +645,8 @@ ${q} x ${rupiah(p.harga)}
 })
 
 document.getElementById("cartItems").innerHTML=html
-document.getElementById("cartCount").innerText=jumlah
 document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
+document.getElementById("cartCount").innerText=jumlah
 
 }
 
@@ -630,7 +690,6 @@ document.getElementById("popup").style.display="none"
 function checkout(){
 
 let pesan="Halo saya ingin memesan:%0A%0A"
-
 let total=0
 
 produk.forEach(p=>{
@@ -668,7 +727,6 @@ function showSlide(){
 slider.style.transform="translateX(-"+index*100+"%)"
 
 dots.forEach(d=>d.classList.remove("active"))
-
 dots[index].classList.add("active")
 
 }
