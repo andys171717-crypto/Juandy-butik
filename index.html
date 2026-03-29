@@ -49,7 +49,7 @@ border-radius:20px;
 font-size:12px;
 }
 
-/* PRODUK */
+/* PRODUK GRID */
 
 .container{
 padding:15px;
@@ -58,11 +58,20 @@ grid-template-columns:repeat(2,1fr);
 gap:15px;
 }
 
+/* CARD */
+
 .card{
 background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
+transition:0.3s;
+animation:fadeIn 0.5s ease;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
 }
 
 .card img{
@@ -78,7 +87,19 @@ font-weight:bold;
 
 .harga{
 color:#ccc;
-margin-bottom:10px;
+margin-bottom:8px;
+}
+
+/* PILIHAN */
+
+.select{
+margin-bottom:8px;
+}
+
+.select select{
+padding:6px;
+border-radius:6px;
+border:none;
 }
 
 /* QTY */
@@ -98,6 +119,11 @@ padding:7px 12px;
 border-radius:7px;
 color:white;
 font-size:16px;
+transition:0.2s;
+}
+
+.qty button:active{
+transform:scale(0.9);
 }
 
 .qty input{
@@ -112,7 +138,7 @@ background:#eee;
 color:#000;
 }
 
-/* CART PANEL */
+/* CART */
 
 .cartBox{
 position:fixed;
@@ -220,6 +246,22 @@ margin-top:40px;
 color:#aaa;
 }
 
+/* ANIMASI */
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
 </style>
 
 </head>
@@ -244,7 +286,6 @@ JUANDY BUTIK
 
 <div class="container" id="produk"></div>
 
-
 <!-- CART -->
 
 <div class="cartBox" id="cartBox">
@@ -267,15 +308,9 @@ Kembali Belanja
 
 </div>
 
-
-<!-- WA FLOAT -->
-
 <div class="wa" onclick="waDirect()">
-
 <i class="fa-brands fa-whatsapp"></i>
-
 </div>
-
 
 <footer>
 
@@ -284,40 +319,53 @@ Belanja mudah langsung WhatsApp
 
 </footer>
 
-
 <script>
 
-/* CART STORAGE */
+/* DATA CART */
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
-if(!Array.isArray(cart)){
-cart=[]
+function saveCart(){
+localStorage.setItem("cart",JSON.stringify(cart))
 }
 
-/* PRODUK */
+/* DATA PRODUK */
 
 const produk=[
 
-{ id:1,nama:"Baju Fashion",harga:120000,
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" },
+{
+id:1,
+nama:"Baju Fashion",
+harga:120000,
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+opsi:["S","M","L","XL"]
+},
 
-{ id:2,nama:"Tas Wanita",harga:150000,
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3" },
+{
+id:2,
+nama:"Tas Wanita",
+harga:150000,
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+opsi:["Merah","Hitam","Cream"]
+},
 
-{ id:3,nama:"Sepatu Trend",harga:200000,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff" },
+{
+id:3,
+nama:"Sepatu Trend",
+harga:200000,
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+opsi:["39","40","41","42","43"]
+},
 
-{ id:4,nama:"Jaket Pria",harga:250000,
-img:"https://images.unsplash.com/photo-1548883354-7622d03aca27" }
+{
+id:4,
+nama:"Jaket Pria",
+harga:250000,
+img:"https://images.unsplash.com/photo-1548883354-7622d03aca27",
+opsi:["M","L","XL"]
+}
 
 ]
-
-function saveCart(){
-
-localStorage.setItem("cart",JSON.stringify(cart))
-
-}
 
 /* TAMPIL PRODUK */
 
@@ -340,6 +388,16 @@ html+=`
 <div class="nama">${p.nama}</div>
 
 <div class="harga">Rp ${p.harga}</div>
+
+<div class="select">
+
+<select id="opt${p.id}">
+
+${p.opsi.map(o=>`<option>${o}</option>`).join("")}
+
+</select>
+
+</div>
 
 <div class="qty">
 
@@ -364,7 +422,7 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-/* INPUT QTY */
+/* INPUT */
 
 function inputQty(id,value){
 
@@ -508,9 +566,7 @@ Hapus
 })
 
 document.getElementById("cartItems").innerHTML=html
-
 document.getElementById("totalHarga").innerText=total
-
 document.getElementById("cartCount").innerText=jumlah
 
 tampilProduk()
@@ -529,7 +585,7 @@ updateCart()
 
 }
 
-/* TOGGLE CART */
+/* CART */
 
 function toggleCart(){
 
@@ -553,7 +609,12 @@ let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
 
-pesan+=item.nama+" x "+item.qty+" = Rp "+(item.harga*item.qty)+"%0A"
+let select=document.getElementById("opt"+item.id)
+
+let pilihan=select?select.value:""
+
+pesan+=item.nama+" ("+pilihan+") x "+item.qty+
+" = Rp "+(item.harga*item.qty)+"%0A"
 
 })
 
@@ -561,7 +622,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* WA DIRECT */
+/* WA */
 
 function waDirect(){
 
@@ -569,14 +630,10 @@ window.open("https://wa.me/6281220549530")
 
 }
 
-/* LOAD */
-
 tampilProduk()
-
 updateCart()
 
 </script>
 
 </body>
-
 </html>
