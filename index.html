@@ -31,7 +31,7 @@ background:black;
 }
 
 .logo{
-font-size:18px;
+font-size:20px;
 font-weight:bold;
 }
 
@@ -44,12 +44,17 @@ gap:6px;
 
 .cart span{
 background:#25D366;
-padding:3px 8px;
+padding:4px 9px;
 border-radius:20px;
 font-size:12px;
+transition:0.3s;
 }
 
-/* PRODUK GRID */
+.cart span.bump{
+transform:scale(1.4);
+}
+
+/* GRID */
 
 .container{
 padding:15px;
@@ -65,13 +70,21 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-transition:0.3s;
-animation:fadeIn 0.5s ease;
+animation:showCard 0.5s ease forwards;
+opacity:0;
 }
+
+.card:nth-child(1){animation-delay:0.1s}
+.card:nth-child(2){animation-delay:0.2s}
+.card:nth-child(3){animation-delay:0.3s}
+.card:nth-child(4){animation-delay:0.4s}
 
 .card:hover{
 transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+.card:active{
+transform:scale(0.97);
 }
 
 .card img{
@@ -138,7 +151,7 @@ background:#eee;
 color:#000;
 }
 
-/* CART */
+/* CART PANEL */
 
 .cartBox{
 position:fixed;
@@ -234,6 +247,7 @@ justify-content:center;
 align-items:center;
 font-size:28px;
 cursor:pointer;
+animation:waGlow 2s infinite;
 }
 
 /* FOOTER */
@@ -246,19 +260,20 @@ margin-top:40px;
 color:#aaa;
 }
 
-/* ANIMASI */
+/* ANIMATION */
 
-@keyframes fadeIn{
-
-from{
-opacity:0;
-transform:translateY(20px);
-}
-
+@keyframes showCard{
 to{
 opacity:1;
 transform:translateY(0);
 }
+}
+
+@keyframes waGlow{
+
+0%{box-shadow:0 0 0 rgba(37,211,102,0.7);}
+50%{box-shadow:0 0 20px rgba(37,211,102,0.9);}
+100%{box-shadow:0 0 0 rgba(37,211,102,0.7);}
 
 }
 
@@ -285,8 +300,6 @@ JUANDY BUTIK
 </div>
 
 <div class="container" id="produk"></div>
-
-<!-- CART -->
 
 <div class="cartBox" id="cartBox">
 
@@ -321,15 +334,13 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
-/* DATA CART */
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []
+let cart=JSON.parse(localStorage.getItem("cart"))||[]
 
 function saveCart(){
-localStorage.setItem("cart",JSON.stringify(cart))
-}
 
-/* DATA PRODUK */
+localStorage.setItem("cart",JSON.stringify(cart))
+
+}
 
 const produk=[
 
@@ -366,8 +377,6 @@ opsi:["M","L","XL"]
 }
 
 ]
-
-/* TAMPIL PRODUK */
 
 function tampilProduk(){
 
@@ -422,15 +431,11 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-/* INPUT */
-
 function inputQty(id,value){
 
 value=parseInt(value)
 
-if(isNaN(value)||value<0){
-value=0
-}
+if(isNaN(value)||value<0)value=0
 
 let item=cart.find(x=>x.id===id)
 
@@ -465,8 +470,6 @@ updateCart()
 
 }
 
-/* PLUS */
-
 function plusProduk(id){
 
 let item=cart.find(x=>x.id===id)
@@ -494,8 +497,6 @@ updateCart()
 
 }
 
-/* MINUS */
-
 function minusProduk(id){
 
 let item=cart.find(x=>x.id===id)
@@ -515,8 +516,6 @@ updateCart()
 
 }
 
-/* UPDATE CART */
-
 function updateCart(){
 
 let html=""
@@ -528,7 +527,6 @@ cart.forEach(item=>{
 let subtotal=item.harga*item.qty
 
 total+=subtotal
-
 jumlah+=item.qty
 
 html+=`
@@ -567,33 +565,37 @@ Hapus
 
 document.getElementById("cartItems").innerHTML=html
 document.getElementById("totalHarga").innerText=total
-document.getElementById("cartCount").innerText=jumlah
+
+let badge=document.getElementById("cartCount")
+
+badge.innerText=jumlah
+
+badge.classList.add("bump")
+
+setTimeout(()=>{
+
+badge.classList.remove("bump")
+
+},200)
 
 tampilProduk()
 
 }
-
-/* HAPUS */
 
 function hapus(id){
 
 cart=cart.filter(x=>x.id!==id)
 
 saveCart()
-
 updateCart()
 
 }
-
-/* CART */
 
 function toggleCart(){
 
 document.getElementById("cartBox").classList.toggle("active")
 
 }
-
-/* CHECKOUT */
 
 function checkout(){
 
@@ -621,8 +623,6 @@ pesan+=item.nama+" ("+pilihan+") x "+item.qty+
 window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
-
-/* WA */
 
 function waDirect(){
 
