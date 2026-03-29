@@ -85,7 +85,7 @@ padding:6px 12px;
 border-radius:20px;
 }
 
-/* GRID */
+/* GRID PRODUK */
 
 .container{
 padding:12px;
@@ -138,7 +138,7 @@ border-radius:6px;
 }
 
 .qty input{
-width:55px;
+width:60px;
 text-align:center;
 border:none;
 border-radius:6px;
@@ -168,6 +168,12 @@ border-bottom:1px solid #333;
 padding:10px 0;
 }
 
+.total{
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
+
 .checkout{
 background:#25D366;
 width:100%;
@@ -176,7 +182,7 @@ border:none;
 border-radius:8px;
 color:white;
 font-weight:bold;
-margin-top:10px;
+margin-top:15px;
 }
 
 .closeCart{
@@ -189,7 +195,7 @@ color:white;
 margin-top:10px;
 }
 
-/* WHATSAPP */
+/* WA FLOAT */
 
 .wa{
 position:fixed;
@@ -262,6 +268,10 @@ src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
 
 <div id="cartItems"></div>
 
+<div class="total" id="totalHarga">
+Total : Rp 0
+</div>
+
 <button class="checkout" onclick="checkout()">
 Checkout WhatsApp
 </button>
@@ -289,16 +299,16 @@ Belanja mudah langsung WhatsApp
 
 let produk=[
 
-{ id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",
+{id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",
 img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-{ id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",
+{id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",
 img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-{ id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
+{id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
 img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
 
-{ id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",
+{id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",
 img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 
 ]
@@ -354,7 +364,9 @@ tampilProduk(produk)
 function plus(id){
 
 let q=document.getElementById("q"+id)
+
 q.value=parseInt(q.value||0)+1
+
 updateCart()
 
 }
@@ -362,6 +374,7 @@ updateCart()
 function minus(id){
 
 let q=document.getElementById("q"+id)
+
 let v=parseInt(q.value||0)
 
 if(v>0)v--
@@ -403,13 +416,16 @@ let qty=parseInt(q.value)||0
 
 if(qty>0){
 
+let sub=qty*p.harga
+
 cart.push({
 nama:p.nama,
 harga:p.harga,
-qty:qty
+qty:qty,
+subtotal:sub
 })
 
-total+=qty
+total+=sub
 
 }
 
@@ -417,15 +433,15 @@ total+=qty
 
 })
 
-document.getElementById("cartCount").innerText=total
+document.getElementById("cartCount").innerText=cart.length
 
-renderCart()
+renderCart(total)
 
 }
 
-/* CART LIST */
+/* RENDER CART */
 
-function renderCart(){
+function renderCart(total){
 
 let html=""
 
@@ -436,7 +452,8 @@ html+=`
 <div class="cartItem">
 
 ${i.nama}<br>
-${i.qty} x Rp ${i.harga}
+${i.qty} x Rp ${i.harga}<br>
+Subtotal : Rp ${i.subtotal}
 
 </div>
 
@@ -445,6 +462,7 @@ ${i.qty} x Rp ${i.harga}
 })
 
 document.getElementById("cartItems").innerHTML=html
+document.getElementById("totalHarga").innerText="Total : Rp "+total
 
 }
 
@@ -468,12 +486,17 @@ return
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
+let total=0
 
 cart.forEach(i=>{
 
-pesan+=i.nama+" x "+i.qty+"%0A"
+pesan+=i.nama+" x "+i.qty+" = Rp "+i.subtotal+"%0A"
+
+total+=i.subtotal
 
 })
+
+pesan+="%0ATotal Belanja : Rp "+total
 
 window.open("https://wa.me/6281220549530?text="+pesan)
 
@@ -511,7 +534,7 @@ tampilProduk(hasil)
 
 }
 
-/* SLIDER */
+/* BANNER SLIDER */
 
 let banner=[
 
