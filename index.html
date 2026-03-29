@@ -2,7 +2,6 @@
 <html lang="id">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -13,13 +12,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <style>
 
-/* =========================
-GLOBAL
-========================= */
-
-*{
-box-sizing:border-box;
-}
+/* GLOBAL */
 
 body{
 margin:0;
@@ -28,23 +21,21 @@ background:#0f0f0f;
 color:white;
 }
 
-/* =========================
-HEADER
-========================= */
+/* HEADER */
 
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:14px;
-background:#000;
+background:black;
 position:sticky;
 top:0;
 z-index:1000;
 }
 
 .logo{
-font-size:18px;
+font-size:20px;
 font-weight:bold;
 }
 
@@ -61,14 +52,12 @@ position:absolute;
 top:-5px;
 right:-5px;
 background:red;
+padding:2px 6px;
 font-size:12px;
-padding:3px 6px;
 border-radius:50%;
 }
 
-/* =========================
-SEARCH
-========================= */
+/* SEARCH */
 
 .search{
 padding:10px;
@@ -78,35 +67,11 @@ background:#111;
 .search input{
 width:100%;
 padding:10px;
+border-radius:10px;
 border:none;
-border-radius:8px;
 }
 
-/* =========================
-KATEGORI
-========================= */
-
-.kategori{
-display:flex;
-overflow:auto;
-gap:8px;
-padding:10px;
-background:#111;
-}
-
-.kategori button{
-background:#222;
-border:none;
-color:white;
-padding:8px 12px;
-border-radius:20px;
-white-space:nowrap;
-cursor:pointer;
-}
-
-/* =========================
-BANNER
-========================= */
+/* BANNER */
 
 .banner{
 width:100%;
@@ -129,8 +94,6 @@ height:180px;
 object-fit:cover;
 }
 
-/* dots */
-
 .dots{
 position:absolute;
 bottom:10px;
@@ -148,44 +111,33 @@ background:#aaa;
 }
 
 .dot.active{
-background:#25D366;
+background:#00e676;
 }
 
-/* =========================
-PRODUK GRID
-========================= */
+/* PRODUK */
 
 .container{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-gap:10px;
-padding:10px;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+padding:12px;
 }
 
 .card{
 background:#1a1a1a;
-border-radius:12px;
+border-radius:14px;
 overflow:hidden;
-box-shadow:0 2px 6px rgba(0,0,0,.5);
-transition:.2s;
-}
-
-.card:active{
-transform:scale(.97);
 }
 
 .card img{
 width:100%;
-aspect-ratio:1/1;
+height:160px;
 object-fit:cover;
-cursor:pointer;
 }
 
 .nama{
-font-size:14px;
-padding:6px 8px;
-height:36px;
-overflow:hidden;
+padding:8px;
+font-size:15px;
 }
 
 .harga{
@@ -195,44 +147,40 @@ padding:0 8px;
 }
 
 .rating{
-font-size:12px;
-color:#fbc02d;
 padding:0 8px;
+color:#ffc107;
+font-size:13px;
 }
 
-/* =========================
-QTY
-========================= */
+/* QTY */
 
 .qty{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:8px;
+padding:10px;
 }
 
 .qty button{
-width:26px;
-height:26px;
-border:none;
+width:28px;
+height:28px;
 background:#00c853;
-color:white;
+border:none;
 border-radius:6px;
-cursor:pointer;
+color:white;
+font-size:18px;
 }
 
-.qtyInput{
+.qty input{
 width:40px;
 text-align:center;
-background:#222;
 border:none;
+background:#222;
 color:white;
 border-radius:6px;
 }
 
-/* =========================
-CART
-========================= */
+/* CART */
 
 .cartBox{
 position:fixed;
@@ -242,7 +190,7 @@ width:320px;
 height:100%;
 background:#111;
 transform:translateX(100%);
-transition:.3s;
+transition:0.3s;
 padding:20px;
 overflow:auto;
 z-index:2000;
@@ -252,8 +200,6 @@ z-index:2000;
 transform:translateX(0);
 }
 
-/* header cart */
-
 .cartHeader{
 display:flex;
 align-items:center;
@@ -261,24 +207,24 @@ gap:10px;
 margin-bottom:10px;
 }
 
-.backCart{
+.cartHeader button{
 background:#333;
 border:none;
 color:white;
 width:35px;
 height:35px;
 border-radius:8px;
-cursor:pointer;
 }
 
-/* cart item */
+.closeCart{
+margin-left:auto;
+background:red;
+}
 
 .cartItem{
 display:flex;
 gap:10px;
-margin-bottom:15px;
-border-bottom:1px solid #333;
-padding-bottom:10px;
+margin-bottom:10px;
 }
 
 .cartItem img{
@@ -291,33 +237,66 @@ object-fit:cover;
 .remove{
 background:red;
 border:none;
-padding:3px 6px;
-border-radius:4px;
 color:white;
-cursor:pointer;
+border-radius:4px;
+padding:3px 6px;
 }
-
-/* checkout */
 
 .checkout{
 background:#25D366;
 border:none;
 padding:12px;
 width:100%;
-border-radius:8px;
-margin-top:10px;
+border-radius:10px;
 color:white;
-font-weight:bold;
-cursor:pointer;
+margin-top:10px;
+}
+
+/* WHATSAPP FLOAT */
+
+.waFloat{
+position:fixed;
+bottom:80px;
+right:20px;
+width:55px;
+height:55px;
+background:#25D366;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+z-index:1000;
+}
+
+/* FOOTER */
+
+.footer{
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+display:flex;
+justify-content:space-around;
+padding:10px;
+border-top:1px solid #333;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:12px;
+}
+
+.menu i{
+font-size:18px;
 }
 
 </style>
-
 </head>
 
 <body>
-
-<!-- HEADER -->
 
 <div class="header">
 
@@ -330,19 +309,8 @@ cursor:pointer;
 
 </div>
 
-<!-- SEARCH -->
-
 <div class="search">
 <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProduk()">
-</div>
-
-<!-- KATEGORI -->
-
-<div class="kategori">
-<button onclick="filterKategori('all')">Semua</button>
-<button onclick="filterKategori('baju')">Baju</button>
-<button onclick="filterKategori('tas')">Tas</button>
-<button onclick="filterKategori('sepatu')">Sepatu</button>
 </div>
 
 <!-- BANNER -->
@@ -352,15 +320,15 @@ cursor:pointer;
 <div class="slider" id="slider">
 
 <div class="slide">
-<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
-</div>
-
-<div class="slide">
 <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
 </div>
 
 <div class="slide">
 <img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
 
 </div>
@@ -383,11 +351,15 @@ cursor:pointer;
 
 <div class="cartHeader">
 
-<button class="backCart" onclick="toggleCart()">
+<button onclick="toggleCart()">
 <i class="fa-solid fa-arrow-left"></i>
 </button>
 
-<h2>Keranjang</h2>
+<h3>Keranjang</h3>
+
+<button class="closeCart" onclick="toggleCart()">
+<i class="fa-solid fa-xmark"></i>
+</button>
 
 </div>
 
@@ -399,47 +371,64 @@ cursor:pointer;
 
 </div>
 
+<!-- WA FLOAT -->
+
+<div class="waFloat" onclick="openWA()">
+<i class="fa-brands fa-whatsapp"></i>
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<div class="menu">
+<i class="fa-solid fa-house"></i>
+Home
+</div>
+
+<div class="menu" onclick="toggleCart()">
+<i class="fa-solid fa-cart-shopping"></i>
+Cart
+</div>
+
+<div class="menu" onclick="openWA()">
+<i class="fa-brands fa-whatsapp"></i>
+Chat
+</div>
+
+</div>
+
 <script>
 
-/* =========================
-FORMAT RUPIAH
-========================= */
-
-function rupiah(n){
-
-return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
-
-}
-
-/* =========================
-DATA PRODUK
-========================= */
+/* DATA PRODUK */
 
 let produk=[
 
-{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{id:1,nama:"Baju Fashion",harga:120000,rating:4.5,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{id:2,nama:"Tas Wanita",harga:150000,rating:4.8,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"}
+{id:3,nama:"Sepatu Trend",harga:200000,rating:4.6,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+
+{id:4,nama:"Jaket Pria",harga:250000,rating:4.7,img:"https://images.unsplash.com/photo-1520975922284-9f8c2c2bdf1a"}
 
 ]
 
-/* =========================
-CART STORAGE
-========================= */
-
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
 
-/* =========================
-RENDER PRODUK
-========================= */
+/* FORMAT RUPIAH */
 
-function renderProduk(data){
+function rupiah(n){
+return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
+}
+
+/* RENDER PRODUK */
+
+function renderProduk(){
 
 let html=""
 
-data.forEach(p=>{
+produk.forEach(p=>{
 
 html+=`
 
@@ -457,8 +446,7 @@ html+=`
 
 <button onclick="minus(${p.id})">-</button>
 
-<input class="qtyInput" type="number" min="0"
-value="${cart[p.id]||0}"
+<input type="number" min="0" value="${cart[p.id]||0}"
 onchange="setQty(${p.id},this.value)">
 
 <button onclick="plus(${p.id})">+</button>
@@ -477,26 +465,18 @@ updateCart()
 
 }
 
-renderProduk(produk)
+renderProduk()
 
-/* =========================
-QTY
-========================= */
+/* QTY */
 
 function plus(id){
-
 cart[id]=(cart[id]||0)+1
-
 save()
-
 }
 
 function minus(id){
-
-if(cart[id]>0) cart[id]--
-
+if(cart[id]>0)cart[id]--
 save()
-
 }
 
 function setQty(id,val){
@@ -510,21 +490,16 @@ save()
 
 }
 
-/* =========================
-SAVE CART
-========================= */
+/* SAVE */
 
 function save(){
 
 localStorage.setItem("cart",JSON.stringify(cart))
-
-renderProduk(produk)
+renderProduk()
 
 }
 
-/* =========================
-UPDATE CART
-========================= */
+/* CART */
 
 function updateCart(){
 
@@ -574,35 +549,57 @@ document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 
 }
 
-/* =========================
-REMOVE ITEM
-========================= */
+/* REMOVE */
 
 function removeItem(id){
-
 delete cart[id]
-
 save()
-
 }
 
-/* =========================
-TOGGLE CART
-========================= */
+/* TOGGLE CART */
 
 function toggleCart(){
-
 document.getElementById("cartBox").classList.toggle("active")
+}
+
+/* SEARCH */
+
+function filterProduk(){
+
+let key=document.getElementById("searchInput").value.toLowerCase()
+
+let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
+
+document.getElementById("produk").innerHTML=""
+
+hasil.forEach(p=>{
+
+document.getElementById("produk").innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<div class="nama">${p.nama}</div>
+<div class="harga">${rupiah(p.harga)}</div>
+<div class="rating">⭐ ${p.rating}</div>
+</div>
+`
+
+})
 
 }
 
-/* =========================
-CHECKOUT WHATSAPP
-========================= */
+/* WA */
+
+function openWA(){
+
+window.open("https://wa.me/6281220549530")
+
+}
+
+/* CHECKOUT */
 
 function checkout(){
 
-let pesan="Halo saya ingin pesan:%0A%0A"
+let pesan="Halo saya ingin pesan:%0A"
 
 produk.forEach(p=>{
 
@@ -620,41 +617,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* =========================
-SEARCH
-========================= */
-
-function filterProduk(){
-
-let key=document.getElementById("searchInput").value.toLowerCase()
-
-let hasil=produk.filter(p=>
-p.nama.toLowerCase().includes(key))
-
-renderProduk(hasil)
-
-}
-
-/* =========================
-KATEGORI
-========================= */
-
-function filterKategori(k){
-
-if(k=="all"){
-renderProduk(produk)
-return
-}
-
-let hasil=produk.filter(p=>p.kategori==k)
-
-renderProduk(hasil)
-
-}
-
-/* =========================
-BANNER AUTO SLIDE
-========================= */
+/* BANNER */
 
 let slider=document.getElementById("slider")
 let dots=document.querySelectorAll(".dot")
