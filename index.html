@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>JUANDY BUTIK</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -75,6 +73,8 @@ margin-bottom:15px;
 font-weight:bold;
 }
 
+/* CART */
+
 .cart-box{
 position:fixed;
 top:0;
@@ -85,10 +85,24 @@ background:#111;
 padding:20px;
 transition:0.4s;
 overflow:auto;
+z-index:10;
 }
 
 .cart-box.active{
 right:0;
+}
+
+.cart-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.close-btn{
+cursor:pointer;
+color:#25D366;
+font-weight:bold;
 }
 
 .cart-item{
@@ -121,6 +135,8 @@ margin-top:10px;
 font-weight:bold;
 }
 
+/* WA BUTTON */
+
 .wa-float{
 position:fixed;
 bottom:90px;
@@ -137,6 +153,8 @@ color:white;
 cursor:pointer;
 box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
+
+/* FOOTER */
 
 footer{
 background:#000;
@@ -164,9 +182,14 @@ JUANDY BUTIK
 
 <div class="container" id="produk"></div>
 
+<!-- CART -->
+
 <div class="cart-box" id="cartBox">
 
+<div class="cart-header">
+<span onclick="toggleCart()" class="close-btn">← Kembali</span>
 <h3>Keranjang</h3>
+</div>
 
 <div id="cartItems"></div>
 
@@ -180,15 +203,15 @@ Checkout WhatsApp
 
 </div>
 
+<!-- WA FLOAT -->
+
 <div class="wa-float" onclick="waDirect()">
 <i class="fa-brands fa-whatsapp"></i>
 </div>
 
 <footer>
-
-© 2026 JUANDY BUTIK  
+© 2026 JUANDY BUTIK <br>
 Belanja mudah langsung WhatsApp
-
 </footer>
 
 <script>
@@ -228,9 +251,7 @@ img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"
 let cart=JSON.parse(localStorage.getItem("cart")) || []
 
 function saveCart(){
-
 localStorage.setItem("cart",JSON.stringify(cart))
-
 }
 
 function tampilProduk(){
@@ -266,19 +287,13 @@ function tambah(id){
 let item=cart.find(x=>x.id==id)
 
 if(item){
-
 item.qty++
-
 }else{
-
 let produkDipilih=produk.find(x=>x.id==id)
-
 cart.push({...produkDipilih,qty:1})
-
 }
 
 saveCart()
-
 updateCart()
 
 }
@@ -290,13 +305,10 @@ let item=cart.find(x=>x.id==id)
 item.qty--
 
 if(item.qty<=0){
-
 cart=cart.filter(x=>x.id!=id)
-
 }
 
 saveCart()
-
 updateCart()
 
 }
@@ -308,7 +320,6 @@ let item=cart.find(x=>x.id==id)
 item.qty++
 
 saveCart()
-
 updateCart()
 
 }
@@ -357,27 +368,20 @@ document.getElementById("cart-count").innerText=jumlah
 }
 
 function toggleCart(){
-
 document.getElementById("cartBox").classList.toggle("active")
-
 }
 
 function checkout(){
 
 if(cart.length==0){
-
 alert("Keranjang kosong")
-
 return
-
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
-
 pesan+=item.nama+" x "+item.qty+" = Rp "+(item.harga*item.qty)+"%0A"
-
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
@@ -385,9 +389,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 }
 
 function waDirect(){
-
 window.open("https://wa.me/6281220549530")
-
 }
 
 tampilProduk()
