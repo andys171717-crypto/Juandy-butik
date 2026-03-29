@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>JUANDY BUTIK</title>
 
@@ -25,8 +26,8 @@ color:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:#000;
 padding:15px;
+background:black;
 }
 
 .logo{
@@ -93,22 +94,25 @@ margin-bottom:12px;
 .qty button{
 background:#00c853;
 border:none;
-padding:6px 10px;
-border-radius:6px;
+padding:7px 12px;
+border-radius:7px;
 color:white;
 font-size:16px;
 }
 
 .qty input{
-width:40px;
+width:55px;
 text-align:center;
 border:none;
-border-radius:6px;
-padding:6px;
+border-radius:8px;
+padding:8px;
 font-weight:bold;
+font-size:16px;
+background:#eee;
+color:#000;
 }
 
-/* CART */
+/* CART PANEL */
 
 .cartBox{
 position:fixed;
@@ -160,6 +164,8 @@ font-size:12px;
 cursor:pointer;
 }
 
+/* TOTAL */
+
 .total{
 margin-top:15px;
 font-weight:bold;
@@ -187,7 +193,7 @@ margin-top:10px;
 color:white;
 }
 
-/* WA */
+/* WHATSAPP FLOAT */
 
 .wa{
 position:fixed;
@@ -227,13 +233,17 @@ JUANDY BUTIK
 </div>
 
 <div class="cart" onclick="toggleCart()">
+
 <i class="fa-solid fa-cart-shopping"></i>
+
 <span id="cartCount">0</span>
+
 </div>
 
 </div>
 
 <div class="container" id="produk"></div>
+
 
 <!-- CART -->
 
@@ -257,9 +267,15 @@ Kembali Belanja
 
 </div>
 
+
+<!-- WA FLOAT -->
+
 <div class="wa" onclick="waDirect()">
+
 <i class="fa-brands fa-whatsapp"></i>
+
 </div>
+
 
 <footer>
 
@@ -268,15 +284,15 @@ Belanja mudah langsung WhatsApp
 
 </footer>
 
+
 <script>
 
-/* CART DATA */
+/* CART STORAGE */
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
 if(!Array.isArray(cart)){
 cart=[]
-localStorage.removeItem("cart")
 }
 
 /* PRODUK */
@@ -298,7 +314,9 @@ img:"https://images.unsplash.com/photo-1548883354-7622d03aca27" }
 ]
 
 function saveCart(){
+
 localStorage.setItem("cart",JSON.stringify(cart))
+
 }
 
 /* TAMPIL PRODUK */
@@ -310,6 +328,7 @@ let html=""
 produk.forEach(p=>{
 
 let item=cart.find(x=>x.id===p.id)
+
 let qty=item?item.qty:0
 
 html+=`
@@ -329,7 +348,7 @@ html+=`
 <input type="number"
 value="${qty}"
 min="0"
-onchange="inputQty(${p.id},this.value)">
+oninput="inputQty(${p.id},this.value)">
 
 <button onclick="plusProduk(${p.id})">+</button>
 
@@ -351,13 +370,17 @@ function inputQty(id,value){
 
 value=parseInt(value)
 
-if(isNaN(value)||value<=0){
+if(isNaN(value)||value<0){
+value=0
+}
+
+let item=cart.find(x=>x.id===id)
+
+if(value===0){
 
 cart=cart.filter(x=>x.id!==id)
 
 }else{
-
-let item=cart.find(x=>x.id===id)
 
 if(item){
 
@@ -424,7 +447,9 @@ if(!item)return
 item.qty--
 
 if(item.qty<=0){
+
 cart=cart.filter(x=>x.id!==id)
+
 }
 
 saveCart()
@@ -443,7 +468,9 @@ let jumlah=0
 cart.forEach(item=>{
 
 let subtotal=item.harga*item.qty
+
 total+=subtotal
+
 jumlah+=item.qty
 
 html+=`
@@ -455,6 +482,7 @@ html+=`
 <div>
 
 ${item.nama}<br>
+
 Rp ${item.harga} x ${item.qty}
 
 <div class="qtyCart">
@@ -480,7 +508,9 @@ Hapus
 })
 
 document.getElementById("cartItems").innerHTML=html
+
 document.getElementById("totalHarga").innerText=total
+
 document.getElementById("cartCount").innerText=jumlah
 
 tampilProduk()
@@ -494,14 +524,17 @@ function hapus(id){
 cart=cart.filter(x=>x.id!==id)
 
 saveCart()
+
 updateCart()
 
 }
 
-/* CART */
+/* TOGGLE CART */
 
 function toggleCart(){
+
 document.getElementById("cartBox").classList.toggle("active")
+
 }
 
 /* CHECKOUT */
@@ -511,6 +544,7 @@ function checkout(){
 if(cart.length==0){
 
 alert("Keranjang kosong")
+
 return
 
 }
@@ -518,23 +552,31 @@ return
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
+
 pesan+=item.nama+" x "+item.qty+" = Rp "+(item.harga*item.qty)+"%0A"
+
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* WA */
+/* WA DIRECT */
 
 function waDirect(){
+
 window.open("https://wa.me/6281220549530")
+
 }
 
+/* LOAD */
+
 tampilProduk()
+
 updateCart()
 
 </script>
 
 </body>
+
 </html>
