@@ -9,16 +9,8 @@
 body{
 margin:0;
 font-family:Arial;
+background:#111;
 color:white;
-background:linear-gradient(270deg,#111,#000,#111);
-background-size:400% 400%;
-animation:bgmove 12s infinite;
-}
-
-@keyframes bgmove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
 }
 
 .page{display:none}
@@ -29,51 +21,22 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 height:100vh;
-animation:fade 1s;
 }
 
-@keyframes fade{
-0%{opacity:0;transform:translateY(40px)}
-100%{opacity:1;transform:translateY(0)}
-}
-
-h2{
-animation:glow 2s infinite;
-}
-
-@keyframes glow{
-0%{text-shadow:0 0 5px #00c853}
-50%{text-shadow:0 0 20px #00c853}
-100%{text-shadow:0 0 5px #00c853}
-}
-
-input{
-padding:12px;
-margin:8px;
-border-radius:10px;
+input,select{
+padding:10px;
+margin:5px;
+border-radius:8px;
 border:none;
-width:230px;
-transition:0.3s;
-}
-
-input:focus{
-transform:scale(1.05);
-box-shadow:0 0 10px #00c853;
-outline:none;
+width:220px;
 }
 
 button{
-padding:10px 18px;
+padding:10px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 background:#00c853;
 color:white;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.1);
 }
 
 header{
@@ -103,24 +66,16 @@ width:100%;
 border-radius:10px;
 }
 
-.cartItem{
-background:#1a1a1a;
-padding:15px;
-margin:10px;
-border-radius:10px;
-}
-
 footer{
 background:black;
 padding:20px;
 text-align:center;
-margin-top:60px;
-margin-bottom:120px;
+margin-top:30px;
 }
 
 .wa{
 position:fixed;
-bottom:120px;
+bottom:70px;
 right:20px;
 background:#25D366;
 padding:15px;
@@ -128,6 +83,13 @@ border-radius:30px;
 color:white;
 text-decoration:none;
 font-weight:bold;
+}
+
+.cartItem{
+background:#1a1a1a;
+margin:10px;
+padding:10px;
+border-radius:10px;
 }
 
 </style>
@@ -180,13 +142,13 @@ font-weight:bold;
 
 <header>
 
-<div><b>JUANDY BUTIK</b></div>
+<div>JUANDY BUTIK</div>
 
-<div style="display:flex;align-items:center;gap:10px">
+<div>
 
 <span id="userName"></span>
 
-<span onclick="openCart()" style="cursor:pointer">
+<span onclick="openCart()" style="margin-left:10px;cursor:pointer;">
 🛒 <span id="cartCount">0</span>
 </span>
 
@@ -223,7 +185,7 @@ font-weight:bold;
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
+<img src="https://images.unsplash.com/photo-1551028719-00167b16eac5">
 <h3>Jaket Pria</h3>
 <p>Rp250000</p>
 <button onclick="addCart('Jaket Pria',250000,'p4')">Tambah</button>
@@ -241,7 +203,7 @@ font-weight:bold;
 
 </div>
 
-<!-- CART -->
+<!-- CART PAGE -->
 
 <div id="cartPage" class="page">
 
@@ -257,8 +219,6 @@ font-weight:bold;
 
 <center>
 
-<h2 id="totalHarga"></h2>
-
 <button onclick="checkout()">Checkout WhatsApp</button>
 
 </center>
@@ -273,53 +233,56 @@ let cart={}
 let totalItem=0
 
 function hideAll(){
+
 document.getElementById("loginPage").style.display="none"
 document.getElementById("registerPage").style.display="none"
 document.getElementById("storePage").style.display="none"
 document.getElementById("cartPage").style.display="none"
+
 }
 
 function showLogin(){
+
 hideAll()
-loginPage.style.display="flex"
+document.getElementById("loginPage").style.display="flex"
+
 }
 
 function showRegister(){
+
 hideAll()
-registerPage.style.display="flex"
+document.getElementById("registerPage").style.display="flex"
+
 }
 
 function showStore(){
+
 hideAll()
-storePage.style.display="block"
+document.getElementById("storePage").style.display="block"
+
 }
 
 function openCart(){
 
 hideAll()
-cartPage.style.display="block"
+document.getElementById("cartPage").style.display="block"
 
 let list=""
-let total=0
 
 for(let name in cart){
 
 let item=cart[name]
-let sub=item.qty*item.price
-total+=sub
 
 list+=`
 <div class="cartItem">
 <h3>${name}</h3>
 <p>${item.qty} pcs</p>
-<p>Rp ${sub}</p>
 </div>
 `
 
 }
 
-cartList.innerHTML=list
-totalHarga.innerText="Total Rp "+total
+document.getElementById("cartList").innerHTML=list
 
 }
 
@@ -329,8 +292,10 @@ let user=regUser.value
 let pass=regPass.value
 
 if(pass.length<5){
+
 alert("Password minimal 5 digit")
 return
+
 }
 
 localStorage.setItem("user",user)
@@ -338,7 +303,7 @@ localStorage.setItem("pass",pass)
 localStorage.setItem("question",question.value)
 localStorage.setItem("answer",answer.value)
 
-alert("Pendaftaran berhasil")
+alert("Daftar berhasil")
 
 showLogin()
 
@@ -354,7 +319,7 @@ pass===localStorage.getItem("pass")){
 
 localStorage.setItem("login","true")
 
-userName.innerText="Hi "+user
+document.getElementById("userName").innerText="Hi "+user
 
 showStore()
 
@@ -381,9 +346,13 @@ let q=localStorage.getItem("question")
 let a=prompt(q)
 
 if(a===localStorage.getItem("answer")){
+
 alert("Password: "+localStorage.getItem("pass"))
+
 }else{
+
 alert("Jawaban salah")
+
 }
 
 }
@@ -391,14 +360,16 @@ alert("Jawaban salah")
 function addCart(name,price,id){
 
 if(!cart[name]){
+
 cart[name]={qty:0,price:price}
+
 }
 
 cart[name].qty++
 
 totalItem++
 
-cartCount.innerText=totalItem
+document.getElementById("cartCount").innerText=totalItem
 
 document.getElementById(id).innerText=cart[name].qty+" pcs"
 
@@ -409,14 +380,12 @@ function checkout(){
 let text="Pesanan JUANDY BUTIK%0A"
 
 for(let name in cart){
+
 text+=name+" "+cart[name].qty+" pcs%0A"
+
 }
 
 window.open("https://wa.me/?text="+text)
-
-cart={}
-totalItem=0
-cartCount.innerText="0"
 
 }
 
@@ -424,7 +393,7 @@ window.onload=function(){
 
 if(localStorage.getItem("login")==="true"){
 
-userName.innerText="Hi "+localStorage.getItem("user")
+document.getElementById("userName").innerText="Hi "+localStorage.getItem("user")
 
 showStore()
 
