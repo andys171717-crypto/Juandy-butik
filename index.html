@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -31,8 +30,19 @@ background:black;
 }
 
 .logo{
-font-weight:bold;
 font-size:20px;
+font-weight:bold;
+}
+
+.cart{
+background:#25D366;
+padding:8px 14px;
+border-radius:20px;
+cursor:pointer;
+}
+
+.cart span{
+margin-left:5px;
 }
 
 /* SEARCH */
@@ -53,13 +63,13 @@ border-radius:8px;
 
 .banner{
 width:100%;
-height:150px;
+height:160px;
 overflow:hidden;
 }
 
 .banner img{
 width:100%;
-height:150px;
+height:160px;
 object-fit:cover;
 }
 
@@ -78,12 +88,13 @@ border:none;
 color:white;
 padding:6px 12px;
 border-radius:20px;
+cursor:pointer;
 }
 
-/* GRID */
+/* PRODUK GRID */
 
 .container{
-padding:10px;
+padding:12px;
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
@@ -96,7 +107,6 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-animation:fadeIn .4s ease;
 }
 
 .card img{
@@ -112,13 +122,17 @@ margin-top:8px;
 
 .harga{
 color:#ccc;
+margin-bottom:5px;
 }
+
+/* QTY */
 
 .qty{
 display:flex;
 justify-content:center;
-gap:6px;
-margin:10px;
+align-items:center;
+gap:8px;
+margin-bottom:12px;
 }
 
 .qty button{
@@ -136,31 +150,65 @@ border:none;
 border-radius:6px;
 }
 
-/* CART */
+/* CART PANEL */
 
-.cart{
+.cartBox{
 position:fixed;
-top:15px;
-right:15px;
-background:#25D366;
-padding:8px 10px;
-border-radius:20px;
+top:0;
+right:-100%;
+width:320px;
+height:100%;
+background:#111;
+padding:20px;
+transition:0.4s;
+overflow:auto;
 }
 
-/* WHATSAPP */
+.cartBox.active{
+right:0;
+}
+
+.cartItem{
+border-bottom:1px solid #333;
+padding:10px 0;
+}
+
+.checkout{
+background:#25D366;
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+color:white;
+font-weight:bold;
+margin-top:10px;
+}
+
+.closeCart{
+background:#333;
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+color:white;
+margin-top:10px;
+}
+
+/* WHATSAPP FLOAT */
 
 .wa{
 position:fixed;
-bottom:80px;
+bottom:90px;
 right:20px;
 background:#25D366;
 width:60px;
 height:60px;
 border-radius:50%;
 display:flex;
-align-items:center;
 justify-content:center;
-font-size:26px;
+align-items:center;
+font-size:28px;
+cursor:pointer;
 }
 
 footer{
@@ -181,7 +229,7 @@ color:#aaa;
 JUANDY BUTIK
 </div>
 
-<div class="cart">
+<div class="cart" onclick="toggleCart()">
 <i class="fa-solid fa-cart-shopping"></i>
 <span id="cartCount">0</span>
 </div>
@@ -190,9 +238,9 @@ JUANDY BUTIK
 
 <div class="search">
 
-<input type="text" id="search"
+<input type="text"
 placeholder="Cari produk..."
-onkeyup="cariProduk()">
+onkeyup="searchProduk(this.value)">
 
 </div>
 
@@ -205,14 +253,32 @@ src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
 
 <div class="filter">
 
-<button onclick="filter('all')">Semua</button>
-<button onclick="filter('baju')">Baju</button>
-<button onclick="filter('tas')">Tas</button>
-<button onclick="filter('sepatu')">Sepatu</button>
+<button onclick="filterProduk('all')">Semua</button>
+<button onclick="filterProduk('baju')">Baju</button>
+<button onclick="filterProduk('tas')">Tas</button>
+<button onclick="filterProduk('sepatu')">Sepatu</button>
 
 </div>
 
 <div class="container" id="produk"></div>
+
+<!-- CART PANEL -->
+
+<div class="cartBox" id="cartBox">
+
+<h2>Keranjang</h2>
+
+<div id="cartItems"></div>
+
+<button class="checkout" onclick="checkout()">
+Checkout WhatsApp
+</button>
+
+<button class="closeCart" onclick="toggleCart()">
+Tutup
+</button>
+
+</div>
 
 <div class="wa" onclick="checkout()">
 <i class="fa-brands fa-whatsapp"></i>
@@ -231,14 +297,37 @@ Belanja mudah langsung WhatsApp
 
 let produk=[
 
-{nama:"Baju Fashion",harga:120000,kategori:"baju",
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{
+id:1,
+nama:"Baju Fashion",
+harga:120000,
+kategori:"baju",
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+},
 
-{nama:"Tas Wanita",harga:150000,kategori:"tas",
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{
+id:2,
+nama:"Tas Wanita",
+harga:150000,
+kategori:"tas",
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+},
 
-{nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"}
+{
+id:3,
+nama:"Sepatu Trend",
+harga:200000,
+kategori:"sepatu",
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+},
+
+{
+id:4,
+nama:"Jaket Pria",
+harga:250000,
+kategori:"baju",
+img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"
+}
 
 ]
 
@@ -246,11 +335,11 @@ let cart=[]
 
 /* TAMPIL PRODUK */
 
-function tampil(data){
+function tampilProduk(data){
 
 let html=""
 
-data.forEach((p,i)=>{
+data.forEach(p=>{
 
 html+=`
 
@@ -264,11 +353,11 @@ html+=`
 
 <div class="qty">
 
-<button onclick="minus(${i})">-</button>
+<button onclick="minus(${p.id})">-</button>
 
-<input value="0" id="q${i}">
+<input type="number" id="q${p.id}" value="0" min="0">
 
-<button onclick="plus(${i})">+</button>
+<button onclick="plus(${p.id})">+</button>
 
 </div>
 
@@ -282,43 +371,13 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-tampil(produk)
+tampilProduk(produk)
 
-/* SEARCH */
+/* QTY */
 
-function cariProduk(){
+function plus(id){
 
-let key=document.getElementById("search").value.toLowerCase()
-
-let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
-
-tampil(hasil)
-
-}
-
-/* FILTER */
-
-function filter(k){
-
-if(k=="all"){
-
-tampil(produk)
-
-}else{
-
-let hasil=produk.filter(p=>p.kategori==k)
-
-tampil(hasil)
-
-}
-
-}
-
-/* CART */
-
-function plus(i){
-
-let q=document.getElementById("q"+i)
+let q=document.getElementById("q"+id)
 
 q.value++
 
@@ -326,27 +385,77 @@ updateCart()
 
 }
 
-function minus(i){
+function minus(id){
 
-let q=document.getElementById("q"+i)
+let q=document.getElementById("q"+id)
 
-if(q.value>0)q.value--
+if(q.value>0) q.value--
 
 updateCart()
 
 }
 
+/* UPDATE CART */
+
 function updateCart(){
 
+cart=[]
 let total=0
 
-document.querySelectorAll("input").forEach(i=>{
+produk.forEach(p=>{
 
-total+=parseInt(i.value)
+let qty=document.getElementById("q"+p.id)
+
+if(qty && qty.value>0){
+
+cart.push({
+nama:p.nama,
+harga:p.harga,
+qty:qty.value
+})
+
+total+=parseInt(qty.value)
+
+}
 
 })
 
 document.getElementById("cartCount").innerText=total
+
+renderCart()
+
+}
+
+/* RENDER CART */
+
+function renderCart(){
+
+let html=""
+
+cart.forEach(item=>{
+
+html+=`
+
+<div class="cartItem">
+
+${item.nama}<br>
+${item.qty} x Rp ${item.harga}
+
+</div>
+
+`
+
+})
+
+document.getElementById("cartItems").innerHTML=html
+
+}
+
+/* CART PANEL */
+
+function toggleCart(){
+
+document.getElementById("cartBox").classList.toggle("active")
 
 }
 
@@ -354,21 +463,55 @@ document.getElementById("cartCount").innerText=total
 
 function checkout(){
 
-let pesan="Halo saya ingin memesan:%0A%0A"
+if(cart.length==0){
 
-document.querySelectorAll(".card").forEach((c,i)=>{
+alert("Keranjang kosong")
 
-let qty=document.getElementById("q"+i)
-
-if(qty && qty.value>0){
-
-pesan+=produk[i].nama+" x "+qty.value+"%0A"
+return
 
 }
+
+let pesan="Halo saya ingin memesan:%0A%0A"
+
+cart.forEach(i=>{
+
+pesan+=i.nama+" x "+i.qty+"%0A"
 
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
+
+}
+
+/* SEARCH */
+
+function searchProduk(key){
+
+key=key.toLowerCase()
+
+let hasil=produk.filter(p=>
+p.nama.toLowerCase().includes(key)
+)
+
+tampilProduk(hasil)
+
+}
+
+/* FILTER */
+
+function filterProduk(k){
+
+if(k=="all"){
+
+tampilProduk(produk)
+
+}else{
+
+let hasil=produk.filter(p=>p.kategori==k)
+
+tampilProduk(hasil)
+
+}
 
 }
 
