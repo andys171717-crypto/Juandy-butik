@@ -38,10 +38,24 @@ font-weight:bold;
 
 .cartBtn{
 background:#25D366;
-padding:8px 12px;
+padding:10px 14px;
 border-radius:20px;
 cursor:pointer;
 position:relative;
+}
+
+.cartBtn.shake{
+animation:shake .4s;
+}
+
+@keyframes shake{
+
+0%{transform:rotate(0)}
+25%{transform:rotate(10deg)}
+50%{transform:rotate(-10deg)}
+75%{transform:rotate(10deg)}
+100%{transform:rotate(0)}
+
 }
 
 .cartCount{
@@ -68,6 +82,30 @@ border:none;
 border-radius:8px;
 }
 
+/* KATEGORI */
+
+.kategori{
+display:flex;
+gap:8px;
+overflow:auto;
+padding:10px;
+background:#111;
+}
+
+.kategori button{
+background:#222;
+border:none;
+color:white;
+padding:8px 12px;
+border-radius:20px;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.kategori button:hover{
+background:#25D366;
+}
+
 /* BANNER */
 
 .banner{
@@ -78,7 +116,7 @@ position:relative;
 
 .slider{
 display:flex;
-transition:transform 0.5s ease;
+transition:transform .5s ease;
 }
 
 .slide{
@@ -89,7 +127,6 @@ min-width:100%;
 width:100%;
 height:180px;
 object-fit:cover;
-display:block;
 }
 
 /* DOT */
@@ -187,7 +224,7 @@ width:320px;
 height:100%;
 background:#111;
 padding:20px;
-transition:transform 0.3s ease;
+transition:.3s;
 overflow:auto;
 z-index:2000;
 }
@@ -267,7 +304,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,.8);
 display:none;
 justify-content:center;
 align-items:center;
@@ -329,7 +366,17 @@ color:#aaa;
 </div>
 
 <div class="search">
-<input type="text" placeholder="Cari produk...">
+<input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProduk()">
+</div>
+
+<div class="kategori">
+
+<button onclick="filterKategori('all')">Semua</button>
+<button onclick="filterKategori('baju')">Baju</button>
+<button onclick="filterKategori('tas')">Tas</button>
+<button onclick="filterKategori('sepatu')">Sepatu</button>
+<button onclick="filterKategori('jaket')">Jaket</button>
+
 </div>
 
 <!-- BANNER -->
@@ -362,8 +409,6 @@ color:#aaa;
 
 <div class="container" id="produk"></div>
 
-<!-- CART -->
-
 <div class="cartBox" id="cartBox">
 
 <h2>Keranjang</h2>
@@ -377,8 +422,6 @@ color:#aaa;
 <button class="closeCart" onclick="toggleCart()">Tutup</button>
 
 </div>
-
-<!-- POPUP -->
 
 <div class="popup" id="popup">
 
@@ -410,27 +453,36 @@ color:#aaa;
 
 <script>
 
+/* FORMAT RUPIAH */
+
 function rupiah(n){
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
 
+/* DATA PRODUK */
+
 let produk=[
 
-{id:1,nama:"Baju Fashion",harga:120000,rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
-{id:2,nama:"Tas Wanita",harga:150000,rating:4.8,sale:false,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-{id:3,nama:"Sepatu Trend",harga:200000,rating:4.6,sale:true,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
-{id:4,nama:"Jaket Pria",harga:250000,rating:4.4,sale:false,img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
+{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+
+{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,sale:false,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+
+{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,sale:true,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+
+{id:4,nama:"Jaket Pria",kategori:"jaket",harga:250000,rating:4.4,sale:false,img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
 let currentProduk=null
 
-function tampilProduk(){
+/* RENDER PRODUK */
+
+function renderProduk(data){
 
 let html=""
 
-produk.forEach(p=>{
+data.forEach(p=>{
 
 html+=`
 
@@ -467,16 +519,79 @@ updateCart()
 
 }
 
-tampilProduk()
+renderProduk(produk)
 
-function plus(id){cart[id]=(cart[id]||0)+1;save()}
-function minus(id){if(cart[id]>0)cart[id]--;save()}
-function removeItem(id){delete cart[id];save()}
+/* SEARCH */
+
+function filterProduk(){
+
+let key=document.getElementById("searchInput").value.toLowerCase()
+
+let hasil=produk.filter(p=>
+p.nama.toLowerCase().includes(key)
+)
+
+renderProduk(hasil)
+
+}
+
+/* KATEGORI */
+
+function filterKategori(kat){
+
+if(kat=="all"){
+renderProduk(produk)
+return
+}
+
+let hasil=produk.filter(p=>p.kategori==kat)
+
+renderProduk(hasil)
+
+}
+
+/* QTY */
+
+function plus(id){
+
+cart[id]=(cart[id]||0)+1
+
+let cartBtn=document.querySelector(".cartBtn")
+cartBtn.classList.add("shake")
+
+setTimeout(()=>{
+cartBtn.classList.remove("shake")
+},400)
+
+save()
+
+}
+
+function minus(id){
+
+if(cart[id]>0)cart[id]--
+
+save()
+
+}
+
+function removeItem(id){
+
+delete cart[id]
+
+save()
+
+}
 
 function save(){
+
 localStorage.setItem("cart",JSON.stringify(cart))
-tampilProduk()
+
+renderProduk(produk)
+
 }
+
+/* UPDATE CART */
 
 function updateCart(){
 
@@ -510,9 +625,7 @@ html+=`
 <div class="cartQty">
 
 <button onclick="minus(${p.id})">-</button>
-
 <span>${q}</span>
-
 <button onclick="plus(${p.id})">+</button>
 
 </div>
@@ -537,9 +650,13 @@ document.getElementById("cartCount").innerText=jumlah
 
 }
 
+/* CART */
+
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
 }
+
+/* POPUP */
 
 function detailProduk(id){
 
@@ -555,14 +672,20 @@ document.getElementById("popupHarga").innerText=rupiah(p.harga)
 }
 
 function tambahPopup(){
+
 cart[currentProduk]=(cart[currentProduk]||0)+1
+
 save()
+
 closePopup()
+
 }
 
 function closePopup(){
 document.getElementById("popup").style.display="none"
 }
+
+/* CHECKOUT */
 
 function checkout(){
 
@@ -611,7 +734,8 @@ dots[index].classList.add("active")
 function nextSlide(){
 
 index++
-if(index>=totalSlide) index=0
+
+if(index>=totalSlide)index=0
 
 showSlide()
 
@@ -619,7 +743,7 @@ showSlide()
 
 setInterval(nextSlide,3000)
 
-/* swipe */
+/* SWIPE */
 
 let startX=0
 
@@ -633,12 +757,12 @@ let endX=e.changedTouches[0].clientX
 
 if(startX-endX>50){
 index++
-if(index>=totalSlide) index=0
+if(index>=totalSlide)index=0
 }
 
 if(endX-startX>50){
 index--
-if(index<0) index=totalSlide-1
+if(index<0)index=totalSlide-1
 }
 
 showSlide()
