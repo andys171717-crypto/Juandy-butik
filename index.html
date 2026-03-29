@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -18,8 +17,6 @@ font-family:Arial;
 background:#0f0f0f;
 color:white;
 }
-
-/* HEADER */
 
 .header{
 display:flex;
@@ -99,6 +96,7 @@ text-align:center;
 width:100%;
 height:160px;
 object-fit:cover;
+cursor:pointer;
 }
 
 .nama{
@@ -186,8 +184,6 @@ border-radius:8px;
 color:white;
 margin-top:10px;
 }
-
-/* WHATSAPP */
 
 .wa{
 position:fixed;
@@ -318,7 +314,7 @@ html+=`
 
 <div class="card">
 
-<img src="${p.img}">
+<img src="${p.img}" onclick="fokusQty(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
@@ -329,6 +325,7 @@ html+=`
 <button onclick="minus(${p.id})">-</button>
 
 <input type="text"
+data-id="${p.id}"
 value="${qty}"
 inputmode="numeric"
 oninput="ubahQty(${p.id},this.value)">
@@ -350,6 +347,21 @@ updateCart()
 }
 
 tampilProduk(produk)
+
+/* FOKUS INPUT */
+
+function fokusQty(id){
+
+let input=document.querySelector(`input[data-id='${id}']`)
+
+if(input){
+
+input.focus()
+input.select()
+
+}
+
+}
 
 /* QTY */
 
@@ -379,7 +391,7 @@ saveCart()
 
 }
 
-/* SIMPAN CART */
+/* SIMPAN */
 
 function saveCart(){
 
