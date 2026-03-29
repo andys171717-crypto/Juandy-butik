@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -121,7 +120,18 @@ padding:12px;
 background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
+position:relative;
 text-align:center;
+}
+
+.sale{
+position:absolute;
+top:10px;
+left:10px;
+background:red;
+padding:4px 8px;
+font-size:12px;
+border-radius:5px;
 }
 
 .card img{
@@ -138,14 +148,18 @@ margin-top:8px;
 
 .harga{
 color:#ccc;
-margin-bottom:8px;
+}
+
+.rating{
+color:gold;
+font-size:14px;
 }
 
 .qty{
 display:flex;
 justify-content:center;
 gap:8px;
-margin-bottom:10px;
+margin:10px;
 }
 
 .qty button{
@@ -223,7 +237,7 @@ background:#222;
 padding:20px;
 border-radius:10px;
 width:80%;
-max-width:300px;
+max-width:320px;
 text-align:center;
 }
 
@@ -255,7 +269,6 @@ color:#aaa;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -275,10 +288,9 @@ color:#aaa;
 <input type="text" placeholder="Cari produk..." onkeyup="searchProduk(this.value)">
 </div>
 
-<!-- BANNER SLIDER -->
+<!-- SLIDER -->
 
 <div class="banner">
-
 <div class="slider" id="slider">
 
 <div class="slide">
@@ -294,7 +306,6 @@ color:#aaa;
 </div>
 
 </div>
-
 </div>
 
 <div class="filter">
@@ -334,6 +345,12 @@ color:#aaa;
 
 <p id="popupHarga"></p>
 
+<div id="popupRating"></div>
+
+<button onclick="tambahPopup()">Tambah ke Keranjang</button>
+
+<br><br>
+
 <button onclick="closePopup()">Tutup</button>
 
 </div>
@@ -359,13 +376,14 @@ return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 /* PRODUK */
 
 let produk=[
-{id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
-{id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-{id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
-{id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
+{id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",rating:4.8,sale:false,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",rating:4.6,sale:true,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+{id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",rating:4.4,sale:false,img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
+let currentProduk=null
 
 /* TAMPIL PRODUK */
 
@@ -381,11 +399,15 @@ html+=`
 
 <div class="card">
 
+${p.sale?'<div class="sale">SALE</div>':''}
+
 <img src="${p.img}" onclick="detailProduk(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
 <div class="harga">${rupiah(p.harga)}</div>
+
+<div class="rating">⭐ ${p.rating}</div>
 
 <div class="qty">
 
@@ -412,20 +434,9 @@ tampilProduk(produk)
 
 /* QTY */
 
-function plus(id){
-cart[id]=(cart[id]||0)+1
-save()
-}
-
-function minus(id){
-if(cart[id]>0) cart[id]--
-save()
-}
-
-function ubahQty(id,v){
-cart[id]=parseInt(v)||0
-save()
-}
+function plus(id){cart[id]=(cart[id]||0)+1;save()}
+function minus(id){if(cart[id]>0)cart[id]--;save()}
+function ubahQty(id,v){cart[id]=parseInt(v)||0;save()}
 
 function save(){
 localStorage.setItem("cart",JSON.stringify(cart))
@@ -499,21 +510,14 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 /* SEARCH */
 
 function searchProduk(k){
-
 k=k.toLowerCase()
-
 let hasil=produk.filter(p=>p.nama.toLowerCase().includes(k))
-
 tampilProduk(hasil)
-
 }
 
 function filterProduk(k){
-
 if(k=="all") tampilProduk(produk)
-
 else tampilProduk(produk.filter(p=>p.kategori==k))
-
 }
 
 /* POPUP */
@@ -521,12 +525,20 @@ else tampilProduk(produk.filter(p=>p.kategori==k))
 function detailProduk(id){
 
 let p=produk.find(x=>x.id==id)
+currentProduk=id
 
 document.getElementById("popup").style.display="flex"
 document.getElementById("popupImg").src=p.img
 document.getElementById("popupNama").innerText=p.nama
 document.getElementById("popupHarga").innerText=rupiah(p.harga)
+document.getElementById("popupRating").innerText="⭐ "+p.rating
 
+}
+
+function tambahPopup(){
+cart[currentProduk]=(cart[currentProduk]||0)+1
+save()
+closePopup()
 }
 
 function closePopup(){
@@ -542,18 +554,13 @@ let totalSlide=document.querySelectorAll(".slide").length
 function autoSlide(){
 
 index++
-
-if(index>=totalSlide){
-index=0
-}
+if(index>=totalSlide) index=0
 
 slider.style.transform="translateX(-"+index*100+"%)"
 
 }
 
 setInterval(autoSlide,4000)
-
-/* SWIPE */
 
 let startX=0
 
