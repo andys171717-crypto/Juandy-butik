@@ -69,11 +69,12 @@ border-radius:8px;
 border:none;
 }
 
-/* BANNER SLIDER */
+/* BANNER */
 
 .banner{
 width:100%;
 overflow:hidden;
+position:relative;
 }
 
 .slider{
@@ -86,8 +87,30 @@ min-width:100%;
 
 .slide img{
 width:100%;
-height:180px;
+height:190px;
 object-fit:cover;
+}
+
+/* DOT */
+
+.dots{
+position:absolute;
+bottom:10px;
+width:100%;
+display:flex;
+justify-content:center;
+gap:6px;
+}
+
+.dot{
+width:8px;
+height:8px;
+background:#aaa;
+border-radius:50%;
+}
+
+.dot.active{
+background:white;
 }
 
 /* FILTER */
@@ -261,6 +284,8 @@ align-items:center;
 font-size:28px;
 }
 
+/* FOOTER */
+
 footer{
 text-align:center;
 padding:20px;
@@ -305,7 +330,15 @@ color:#aaa;
 <img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
 </div>
 
+<!-- clone slide -->
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
+
+</div>
+
+<div class="dots" id="dots"></div>
 
 </div>
 
@@ -385,8 +418,6 @@ let produk=[
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
 let currentProduk=null
-
-/* TAMPIL PRODUK */
 
 function tampilProduk(data){
 
@@ -546,35 +577,90 @@ function closePopup(){
 document.getElementById("popup").style.display="none"
 }
 
-/* SLIDER SATU ARAH */
+/* SLIDER */
 
 let slider=document.getElementById("slider")
 let slides=document.querySelectorAll(".slide")
 let index=0
-let totalSlide=slides.length
+let total=slides.length
+
+let dotsContainer=document.getElementById("dots")
+
+for(let i=0;i<total-1;i++){
+
+let dot=document.createElement("div")
+dot.classList.add("dot")
+
+if(i==0) dot.classList.add("active")
+
+dotsContainer.appendChild(dot)
+
+}
+
+let dots=document.querySelectorAll(".dot")
+
+function updateDots(){
+
+dots.forEach(d=>d.classList.remove("active"))
+
+if(index>=dots.length){
+dots[0].classList.add("active")
+}else{
+dots[index].classList.add("active")
+}
+
+}
 
 function autoSlide(){
 
 index++
 
-slider.style.transition="transform 0.7s ease"
+slider.style.transition="transform 0.6s ease"
 slider.style.transform="translateX(-"+index*100+"%)"
 
-if(index==totalSlide){
+updateDots()
+
+if(index==total-1){
 
 setTimeout(()=>{
 
 slider.style.transition="none"
 index=0
 slider.style.transform="translateX(0)"
+updateDots()
 
-},700)
+},600)
 
 }
 
 }
 
 setInterval(autoSlide,3500)
+
+/* SWIPE */
+
+let startX=0
+
+slider.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX
+})
+
+slider.addEventListener("touchend",e=>{
+
+let endX=e.changedTouches[0].clientX
+
+if(startX-endX>50) index++
+if(endX-startX>50) index--
+
+if(index<0) index=0
+if(index>=total) index=total-1
+
+slider.style.transition="transform 0.5s"
+slider.style.transform="translateX(-"+index*100+"%)"
+
+updateDots()
+
+})
 
 </script>
 
