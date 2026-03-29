@@ -104,11 +104,37 @@ font-weight:bold;
 .checkout{
 background:#25D366;
 width:100%;
-padding:10px;
+padding:12px;
 border:none;
 border-radius:8px;
 margin-top:10px;
 font-weight:bold;
+}
+
+.wa-float{
+position:fixed;
+bottom:90px;
+right:20px;
+background:#25D366;
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+color:white;
+cursor:pointer;
+box-shadow:0 0 10px rgba(0,0,0,0.7);
+}
+
+footer{
+background:#000;
+text-align:center;
+padding:20px;
+margin-top:40px;
+color:#aaa;
+font-size:14px;
 }
 
 </style>
@@ -117,21 +143,15 @@ font-weight:bold;
 <body>
 
 <header>
-
 JUANDY BUTIK
-
 <div class="cart-icon" onclick="toggleCart()">
 🛒 <span id="cart-count">0</span>
 </div>
-
 </header>
-
 
 <div class="container" id="produk"></div>
 
-
 <div class="cart-box" id="cartBox">
-
 <h3>Keranjang</h3>
 
 <div id="cartItems"></div>
@@ -146,6 +166,15 @@ Checkout WhatsApp
 
 </div>
 
+<div class="wa-float" onclick="waDirect()">
+<i class="fa-brands fa-whatsapp"></i>
+</div>
+
+<footer>
+© 2026 JUANDY BUTIK
+<br>
+Belanja mudah langsung WhatsApp
+</footer>
 
 <script>
 
@@ -200,7 +229,6 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-
 function tambah(i){
 
 cart.push(produk[i])
@@ -208,7 +236,6 @@ cart.push(produk[i])
 updateCart()
 
 }
-
 
 function updateCart(){
 
@@ -235,7 +262,6 @@ document.getElementById("cart-count").innerText=cart.length
 
 }
 
-
 function hapus(i){
 
 cart.splice(i,1)
@@ -244,13 +270,11 @@ updateCart()
 
 }
 
-
 function toggleCart(){
 
 document.getElementById("cartBox").classList.toggle("active")
 
 }
-
 
 function checkout(){
 
@@ -274,6 +298,11 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
+function waDirect(){
+
+window.open("https://wa.me/6281220549530")
+
+}
 
 tampilProduk()
 
