@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -23,8 +22,8 @@ padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-weight:bold;
 font-size:18px;
+font-weight:bold;
 }
 
 .container{
@@ -49,9 +48,9 @@ object-fit:cover;
 }
 
 .nama{
-margin-top:10px;
 font-size:16px;
 font-weight:bold;
+margin-top:10px;
 }
 
 .harga{
@@ -85,8 +84,9 @@ border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:28px;
+font-size:30px;
 cursor:pointer;
+box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 </style>
@@ -107,7 +107,7 @@ JUANDY BUTIK
 
 <div class="container" id="produk"></div>
 
-<div class="wa" onclick="checkout()">☎</div>
+<div class="wa" onclick="checkout()">💬</div>
 
 <script>
 
@@ -116,19 +116,19 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://images.unsplash.com/photo-1520975922327-9f8e6f1c5f3d"
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://images.unsplash.com/photo-1591561954557-26941169b49e"
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://images.unsplash.com/photo-1549298916-b41d501d3772"
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
 },
 
 {
@@ -199,7 +199,7 @@ return
 
 }
 
-let pesan="Halo saya ingin pesan:%0A%0A"
+let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
 
@@ -207,7 +207,7 @@ pesan+=item.nama+" - Rp "+item.harga+"%0A"
 
 })
 
-window.open("https://wa.me/?text="+pesan)
+window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
