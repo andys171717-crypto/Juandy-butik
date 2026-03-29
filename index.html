@@ -119,15 +119,22 @@ color:white;
 position:fixed;
 bottom:20px;
 right:20px;
+width:60px;
+height:60px;
 background:#25D366;
-color:white;
-padding:14px 20px;
-border-radius:30px;
-font-weight:bold;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.4);
+z-index:999;
+}
+
+.wa img{
+width:35px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -190,7 +197,9 @@ Hi <span id="user"></span>
 </div>
 
 
-<a href="https://wa.me/6281234567890" class="wa">Chat WhatsApp</a>
+<a href="https://wa.me/6281234567890" class="wa" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+</a>
 
 
 <script>
@@ -353,7 +362,6 @@ let data=JSON.parse(localStorage.getItem("user"))
 if(!data){
 
 alert("Silakan daftar dulu")
-
 return
 
 }
