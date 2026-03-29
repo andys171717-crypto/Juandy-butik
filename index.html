@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>JUANDY BUTIK</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
 body{
 margin:0;
-font-family:Arial, sans-serif;
+font-family:Arial;
 background:#0f0f0f;
 color:white;
 }
@@ -36,7 +40,7 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-box-shadow:0 0 10px rgba(0,0,0,0.6);
+box-shadow:0 0 12px rgba(0,0,0,0.6);
 }
 
 .card img{
@@ -67,10 +71,6 @@ margin-bottom:15px;
 font-weight:bold;
 }
 
-button:hover{
-background:#00b34a;
-}
-
 .wa{
 position:fixed;
 bottom:20px;
@@ -88,6 +88,7 @@ box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 </style>
+
 </head>
 
 <body>
@@ -104,7 +105,9 @@ JUANDY BUTIK
 
 <div class="container" id="produk"></div>
 
-<div class="wa" onclick="checkout()">💬</div>
+<div class="wa" onclick="checkout()">
+<i class="fa-brands fa-whatsapp"></i>
+</div>
 
 <script>
 
@@ -113,25 +116,25 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://picsum.photos/400/300?random=1"
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://picsum.photos/400/300?random=2"
+img:"https://images.unsplash.com/photo-1591561954557-26941169b49e"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://picsum.photos/400/300?random=3"
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
 },
 
 {
 nama:"Jaket Pria",
 harga:250000,
-img:"https://picsum.photos/400/300?random=4"
+img:"https://images.unsplash.com/photo-1551028719-00167b16eac5"
 }
 
 ]
