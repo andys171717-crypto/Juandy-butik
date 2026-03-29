@@ -80,20 +80,28 @@ color:#ccc;
 margin-bottom:10px;
 }
 
-.btn{
-background:#00c853;
-border:none;
-padding:10px 20px;
-border-radius:8px;
-color:white;
-cursor:pointer;
-margin-bottom:5px;
+/* QTY */
+
+.qty{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-bottom:12px;
 }
 
-.jumlah{
-font-size:13px;
-color:#aaa;
-margin-bottom:12px;
+.qty button{
+background:#00c853;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+color:white;
+font-weight:bold;
+font-size:16px;
+}
+
+.qty span{
+font-size:15px;
 }
 
 /* CART */
@@ -128,13 +136,13 @@ object-fit:cover;
 border-radius:8px;
 }
 
-.qty{
+.qtyCart{
 display:flex;
-gap:5px;
+gap:6px;
 margin-top:5px;
 }
 
-.qty button{
+.qtyCart button{
 background:#00c853;
 border:none;
 padding:4px 8px;
@@ -258,7 +266,7 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
-/* DATA CART */
+/* CART DATA */
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
@@ -310,12 +318,14 @@ html+=`
 
 <div class="harga">Rp ${p.harga}</div>
 
-<button class="btn" onclick="tambah(${p.id})">
-Tambah
-</button>
+<div class="qty">
 
-<div class="jumlah">
-Dipilih: <span id="qty-${p.id}">${qty}</span>
+<button onclick="minusProduk(${p.id})">-</button>
+
+<span>${qty}</span>
+
+<button onclick="plusProduk(${p.id})">+</button>
+
 </div>
 
 </div>
@@ -328,14 +338,16 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-/* TAMBAH */
+/* PLUS PRODUK */
 
-function tambah(id){
+function plusProduk(id){
 
 let item=cart.find(x=>x.id===id)
 
 if(item){
+
 item.qty++
+
 }else{
 
 let p=produk.find(x=>x.id===id)
@@ -348,6 +360,25 @@ img:p.img,
 qty:1
 })
 
+}
+
+saveCart()
+updateCart()
+
+}
+
+/* MINUS PRODUK */
+
+function minusProduk(id){
+
+let item=cart.find(x=>x.id===id)
+
+if(!item)return
+
+item.qty--
+
+if(item.qty<=0){
+cart=cart.filter(x=>x.id!==id)
 }
 
 saveCart()
@@ -380,13 +411,13 @@ html+=`
 ${item.nama}<br>
 Rp ${item.harga} x ${item.qty}
 
-<div class="qty">
+<div class="qtyCart">
 
-<button onclick="minus(${item.id})">-</button>
+<button onclick="minusProduk(${item.id})">-</button>
 
 <span>${item.qty}</span>
 
-<button onclick="plus(${item.id})">+</button>
+<button onclick="plusProduk(${item.id})">+</button>
 
 </div>
 
@@ -410,36 +441,6 @@ tampilProduk()
 
 }
 
-/* PLUS */
-
-function plus(id){
-
-let item=cart.find(x=>x.id===id)
-item.qty++
-
-saveCart()
-updateCart()
-
-}
-
-/* MINUS */
-
-function minus(id){
-
-let item=cart.find(x=>x.id===id)
-
-item.qty--
-
-if(item.qty<=0){
-hapus(id)
-return
-}
-
-saveCart()
-updateCart()
-
-}
-
 /* HAPUS */
 
 function hapus(id){
@@ -451,7 +452,7 @@ updateCart()
 
 }
 
-/* CART */
+/* TOGGLE CART */
 
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
@@ -478,7 +479,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* WA */
+/* WA DIRECT */
 
 function waDirect(){
 window.open("https://wa.me/6281220549530")
