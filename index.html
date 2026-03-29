@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
@@ -18,12 +19,18 @@ background:#0f0f0f;
 color:white;
 }
 
+/* HEADER STICKY */
+
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px;
 background:black;
+
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .logo{
@@ -147,6 +154,7 @@ background:#111;
 padding:20px;
 transition:0.4s;
 overflow:auto;
+z-index:2000;
 }
 
 .cartBox.active{
@@ -184,6 +192,8 @@ border-radius:8px;
 color:white;
 margin-top:10px;
 }
+
+/* WHATSAPP */
 
 .wa{
 position:fixed;
@@ -355,10 +365,8 @@ function fokusQty(id){
 let input=document.querySelector(`input[data-id='${id}']`)
 
 if(input){
-
 input.focus()
 input.select()
-
 }
 
 }
@@ -366,39 +374,26 @@ input.select()
 /* QTY */
 
 function plus(id){
-
 cart[id]=(cart[id]||0)+1
-
 saveCart()
-
 }
 
 function minus(id){
-
 if(cart[id]>0) cart[id]--
-
 saveCart()
-
 }
 
 function ubahQty(id,val){
-
 val=val.replace(/[^0-9]/g,'')
-
 cart[id]=parseInt(val)||0
-
 saveCart()
-
 }
 
 /* SIMPAN */
 
 function saveCart(){
-
 localStorage.setItem("cart",JSON.stringify(cart))
-
 tampilProduk(produk)
-
 }
 
 /* UPDATE CART */
@@ -445,9 +440,7 @@ document.getElementById("cartCount").innerText=jumlah
 /* CART */
 
 function toggleCart(){
-
 document.getElementById("cartBox").classList.toggle("active")
-
 }
 
 /* CHECKOUT */
