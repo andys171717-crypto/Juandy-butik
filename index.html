@@ -8,8 +8,7 @@
 
 <title>JUANDY BUTIK</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
@@ -80,7 +79,7 @@ padding:6px 12px;
 border-radius:20px;
 }
 
-/* PRODUK GRID */
+/* PRODUK */
 
 .container{
 padding:12px;
@@ -228,26 +227,18 @@ color:#aaa;
 </div>
 
 <div class="search">
-
-<input type="text"
-placeholder="Cari produk..."
-onkeyup="searchProduk(this.value)">
-
+<input type="text" placeholder="Cari produk..." onkeyup="searchProduk(this.value)">
 </div>
 
 <div class="banner">
-
 <img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
-
 </div>
 
 <div class="filter">
-
 <button onclick="filterProduk('all')">Semua</button>
 <button onclick="filterProduk('baju')">Baju</button>
 <button onclick="filterProduk('tas')">Tas</button>
 <button onclick="filterProduk('sepatu')">Sepatu</button>
-
 </div>
 
 <div class="container" id="produk"></div>
@@ -287,6 +278,12 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
+/* FORMAT RUPIAH */
+
+function rupiah(angka){
+return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
+}
+
 /* DATA PRODUK */
 
 let produk=[
@@ -325,7 +322,7 @@ html+=`
 
 <div class="nama">${p.nama}</div>
 
-<div class="harga">Rp ${p.harga}</div>
+<div class="harga">${rupiah(p.harga)}</div>
 
 <div class="qty">
 
@@ -333,7 +330,6 @@ html+=`
 
 <input type="text"
 value="${qty}"
-id="q${p.id}"
 inputmode="numeric"
 oninput="ubahQty(${p.id},this.value)">
 
@@ -355,7 +351,7 @@ updateCart()
 
 tampilProduk(produk)
 
-/* QTY BUTTON */
+/* QTY */
 
 function plus(id){
 
@@ -417,8 +413,8 @@ html+=`
 <div class="cartItem">
 
 ${p.nama}<br>
-${qty} x Rp ${p.harga}<br>
-Subtotal : Rp ${sub}
+${qty} x ${rupiah(p.harga)}<br>
+Subtotal : ${rupiah(sub)}
 
 </div>
 
@@ -429,7 +425,7 @@ Subtotal : Rp ${sub}
 })
 
 document.getElementById("cartItems").innerHTML=html
-document.getElementById("totalHarga").innerText="Total : Rp "+total
+document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 document.getElementById("cartCount").innerText=jumlah
 
 }
@@ -457,7 +453,7 @@ if(qty>0){
 
 let sub=qty*p.harga
 
-pesan+=p.nama+" x "+qty+" = Rp "+sub+"%0A"
+pesan+=p.nama+" x "+qty+" = "+rupiah(sub)+"%0A"
 
 total+=sub
 
@@ -465,7 +461,7 @@ total+=sub
 
 })
 
-pesan+="%0ATotal Belanja : Rp "+total
+pesan+="%0ATotal Belanja : "+rupiah(total)
 
 window.open("https://wa.me/6281220549530?text="+pesan)
 
