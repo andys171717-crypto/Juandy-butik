@@ -80,9 +80,8 @@ border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:28px;
+font-size:30px;
 cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 </style>
@@ -108,25 +107,25 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://upload.wikimedia.org/wikipedia/commons/4/4a/Tshirt.svg"
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://upload.wikimedia.org/wikipedia/commons/1/1b/Handbag_icon.svg"
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Shoes_icon.svg"
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
 },
 
 {
 nama:"Jaket Pria",
 harga:250000,
-img:"https://upload.wikimedia.org/wikipedia/commons/8/8c/Jacket_icon.svg"
+img:"https://images.unsplash.com/photo-1520975922284-9c4a5d1f4c3d"
 }
 
 ]
@@ -157,10 +156,7 @@ document.getElementById("produk").innerHTML=html
 function tambah(i){
 
 cart.push(produk[i])
-
 document.getElementById("cart").innerText=cart.length
-
-alert("Produk ditambahkan ke keranjang")
 
 }
 
