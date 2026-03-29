@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -19,18 +18,17 @@ background:#0f0f0f;
 color:white;
 }
 
-/* HEADER STICKY */
+/* HEADER */
 
 .header{
+position:sticky;
+top:0;
+z-index:1000;
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px;
 background:black;
-
-position:sticky;
-top:0;
-z-index:1000;
 }
 
 .logo{
@@ -38,11 +36,23 @@ font-size:20px;
 font-weight:bold;
 }
 
-.cart{
+.cartBtn{
+position:relative;
 background:#25D366;
-padding:8px 14px;
+padding:8px 12px;
 border-radius:20px;
 cursor:pointer;
+}
+
+.cartCount{
+position:absolute;
+top:-6px;
+right:-6px;
+background:red;
+color:white;
+font-size:12px;
+padding:2px 6px;
+border-radius:50%;
 }
 
 /* SEARCH */
@@ -55,8 +65,8 @@ background:#111;
 .search input{
 width:100%;
 padding:10px;
-border:none;
 border-radius:8px;
+border:none;
 }
 
 /* BANNER */
@@ -86,10 +96,10 @@ border-radius:20px;
 /* PRODUK */
 
 .container{
-padding:12px;
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
+padding:12px;
 }
 
 .card{
@@ -116,14 +126,11 @@ color:#ccc;
 margin-bottom:8px;
 }
 
-/* QTY */
-
 .qty{
 display:flex;
 justify-content:center;
-align-items:center;
 gap:8px;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .qty button{
@@ -135,11 +142,10 @@ border-radius:6px;
 }
 
 .qty input{
-width:60px;
+width:50px;
 text-align:center;
 border:none;
 border-radius:6px;
-font-size:16px;
 }
 
 /* CART */
@@ -161,39 +167,57 @@ z-index:2000;
 right:0;
 }
 
-.cartItem{
-border-bottom:1px solid #333;
-padding:10px 0;
-}
-
-.total{
-font-size:18px;
-font-weight:bold;
-margin-top:10px;
-}
-
 .checkout{
 background:#25D366;
-width:100%;
-padding:12px;
 border:none;
+padding:12px;
+width:100%;
 border-radius:8px;
+margin-top:10px;
 color:white;
 font-weight:bold;
-margin-top:15px;
 }
 
 .closeCart{
 background:#333;
-width:100%;
-padding:12px;
 border:none;
+padding:12px;
+width:100%;
 border-radius:8px;
-color:white;
 margin-top:10px;
+color:white;
 }
 
-/* WHATSAPP */
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:3000;
+}
+
+.popupContent{
+background:#222;
+padding:20px;
+border-radius:10px;
+width:80%;
+max-width:300px;
+text-align:center;
+}
+
+.popupContent img{
+width:100%;
+border-radius:10px;
+}
+
+/* WA */
 
 .wa{
 position:fixed;
@@ -216,7 +240,6 @@ color:#aaa;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -225,9 +248,9 @@ color:#aaa;
 
 <div class="logo">JUANDY BUTIK</div>
 
-<div class="cart" onclick="toggleCart()">
+<div class="cartBtn" onclick="toggleCart()">
 <i class="fa-solid fa-cart-shopping"></i>
-<span id="cartCount">0</span>
+<div class="cartCount" id="cartCount">0</div>
 </div>
 
 </div>
@@ -257,18 +280,28 @@ color:#aaa;
 
 <div id="cartItems"></div>
 
-<div class="total" id="totalHarga">
-Total : Rp 0
+<h3 id="totalHarga">Total : Rp 0</h3>
+
+<button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
+
+<button class="closeCart" onclick="toggleCart()">Tutup</button>
+
 </div>
 
-<button class="checkout" onclick="checkout()">
-Checkout WhatsApp
-</button>
+<!-- POPUP -->
 
-<button class="closeCart" onclick="toggleCart()">
-Tutup
-</button>
+<div class="popup" id="popup">
+<div class="popupContent">
 
+<img id="popupImg">
+
+<h3 id="popupNama"></h3>
+
+<p id="popupHarga"></p>
+
+<button onclick="closePopup()">Tutup</button>
+
+</div>
 </div>
 
 <div class="wa" onclick="checkout()">
@@ -276,41 +309,23 @@ Tutup
 </div>
 
 <footer>
-
-© 2026 JUANDY BUTIK  
-Belanja mudah langsung WhatsApp
-
+© 2026 JUANDY BUTIK
 </footer>
 
 <script>
 
-/* FORMAT RUPIAH */
-
-function rupiah(angka){
-return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
+function rupiah(n){
+return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
 
-/* DATA PRODUK */
-
 let produk=[
-
-{id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
-
-{id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-
-{id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
-
-{id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",
-img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
-
+{id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+{id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 ]
 
-let cart=JSON.parse(localStorage.getItem("cart")) || {}
-
-/* TAMPIL PRODUK */
+let cart=JSON.parse(localStorage.getItem("cart"))||{}
 
 function tampilProduk(data){
 
@@ -324,7 +339,7 @@ html+=`
 
 <div class="card">
 
-<img src="${p.img}" onclick="fokusQty(${p.id})">
+<img src="${p.img}" onclick="detailProduk(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
@@ -334,11 +349,7 @@ html+=`
 
 <button onclick="minus(${p.id})">-</button>
 
-<input type="text"
-data-id="${p.id}"
-value="${qty}"
-inputmode="numeric"
-oninput="ubahQty(${p.id},this.value)">
+<input value="${qty}" onchange="ubahQty(${p.id},this.value)">
 
 <button onclick="plus(${p.id})">+</button>
 
@@ -351,52 +362,31 @@ oninput="ubahQty(${p.id},this.value)">
 })
 
 document.getElementById("produk").innerHTML=html
-
 updateCart()
 
 }
 
 tampilProduk(produk)
 
-/* FOKUS INPUT */
-
-function fokusQty(id){
-
-let input=document.querySelector(`input[data-id='${id}']`)
-
-if(input){
-input.focus()
-input.select()
-}
-
-}
-
-/* QTY */
-
 function plus(id){
 cart[id]=(cart[id]||0)+1
-saveCart()
+save()
 }
 
 function minus(id){
 if(cart[id]>0) cart[id]--
-saveCart()
+save()
 }
 
-function ubahQty(id,val){
-val=val.replace(/[^0-9]/g,'')
-cart[id]=parseInt(val)||0
-saveCart()
+function ubahQty(id,v){
+cart[id]=parseInt(v)||0
+save()
 }
 
-/* SIMPAN */
-
-function saveCart(){
+function save(){
 localStorage.setItem("cart",JSON.stringify(cart))
 tampilProduk(produk)
 }
-
-/* UPDATE CART */
 
 function updateCart(){
 
@@ -406,26 +396,16 @@ let jumlah=0
 
 produk.forEach(p=>{
 
-let qty=cart[p.id]||0
+let q=cart[p.id]||0
 
-if(qty>0){
+if(q>0){
 
-let sub=qty*p.harga
+let sub=q*p.harga
 
-jumlah+=qty
+jumlah+=q
 total+=sub
 
-html+=`
-
-<div class="cartItem">
-
-${p.nama}<br>
-${qty} x ${rupiah(p.harga)}<br>
-Subtotal : ${rupiah(sub)}
-
-</div>
-
-`
+html+=p.nama+" x "+q+" = "+rupiah(sub)+"<br><br>"
 
 }
 
@@ -437,13 +417,9 @@ document.getElementById("cartCount").innerText=jumlah
 
 }
 
-/* CART */
-
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
 }
-
-/* CHECKOUT */
 
 function checkout(){
 
@@ -452,13 +428,13 @@ let total=0
 
 produk.forEach(p=>{
 
-let qty=cart[p.id]||0
+let q=cart[p.id]||0
 
-if(qty>0){
+if(q>0){
 
-let sub=qty*p.harga
+let sub=q*p.harga
 
-pesan+=p.nama+" x "+qty+" = "+rupiah(sub)+"%0A"
+pesan+=p.nama+" x "+q+" = "+rupiah(sub)+"%0A"
 
 total+=sub
 
@@ -466,40 +442,46 @@ total+=sub
 
 })
 
-pesan+="%0ATotal Belanja : "+rupiah(total)
+pesan+="%0ATotal : "+rupiah(total)
 
 window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* SEARCH */
+function searchProduk(k){
 
-function searchProduk(key){
+k=k.toLowerCase()
 
-key=key.toLowerCase()
-
-let hasil=produk.filter(p=>
-p.nama.toLowerCase().includes(key)
-)
+let hasil=produk.filter(p=>p.nama.toLowerCase().includes(k))
 
 tampilProduk(hasil)
 
 }
-
-/* FILTER */
 
 function filterProduk(k){
 
 if(k=="all") tampilProduk(produk)
 
-else{
-
-let hasil=produk.filter(p=>p.kategori==k)
-
-tampilProduk(hasil)
+else tampilProduk(produk.filter(p=>p.kategori==k))
 
 }
 
+/* POPUP */
+
+function detailProduk(id){
+
+let p=produk.find(x=>x.id==id)
+
+document.getElementById("popup").style.display="flex"
+
+document.getElementById("popupImg").src=p.img
+document.getElementById("popupNama").innerText=p.nama
+document.getElementById("popupHarga").innerText=rupiah(p.harga)
+
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none"
 }
 
 </script>
