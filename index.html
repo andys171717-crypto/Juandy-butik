@@ -197,7 +197,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,0,0.9);
 display:none;
 justify-content:center;
 align-items:center;
@@ -224,6 +224,28 @@ top:20px;
 right:20px;
 font-size:24px;
 cursor:pointer;
+}
+
+.popupBtn{
+margin-top:15px;
+display:flex;
+gap:10px;
+justify-content:center;
+}
+
+.popupBtn button{
+padding:10px 14px;
+border:none;
+border-radius:8px;
+color:white;
+}
+
+.addBtn{
+background:#00c853;
+}
+
+.buyBtn{
+background:#25D366;
 }
 
 /* CART */
@@ -257,7 +279,7 @@ height:50px;
 border-radius:6px;
 }
 
-/* WA */
+/* WA FLOAT */
 
 .waFloat{
 position:fixed;
@@ -366,6 +388,14 @@ font-size:12px;
 
 <p id="popupRating"></p>
 
+<div class="popupBtn">
+
+<button class="addBtn" onclick="addCartPopup()">Tambah Keranjang</button>
+
+<button class="buyBtn" onclick="beliSekarang()">Beli Sekarang</button>
+
+</div>
+
 </div>
 
 </div>
@@ -425,13 +455,13 @@ let produk=[
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
 
-/* FORMAT */
+let produkAktif=null
 
 function rupiah(n){
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
 
-/* RENDER */
+/* RENDER PRODUK */
 
 function renderProduk(data=produk){
 
@@ -468,7 +498,7 @@ onchange="setQty(${p.id},this.value)">
 
 })
 
-document.getElementById("produk").innerHTML=html
+produk.innerHTML=html
 
 updateCart()
 
@@ -476,11 +506,13 @@ updateCart()
 
 renderProduk()
 
-/* POPUP */
+/* DETAIL POPUP */
 
 function openDetail(id){
 
 let p=produk.find(x=>x.id===id)
+
+produkAktif=p
 
 popupImg.src=p.img
 popupNama.innerText=p.nama
@@ -495,15 +527,53 @@ function closePopup(){
 popup.style.display="none"
 }
 
+/* POPUP BUTTON */
+
+function addCartPopup(){
+
+let id=produkAktif.id
+
+cart[id]=(cart[id]||0)+1
+
+save()
+
+closePopup()
+
+}
+
+function beliSekarang(){
+
+let pesan="Halo saya ingin beli "+produkAktif.nama+
+" harga "+rupiah(produkAktif.harga)
+
+window.open(
+"https://wa.me/6281220549530?text="+encodeURIComponent(pesan)
+)
+
+}
+
 /* QTY */
 
 function plus(id){cart[id]=(cart[id]||0)+1;save()}
 function minus(id){if(cart[id]>0)cart[id]--;save()}
-function setQty(id,val){val=parseInt(val);if(val<=0)delete cart[id];else cart[id]=val;save()}
+
+function setQty(id,val){
+
+val=parseInt(val)
+
+if(val<=0)delete cart[id]
+else cart[id]=val
+
+save()
+
+}
 
 function save(){
+
 localStorage.setItem("cart",JSON.stringify(cart))
+
 renderProduk()
+
 }
 
 /* CART */
@@ -585,7 +655,7 @@ renderProduk(hasil)
 
 }
 
-/* WA */
+/* WHATSAPP */
 
 function openWA(){
 window.open("https://wa.me/6281220549530")
