@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -40,7 +39,7 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-box-shadow:0 0 12px rgba(0,0,0,0.6);
+box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
 
 .card img{
@@ -82,7 +81,7 @@ border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:28px;
+font-size:30px;
 cursor:pointer;
 box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
@@ -128,7 +127,7 @@ img:"https://images.unsplash.com/photo-1591561954557-26941169b49e"
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+img:"https://images.unsplash.com/photo-1549298916-b41d501d3772"
 },
 
 {
@@ -185,19 +184,14 @@ document.getElementById("cart").innerText=cart.length
 function checkout(){
 
 if(cart.length==0){
-
 alert("Keranjang kosong")
-
 return
-
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
-
 pesan+=item.nama+" - Rp "+item.harga+"%0A"
-
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
