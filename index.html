@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -12,8 +11,6 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
-/* GLOBAL */
 
 body{
 margin:0;
@@ -75,7 +72,6 @@ border:none;
 /* BANNER */
 
 .banner{
-width:100%;
 overflow:hidden;
 position:relative;
 }
@@ -146,38 +142,33 @@ padding:12px;
 background:#1a1a1a;
 border-radius:16px;
 overflow:hidden;
-box-shadow:0 3px 8px rgba(0,0,0,0.5);
 }
 
 .card img{
 width:100%;
 aspect-ratio:1/1;
 object-fit:cover;
+cursor:pointer;
 }
 
 .nama{
 padding:8px;
-font-size:15px;
 }
 
 .harga{
+padding:0 8px;
 color:#00e676;
 font-weight:bold;
-padding:0 8px;
 }
 
 .rating{
 padding:0 8px;
 color:#ffc107;
-font-size:13px;
 }
-
-/* QTY */
 
 .qty{
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:10px;
 }
 
@@ -188,7 +179,6 @@ background:#00c853;
 border:none;
 border-radius:6px;
 color:white;
-font-size:18px;
 }
 
 .qty input{
@@ -197,7 +187,43 @@ text-align:center;
 border:none;
 background:#222;
 color:white;
-border-radius:6px;
+}
+
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:3000;
+}
+
+.popupBox{
+background:#1a1a1a;
+padding:20px;
+border-radius:14px;
+width:90%;
+max-width:350px;
+text-align:center;
+}
+
+.popupBox img{
+width:100%;
+border-radius:10px;
+}
+
+.closePopup{
+position:absolute;
+top:20px;
+right:20px;
+font-size:24px;
+cursor:pointer;
 }
 
 /* CART */
@@ -213,32 +239,10 @@ transform:translateX(100%);
 transition:0.3s;
 padding:20px;
 overflow:auto;
-z-index:2000;
 }
 
 .cartBox.active{
 transform:translateX(0);
-}
-
-.cartHeader{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:10px;
-}
-
-.cartHeader button{
-background:#333;
-border:none;
-color:white;
-width:35px;
-height:35px;
-border-radius:8px;
-}
-
-.closeCart{
-margin-left:auto;
-background:red;
 }
 
 .cartItem{
@@ -251,28 +255,9 @@ margin-bottom:10px;
 width:50px;
 height:50px;
 border-radius:6px;
-object-fit:cover;
 }
 
-.remove{
-background:red;
-border:none;
-color:white;
-border-radius:4px;
-padding:3px 6px;
-}
-
-.checkout{
-background:#25D366;
-border:none;
-padding:12px;
-width:100%;
-border-radius:10px;
-color:white;
-margin-top:10px;
-}
-
-/* WHATSAPP FLOAT */
+/* WA */
 
 .waFloat{
 position:fixed;
@@ -286,7 +271,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-size:28px;
-z-index:1000;
 }
 
 /* FOOTER */
@@ -299,7 +283,6 @@ background:#111;
 display:flex;
 justify-content:space-around;
 padding:10px;
-border-top:1px solid #333;
 }
 
 .menu{
@@ -309,24 +292,18 @@ align-items:center;
 font-size:12px;
 }
 
-.menu i{
-font-size:18px;
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="header">
-
 <div class="logo">JUANDY BUTIK</div>
 
 <div class="cartBtn" onclick="toggleCart()">
 <i class="fa-solid fa-cart-shopping"></i>
 <div class="cartCount" id="cartCount">0</div>
 </div>
-
 </div>
 
 <div class="search">
@@ -336,7 +313,6 @@ font-size:18px;
 <!-- BANNER -->
 
 <div class="banner">
-
 <div class="slider" id="slider">
 
 <div class="slide">
@@ -358,7 +334,6 @@ font-size:18px;
 <div class="dot"></div>
 <div class="dot"></div>
 </div>
-
 </div>
 
 <!-- KATEGORI -->
@@ -375,39 +350,43 @@ font-size:18px;
 
 <div class="container" id="produk"></div>
 
+<!-- POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popupBox">
+
+<span class="closePopup" onclick="closePopup()">✕</span>
+
+<img id="popupImg">
+
+<h2 id="popupNama"></h2>
+
+<p id="popupHarga"></p>
+
+<p id="popupRating"></p>
+
+</div>
+
+</div>
+
 <!-- CART -->
 
 <div class="cartBox" id="cartBox">
 
-<div class="cartHeader">
-
-<button onclick="toggleCart()">
-<i class="fa-solid fa-arrow-left"></i>
-</button>
-
 <h3>Keranjang</h3>
-
-<button class="closeCart" onclick="toggleCart()">
-<i class="fa-solid fa-xmark"></i>
-</button>
-
-</div>
 
 <div id="cartItems"></div>
 
 <h3 id="totalHarga">Total : Rp 0</h3>
 
-<button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
+<button onclick="checkout()">Checkout WhatsApp</button>
 
 </div>
-
-<!-- WA FLOAT -->
 
 <div class="waFloat" onclick="openWA()">
 <i class="fa-brands fa-whatsapp"></i>
 </div>
-
-<!-- FOOTER -->
 
 <div class="footer">
 
@@ -434,29 +413,25 @@ Chat
 
 let produk=[
 
-{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
 
-{id:4,nama:"Jaket Pria",kategori:"jaket",harga:250000,rating:4.7,
-img:"https://images.unsplash.com/photo-1520975922284-9f8c2c2bdf1a"}
+{id:4,nama:"Jaket Pria",kategori:"jaket",harga:250000,rating:4.7,img:"https://images.unsplash.com/photo-1520975922284-9f8c2c2bdf1a"}
 
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
 
-/* FORMAT RUPIAH */
+/* FORMAT */
 
 function rupiah(n){
 return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
 
-/* RENDER PRODUK */
+/* RENDER */
 
 function renderProduk(data=produk){
 
@@ -468,7 +443,7 @@ html+=`
 
 <div class="card">
 
-<img src="${p.img}">
+<img src="${p.img}" onclick="openDetail(${p.id})">
 
 <div class="nama">${p.nama}</div>
 
@@ -501,6 +476,25 @@ updateCart()
 
 renderProduk()
 
+/* POPUP */
+
+function openDetail(id){
+
+let p=produk.find(x=>x.id===id)
+
+popupImg.src=p.img
+popupNama.innerText=p.nama
+popupHarga.innerText=rupiah(p.harga)
+popupRating.innerText="⭐ "+p.rating
+
+popup.style.display="flex"
+
+}
+
+function closePopup(){
+popup.style.display="none"
+}
+
 /* QTY */
 
 function plus(id){cart[id]=(cart[id]||0)+1;save()}
@@ -532,33 +526,35 @@ total+=sub
 jumlah+=q
 
 html+=`
+
 <div class="cartItem">
+
 <img src="${p.img}">
+
 <div>
+
 <b>${p.nama}</b>
+
 <div>${rupiah(sub)}</div>
-<button class="remove" onclick="removeItem(${p.id})">Hapus</button>
+
 </div>
+
 </div>
+
 `
 
 }
 
 })
 
-document.getElementById("cartItems").innerHTML=html
-document.getElementById("cartCount").innerText=jumlah
-document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
+cartItems.innerHTML=html
+cartCount.innerText=jumlah
+totalHarga.innerText="Total : "+rupiah(total)
 
-}
-
-function removeItem(id){
-delete cart[id]
-save()
 }
 
 function toggleCart(){
-document.getElementById("cartBox").classList.toggle("active")
+cartBox.classList.toggle("active")
 }
 
 /* SEARCH */
@@ -573,7 +569,7 @@ renderProduk(hasil)
 
 }
 
-/* FILTER KATEGORI */
+/* KATEGORI */
 
 function filterKategori(k){
 
@@ -617,7 +613,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* BANNER SLIDER */
+/* SLIDER */
 
 let slider=document.getElementById("slider")
 let dots=document.querySelectorAll(".dot")
