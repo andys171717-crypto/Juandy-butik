@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
@@ -57,12 +58,6 @@ border-radius:8px;
 
 /* BANNER */
 
-.banner{
-width:100%;
-height:160px;
-overflow:hidden;
-}
-
 .banner img{
 width:100%;
 height:160px;
@@ -85,7 +80,7 @@ padding:6px 12px;
 border-radius:20px;
 }
 
-/* GRID PRODUK */
+/* PRODUK GRID */
 
 .container{
 padding:12px;
@@ -93,8 +88,6 @@ display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
 }
-
-/* CARD */
 
 .card{
 background:#1c1c1c;
@@ -145,7 +138,7 @@ border-radius:6px;
 font-size:16px;
 }
 
-/* CART PANEL */
+/* CART */
 
 .cartBox{
 position:fixed;
@@ -195,7 +188,7 @@ color:white;
 margin-top:10px;
 }
 
-/* WA FLOAT */
+/* WHATSAPP */
 
 .wa{
 position:fixed;
@@ -244,8 +237,7 @@ onkeyup="searchProduk(this.value)">
 
 <div class="banner">
 
-<img id="bannerImg"
-src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 
 </div>
 
@@ -313,7 +305,7 @@ img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 
 ]
 
-let cart=[]
+let cart=JSON.parse(localStorage.getItem("cart")) || {}
 
 /* TAMPIL PRODUK */
 
@@ -322,6 +314,8 @@ function tampilProduk(data){
 let html=""
 
 data.forEach(p=>{
+
+let qty=cart[p.id]||0
 
 html+=`
 
@@ -338,8 +332,8 @@ html+=`
 <button onclick="minus(${p.id})">-</button>
 
 <input type="text"
+value="${qty}"
 id="q${p.id}"
-value="0"
 inputmode="numeric"
 oninput="ubahQty(${p.id},this.value)">
 
@@ -355,6 +349,8 @@ oninput="ubahQty(${p.id},this.value)">
 
 document.getElementById("produk").innerHTML=html
 
+updateCart()
+
 }
 
 tampilProduk(produk)
@@ -363,39 +359,37 @@ tampilProduk(produk)
 
 function plus(id){
 
-let q=document.getElementById("q"+id)
+cart[id]=(cart[id]||0)+1
 
-q.value=parseInt(q.value||0)+1
-
-updateCart()
+saveCart()
 
 }
 
 function minus(id){
 
-let q=document.getElementById("q"+id)
+if(cart[id]>0) cart[id]--
 
-let v=parseInt(q.value||0)
-
-if(v>0)v--
-
-q.value=v
-
-updateCart()
+saveCart()
 
 }
-
-/* QTY KETIK */
 
 function ubahQty(id,val){
 
 val=val.replace(/[^0-9]/g,'')
 
-if(val=="") val=0
+cart[id]=parseInt(val)||0
 
-document.getElementById("q"+id).value=parseInt(val)
+saveCart()
 
-updateCart()
+}
+
+/* SIMPAN CART */
+
+function saveCart(){
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+tampilProduk(produk)
 
 }
 
@@ -403,70 +397,44 @@ updateCart()
 
 function updateCart(){
 
-cart=[]
+let html=""
 let total=0
+let jumlah=0
 
 produk.forEach(p=>{
 
-let q=document.getElementById("q"+p.id)
-
-if(q){
-
-let qty=parseInt(q.value)||0
+let qty=cart[p.id]||0
 
 if(qty>0){
 
 let sub=qty*p.harga
 
-cart.push({
-nama:p.nama,
-harga:p.harga,
-qty:qty,
-subtotal:sub
-})
-
+jumlah+=qty
 total+=sub
-
-}
-
-}
-
-})
-
-document.getElementById("cartCount").innerText=cart.length
-
-renderCart(total)
-
-}
-
-/* RENDER CART */
-
-function renderCart(total){
-
-let html=""
-
-cart.forEach(i=>{
 
 html+=`
 
 <div class="cartItem">
 
-${i.nama}<br>
-${i.qty} x Rp ${i.harga}<br>
-Subtotal : Rp ${i.subtotal}
+${p.nama}<br>
+${qty} x Rp ${p.harga}<br>
+Subtotal : Rp ${sub}
 
 </div>
 
 `
 
+}
+
 })
 
 document.getElementById("cartItems").innerHTML=html
 document.getElementById("totalHarga").innerText="Total : Rp "+total
+document.getElementById("cartCount").innerText=jumlah
 
 }
 
-/* CART PANEL */
+/* CART */
 
 function toggleCart(){
 
@@ -478,21 +446,22 @@ document.getElementById("cartBox").classList.toggle("active")
 
 function checkout(){
 
-if(cart.length==0){
-
-alert("Keranjang kosong")
-return
-
-}
-
 let pesan="Halo saya ingin memesan:%0A%0A"
 let total=0
 
-cart.forEach(i=>{
+produk.forEach(p=>{
 
-pesan+=i.nama+" x "+i.qty+" = Rp "+i.subtotal+"%0A"
+let qty=cart[p.id]||0
 
-total+=i.subtotal
+if(qty>0){
+
+let sub=qty*p.harga
+
+pesan+=p.nama+" x "+qty+" = Rp "+sub+"%0A"
+
+total+=sub
+
+}
 
 })
 
@@ -520,11 +489,9 @@ tampilProduk(hasil)
 
 function filterProduk(k){
 
-if(k=="all"){
+if(k=="all") tampilProduk(produk)
 
-tampilProduk(produk)
-
-}else{
+else{
 
 let hasil=produk.filter(p=>p.kategori==k)
 
@@ -533,30 +500,6 @@ tampilProduk(hasil)
 }
 
 }
-
-/* BANNER SLIDER */
-
-let banner=[
-
-"https://images.unsplash.com/photo-1607082349566-187342175e2f",
-
-"https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a",
-
-"https://images.unsplash.com/photo-1445205170230-053b83016050"
-
-]
-
-let i=0
-
-setInterval(()=>{
-
-i++
-
-if(i>=banner.length)i=0
-
-document.getElementById("bannerImg").src=banner[i]
-
-},3000)
 
 </script>
 
