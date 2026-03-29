@@ -1,50 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
 <title>JUANDY BUTIK</title>
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
-background:#111;
+margin:0;
+background:black;
 color:white;
+padding-bottom:120px;
 }
 
-.page{display:none}
-
-.center{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-height:100vh;
-}
-
-input,select{
-padding:10px;
-margin:5px;
-border-radius:8px;
-border:none;
-width:220px;
-}
-
-button{
-padding:10px;
-border:none;
-border-radius:8px;
-background:#00c853;
-color:white;
-}
-
-header{
+.header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:black;
 padding:15px;
+background:#111;
+}
+
+.logout{
+background:#00c853;
+padding:8px 15px;
+border-radius:10px;
+border:none;
+color:white;
 }
 
 .grid{
@@ -56,298 +39,371 @@ padding:15px;
 
 .card{
 background:#1a1a1a;
+border-radius:15px;
 padding:10px;
-border-radius:10px;
 text-align:center;
 }
 
 .card img{
 width:100%;
+height:160px;
+object-fit:cover;
 border-radius:10px;
 }
 
-footer{
-background:black;
-padding:20px;
-text-align:center;
-margin-top:30px;
+.price{
+margin:8px 0;
+color:#ccc;
 }
 
-.wa{
-position:fixed;
-bottom:70px;
-right:20px;
-background:#25D366;
-padding:15px;
-border-radius:30px;
+.btn{
+background:#00c853;
+border:none;
+padding:10px;
+border-radius:10px;
 color:white;
-text-decoration:none;
-font-weight:bold;
+width:80%;
+}
+
+.login{
+max-width:320px;
+margin:120px auto;
+text-align:center;
+}
+
+.login input{
+width:90%;
+padding:10px;
+margin:10px;
+border-radius:10px;
+border:none;
+}
+
+.login button{
+background:#00c853;
+border:none;
+padding:10px;
+border-radius:10px;
+color:white;
+width:100px;
+}
+
+.cartPage{
+padding:15px;
 }
 
 .cartItem{
 background:#1a1a1a;
-margin:10px;
-padding:10px;
+padding:15px;
 border-radius:10px;
+margin-bottom:10px;
+}
+
+.total{
+text-align:center;
+font-size:24px;
+margin-top:20px;
+color:#00e676;
+}
+
+.checkout{
+background:#00c853;
+border:none;
+padding:12px;
+border-radius:10px;
+width:200px;
+color:white;
+}
+
+.wa{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:14px 20px;
+border-radius:30px;
+font-weight:bold;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- LOGIN -->
-
-<div id="loginPage" class="page center">
+<div id="loginPage" class="login">
 
 <h2>Login JUANDY BUTIK</h2>
 
-<input id="loginUser" placeholder="Username">
-<input id="loginPass" type="password" placeholder="Password">
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+
+<br>
 
 <button onclick="login()">Login</button>
 
-<p onclick="showRegister()">Daftar akun</p>
-<p onclick="forgot()">Lupa password</p>
+<p onclick="register()">Daftar akun</p>
+<p onclick="lupa()">Lupa password</p>
 
 </div>
 
-<!-- REGISTER -->
 
-<div id="registerPage" class="page center">
+<div id="shop" style="display:none">
 
-<h2>Daftar Akun</h2>
+<div class="header">
 
-<input id="regUser" placeholder="Username">
-<input id="regPass" type="password" placeholder="Password minimal 5 digit">
-
-<select id="question">
-<option>Nama ibu kamu?</option>
-<option>Nama hewan peliharaan?</option>
-<option>Makanan favorit?</option>
-</select>
-
-<input id="answer" placeholder="Jawaban keamanan">
-
-<button onclick="register()">Daftar</button>
-
-<p onclick="showLogin()">Kembali login</p>
-
-</div>
-
-<!-- STORE -->
-
-<div id="storePage" class="page">
-
-<header>
-
-<div>JUANDY BUTIK</div>
+<b>JUANDY BUTIK</b>
 
 <div>
-
-<span id="userName"></span>
-
-<span onclick="openCart()" style="margin-left:10px;cursor:pointer;">
+Hi <span id="user"></span>
 🛒 <span id="cartCount">0</span>
-</span>
 
-<button onclick="logout()">Logout</button>
-
-</div>
-
-</header>
-
-<div class="grid">
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
-<h3>Baju Fashion</h3>
-<p>Rp120000</p>
-<button onclick="addCart('Baju Fashion',120000,'p1')">Tambah</button>
-<p id="p1">0 pcs</p>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-<h3>Tas Wanita</h3>
-<p>Rp150000</p>
-<button onclick="addCart('Tas Wanita',150000,'p2')">Tambah</button>
-<p id="p2">0 pcs</p>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
-<h3>Sepatu Trend</h3>
-<p>Rp200000</p>
-<button onclick="addCart('Sepatu Trend',200000,'p3')">Tambah</button>
-<p id="p3">0 pcs</p>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1551028719-00167b16eac5">
-<h3>Jaket Pria</h3>
-<p>Rp250000</p>
-<button onclick="addCart('Jaket Pria',250000,'p4')">Tambah</button>
-<p id="p4">0 pcs</p>
+<button class="logout" onclick="logout()">Logout</button>
 </div>
 
 </div>
 
-<footer>
-
-<p>© 2026 JUANDY BUTIK</p>
-<p>Toko Fashion Online</p>
-
-</footer>
+<div id="produk" class="grid"></div>
 
 </div>
 
-<!-- CART PAGE -->
 
-<div id="cartPage" class="page">
+<div id="cartPage" style="display:none" class="cartPage">
 
-<header>
+<div class="header">
 
-<div>Keranjang Belanja</div>
+<h3>Keranjang Belanja</h3>
 
-<button onclick="showStore()">Kembali</button>
+<button class="logout" onclick="kembali()">Kembali</button>
 
-</header>
+</div>
 
 <div id="cartList"></div>
 
+<div class="total" id="total"></div>
+
 <center>
-
-<button onclick="checkout()">Checkout WhatsApp</button>
-
+<button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
 </center>
 
 </div>
 
-<a class="wa" href="https://wa.me/">Chat WhatsApp</a>
+
+<a href="https://wa.me/6281234567890" class="wa">Chat WhatsApp</a>
+
 
 <script>
 
-let cart={}
-let totalItem=0
+let produk=[
 
-function hideAll(){
+{name:"Baju Fashion",harga:120000,img:"https://images.unsplash.com/photo-1520975922284-8b456906c813",pcs:0},
 
-document.getElementById("loginPage").style.display="none"
-document.getElementById("registerPage").style.display="none"
-document.getElementById("storePage").style.display="none"
-document.getElementById("cartPage").style.display="none"
+{name:"Tas Wanita",harga:150000,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",pcs:0},
+
+{name:"Sepatu Trend",harga:200000,img:"https://images.unsplash.com/photo-1528701800489-20be3c68dfd8",pcs:0},
+
+{name:"Jaket Pria",harga:250000,img:"https://images.unsplash.com/photo-1520974735194-9c7e70c4b6f7",pcs:0}
+
+]
+
+function tampilProduk(){
+
+let html=""
+
+produk.forEach((p,i)=>{
+
+html+=`
+
+<div class="card">
+
+<img src="${p.img}">
+
+<h3>${p.name}</h3>
+
+<div class="price">Rp${p.harga}</div>
+
+<button class="btn" onclick="tambah(${i})">Tambah</button>
+
+<p>${p.pcs} pcs</p>
+
+</div>
+
+`
+
+})
+
+document.getElementById("produk").innerHTML=html
+
+updateCart()
 
 }
 
-function showLogin(){
+function tambah(i){
 
-hideAll()
-document.getElementById("loginPage").style.display="flex"
+produk[i].pcs++
 
-}
-
-function showRegister(){
-
-hideAll()
-document.getElementById("registerPage").style.display="flex"
+tampilProduk()
 
 }
 
-function showStore(){
+function updateCart(){
 
-hideAll()
-document.getElementById("storePage").style.display="block"
+let total=0
+
+produk.forEach(p=>{
+
+total+=p.pcs
+
+})
+
+document.getElementById("cartCount").innerText=total
 
 }
 
-function openCart(){
+document.addEventListener("click",function(e){
 
-hideAll()
+if(e.target.innerText=="🛒"){
+
+bukaCart()
+
+}
+
+})
+
+function bukaCart(){
+
+document.getElementById("shop").style.display="none"
 document.getElementById("cartPage").style.display="block"
 
-let list=""
+let html=""
+let total=0
 
-for(let name in cart){
+produk.forEach(p=>{
 
-let item=cart[name]
+if(p.pcs>0){
 
-list+=`
+let harga=p.pcs*p.harga
+
+total+=harga
+
+html+=`
+
 <div class="cartItem">
-<h3>${name}</h3>
-<p>${item.qty} pcs</p>
+
+<h3>${p.name}</h3>
+
+<p>${p.pcs} pcs</p>
+
+<p>Rp ${harga}</p>
+
 </div>
+
 `
 
 }
 
-document.getElementById("cartList").innerHTML=list
+})
+
+document.getElementById("cartList").innerHTML=html
+document.getElementById("total").innerText="Total Rp "+total
 
 }
 
-function register(){
+function kembali(){
 
-let user=regUser.value
-let pass=regPass.value
-
-if(pass.length<5){
-
-alert("Password minimal 5 digit")
-return
+document.getElementById("cartPage").style.display="none"
+document.getElementById("shop").style.display="block"
 
 }
 
-localStorage.setItem("user",user)
-localStorage.setItem("pass",pass)
-localStorage.setItem("question",question.value)
-localStorage.setItem("answer",answer.value)
+function checkout(){
 
-alert("Daftar berhasil")
+let pesan="Halo saya ingin pesan:%0A"
 
-showLogin()
+let total=0
+
+produk.forEach(p=>{
+
+if(p.pcs>0){
+
+let harga=p.pcs*p.harga
+
+total+=harga
+
+pesan+=p.name+" "+p.pcs+" pcs - Rp"+harga+"%0A"
+
+}
+
+})
+
+pesan+="Total Rp "+total
+
+window.open("https://wa.me/6281234567890?text="+pesan)
 
 }
 
 function login(){
 
-let user=loginUser.value
-let pass=loginPass.value
+let u=document.getElementById("username").value
+let p=document.getElementById("password").value
 
-if(user===localStorage.getItem("user") &&
-pass===localStorage.getItem("pass")){
+let data=JSON.parse(localStorage.getItem("user"))
+
+if(!data){
+
+alert("Silakan daftar dulu")
+
+return
+
+}
+
+if(u==data.username && p==data.password){
 
 localStorage.setItem("login","true")
 
-document.getElementById("userName").innerText="Hi "+user
+document.getElementById("loginPage").style.display="none"
+document.getElementById("shop").style.display="block"
 
-showStore()
+document.getElementById("user").innerText=u
+
+tampilProduk()
 
 }else{
 
-alert("Login gagal")
+alert("Login salah")
 
 }
 
 }
 
-function logout(){
+function register(){
 
-localStorage.removeItem("login")
+let u=prompt("Buat username")
+let p=prompt("Buat password")
+let q=prompt("Pertanyaan keamanan")
+let a=prompt("Jawaban")
 
-showLogin()
+localStorage.setItem("user",JSON.stringify({
+username:u,
+password:p,
+q:q,
+a:a
+}))
+
+alert("Akun berhasil dibuat")
 
 }
 
-function forgot(){
+function lupa(){
 
-let q=localStorage.getItem("question")
+let data=JSON.parse(localStorage.getItem("user"))
 
-let a=prompt(q)
+let j=prompt(data.q)
 
-if(a===localStorage.getItem("answer")){
+if(j==data.a){
 
-alert("Password: "+localStorage.getItem("pass"))
+alert("Password kamu: "+data.password)
 
 }else{
 
@@ -357,51 +413,11 @@ alert("Jawaban salah")
 
 }
 
-function addCart(name,price,id){
+function logout(){
 
-if(!cart[name]){
+localStorage.removeItem("login")
 
-cart[name]={qty:0,price:price}
-
-}
-
-cart[name].qty++
-
-totalItem++
-
-document.getElementById("cartCount").innerText=totalItem
-
-document.getElementById(id).innerText=cart[name].qty+" pcs"
-
-}
-
-function checkout(){
-
-let text="Pesanan JUANDY BUTIK%0A"
-
-for(let name in cart){
-
-text+=name+" "+cart[name].qty+" pcs%0A"
-
-}
-
-window.open("https://wa.me/?text="+text)
-
-}
-
-window.onload=function(){
-
-if(localStorage.getItem("login")==="true"){
-
-document.getElementById("userName").innerText="Hi "+localStorage.getItem("user")
-
-showStore()
-
-}else{
-
-showLogin()
-
-}
+location.reload()
 
 }
 
