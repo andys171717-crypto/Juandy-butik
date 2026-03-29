@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -97,7 +96,7 @@ margin-bottom:15px;
 position:fixed;
 top:0;
 right:-100%;
-width:320px;
+width:330px;
 height:100%;
 background:#111;
 padding:20px;
@@ -110,30 +109,44 @@ right:0;
 }
 
 .cartItem{
+display:flex;
+gap:10px;
 border-bottom:1px solid #333;
-padding:12px 0;
+padding:10px 0;
+}
+
+.cartItem img{
+width:60px;
+height:60px;
+object-fit:cover;
+border-radius:8px;
 }
 
 .qty{
 display:flex;
-gap:10px;
+gap:5px;
 margin-top:5px;
 }
 
 .qty button{
 background:#00c853;
 border:none;
-padding:5px 10px;
+padding:4px 8px;
 border-radius:5px;
 color:white;
+}
+
+.remove{
+color:red;
+font-size:12px;
+cursor:pointer;
 }
 
 .total{
 margin-top:15px;
 font-weight:bold;
+font-size:18px;
 }
-
-/* BUTTON */
 
 .checkout{
 background:#25D366;
@@ -144,16 +157,6 @@ border-radius:8px;
 margin-top:10px;
 color:white;
 font-weight:bold;
-}
-
-.back{
-background:#333;
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-color:white;
 }
 
 /* WA */
@@ -196,11 +199,8 @@ JUANDY BUTIK
 </div>
 
 <div class="cart" onclick="toggleCart()">
-
 <i class="fa-solid fa-cart-shopping"></i>
-
 <span id="cartCount">0</span>
-
 </div>
 
 </div>
@@ -223,13 +223,7 @@ Total: Rp <span id="totalHarga">0</span>
 Checkout WhatsApp
 </button>
 
-<button class="back" onclick="toggleCart()">
-Kembali Belanja
-</button>
-
 </div>
-
-<!-- WA -->
 
 <div class="wa" onclick="waDirect()">
 <i class="fa-brands fa-whatsapp"></i>
@@ -244,33 +238,38 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
-/* DATA PRODUK */
+/* RESET DATA RUSAK */
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+if(!Array.isArray(cart)){
+cart=[]
+localStorage.removeItem("cart")
+}
+
+/* PRODUK */
 
 const produk=[
 
-{ id:1, nama:"Baju Fashion", harga:120000,
+{ id:1,nama:"Baju Fashion",harga:120000,
 img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" },
 
-{ id:2, nama:"Tas Wanita", harga:150000,
+{ id:2,nama:"Tas Wanita",harga:150000,
 img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3" },
 
-{ id:3, nama:"Sepatu Trend", harga:200000,
+{ id:3,nama:"Sepatu Trend",harga:200000,
 img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff" },
 
-{ id:4, nama:"Jaket Pria", harga:250000,
+{ id:4,nama:"Jaket Pria",harga:250000,
 img:"https://images.unsplash.com/photo-1548883354-7622d03aca27" }
 
 ]
-
-/* CART */
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []
 
 function saveCart(){
 localStorage.setItem("cart",JSON.stringify(cart))
 }
 
-/* PRODUK */
+/* TAMPIL PRODUK */
 
 function tampilProduk(){
 
@@ -320,6 +319,7 @@ cart.push({
 id:p.id,
 nama:p.nama,
 harga:p.harga,
+img:p.img,
 qty:1
 })
 
@@ -330,43 +330,7 @@ updateCart()
 
 }
 
-/* MINUS */
-
-function minus(id){
-
-let item=cart.find(x=>x.id===id)
-
-if(!item) return
-
-item.qty--
-
-if(item.qty<=0){
-
-cart=cart.filter(x=>x.id!==id)
-
-}
-
-saveCart()
-updateCart()
-
-}
-
-/* PLUS */
-
-function plus(id){
-
-let item=cart.find(x=>x.id===id)
-
-if(!item) return
-
-item.qty++
-
-saveCart()
-updateCart()
-
-}
-
-/* UPDATE */
+/* UPDATE CART */
 
 function updateCart(){
 
@@ -375,6 +339,8 @@ let total=0
 let jumlah=0
 
 cart.forEach(item=>{
+
+if(!item.qty)item.qty=1
 
 let subtotal=item.harga*item.qty
 
@@ -385,8 +351,11 @@ html+=`
 
 <div class="cartItem">
 
-${item.nama}<br>
+<img src="${item.img}">
 
+<div>
+
+${item.nama}<br>
 Rp ${item.harga} x ${item.qty}
 
 <div class="qty">
@@ -399,6 +368,12 @@ Rp ${item.harga} x ${item.qty}
 
 </div>
 
+<div class="remove" onclick="hapus(${item.id})">
+Hapus
+</div>
+
+</div>
+
 </div>
 
 `
@@ -408,6 +383,47 @@ Rp ${item.harga} x ${item.qty}
 document.getElementById("cartItems").innerHTML=html
 document.getElementById("totalHarga").innerText=total
 document.getElementById("cartCount").innerText=jumlah
+
+}
+
+/* PLUS */
+
+function plus(id){
+
+let item=cart.find(x=>x.id===id)
+item.qty++
+
+saveCart()
+updateCart()
+
+}
+
+/* MINUS */
+
+function minus(id){
+
+let item=cart.find(x=>x.id===id)
+
+item.qty--
+
+if(item.qty<=0){
+hapus(id)
+return
+}
+
+saveCart()
+updateCart()
+
+}
+
+/* HAPUS */
+
+function hapus(id){
+
+cart=cart.filter(x=>x.id!==id)
+
+saveCart()
+updateCart()
 
 }
 
