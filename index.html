@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -26,6 +26,10 @@ justify-content:space-between;
 align-items:center;
 font-size:18px;
 font-weight:bold;
+}
+
+.cart-icon{
+cursor:pointer;
 }
 
 .container{
@@ -71,20 +75,40 @@ margin-bottom:15px;
 font-weight:bold;
 }
 
-.wa{
+.cart-box{
 position:fixed;
-bottom:20px;
-right:20px;
+top:0;
+right:-100%;
+width:300px;
+height:100%;
+background:#111;
+padding:20px;
+transition:0.4s;
+overflow:auto;
+}
+
+.cart-box.active{
+right:0;
+}
+
+.cart-item{
+border-bottom:1px solid #333;
+padding:10px 0;
+}
+
+.total{
+margin-top:15px;
+font-weight:bold;
+}
+
+.checkout{
 background:#25D366;
-width:65px;
-height:65px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.7);
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+margin-top:10px;
+font-weight:bold;
 }
 
 </style>
@@ -93,15 +117,35 @@ box-shadow:0 0 10px rgba(0,0,0,0.7);
 <body>
 
 <header>
+
 JUANDY BUTIK
-<div>🛒 <span id="cart">0</span></div>
+
+<div class="cart-icon" onclick="toggleCart()">
+🛒 <span id="cart-count">0</span>
+</div>
+
 </header>
+
 
 <div class="container" id="produk"></div>
 
-<div class="wa" onclick="checkout()">
-<i class="fa-brands fa-whatsapp"></i>
+
+<div class="cart-box" id="cartBox">
+
+<h3>Keranjang</h3>
+
+<div id="cartItems"></div>
+
+<div class="total">
+Total: Rp <span id="totalHarga">0</span>
 </div>
+
+<button class="checkout" onclick="checkout()">
+Checkout WhatsApp
+</button>
+
+</div>
+
 
 <script>
 
@@ -156,29 +200,80 @@ document.getElementById("produk").innerHTML=html
 
 }
 
+
 function tambah(i){
 
 cart.push(produk[i])
-document.getElementById("cart").innerText=cart.length
+
+updateCart()
 
 }
+
+
+function updateCart(){
+
+let html=""
+let total=0
+
+cart.forEach((item,index)=>{
+
+total+=item.harga
+
+html+=`
+<div class="cart-item">
+${item.nama} - Rp ${item.harga}
+<br>
+<button onclick="hapus(${index})">Hapus</button>
+</div>
+`
+
+})
+
+document.getElementById("cartItems").innerHTML=html
+document.getElementById("totalHarga").innerText=total
+document.getElementById("cart-count").innerText=cart.length
+
+}
+
+
+function hapus(i){
+
+cart.splice(i,1)
+
+updateCart()
+
+}
+
+
+function toggleCart(){
+
+document.getElementById("cartBox").classList.toggle("active")
+
+}
+
 
 function checkout(){
 
 if(cart.length==0){
+
 alert("Keranjang kosong")
+
 return
+
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
+
 pesan+=item.nama+" - Rp "+item.harga+"%0A"
+
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
+
 
 tampilProduk()
 
