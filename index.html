@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>JUANDY BUTIK</title>
 
 <style>
@@ -20,8 +23,8 @@ padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-size:18px;
 font-weight:bold;
+font-size:18px;
 }
 
 .container{
@@ -36,7 +39,7 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-box-shadow:0 0 10px rgba(0,0,0,0.5);
+box-shadow:0 0 12px rgba(0,0,0,0.6);
 }
 
 .card img{
@@ -46,9 +49,9 @@ object-fit:cover;
 }
 
 .nama{
+margin-top:10px;
 font-size:16px;
 font-weight:bold;
-margin-top:10px;
 }
 
 .harga{
@@ -59,11 +62,11 @@ margin-bottom:10px;
 button{
 background:#00c853;
 border:none;
-padding:10px 18px;
+padding:10px 20px;
 border-radius:8px;
 color:white;
-margin-bottom:15px;
 cursor:pointer;
+margin-bottom:15px;
 font-weight:bold;
 }
 
@@ -84,10 +87,10 @@ justify-content:center;
 align-items:center;
 font-size:28px;
 cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
 
 </style>
+
 </head>
 
 <body>
@@ -113,25 +116,25 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"
+img:"https://images.unsplash.com/photo-1520975922327-9f8e6f1c5f3d"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"
+img:"https://images.unsplash.com/photo-1591561954557-26941169b49e"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"
+img:"https://images.unsplash.com/photo-1549298916-b41d501d3772"
 },
 
 {
 nama:"Jaket Pria",
 harga:250000,
-img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500"
+img:"https://images.unsplash.com/photo-1551028719-00167b16eac5"
 }
 
 ]
@@ -142,17 +145,17 @@ function tampilProduk(){
 
 let html=""
 
-for(let i=0;i<produk.length;i++){
+produk.forEach((p,i)=>{
 
 html+=`
 
 <div class="card">
 
-<img src="${produk[i].img}">
+<img src="${p.img}">
 
-<div class="nama">${produk[i].nama}</div>
+<div class="nama">${p.nama}</div>
 
-<div class="harga">Rp ${produk[i].harga}</div>
+<div class="harga">Rp ${p.harga}</div>
 
 <button onclick="tambah(${i})">Tambah</button>
 
@@ -160,7 +163,7 @@ html+=`
 
 `
 
-}
+})
 
 document.getElementById("produk").innerHTML=html
 
@@ -198,11 +201,11 @@ return
 
 let pesan="Halo saya ingin pesan:%0A%0A"
 
-for(let i=0;i<cart.length;i++){
+cart.forEach(item=>{
 
-pesan+=cart[i].nama+" - Rp "+cart[i].harga+"%0A"
+pesan+=item.nama+" - Rp "+item.harga+"%0A"
 
-}
+})
 
 window.open("https://wa.me/?text="+pesan)
 
