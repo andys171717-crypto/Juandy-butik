@@ -43,7 +43,7 @@ gap:5px;
 
 .cart-icon span{
 background:#25D366;
-padding:2px 7px;
+padding:3px 8px;
 border-radius:20px;
 font-size:12px;
 }
@@ -247,7 +247,7 @@ Checkout WhatsApp
 
 </div>
 
-<!-- WA FLOAT -->
+<!-- WA -->
 
 <div class="wa" onclick="waDirect()">
 <i class="fa-brands fa-whatsapp"></i>
@@ -261,6 +261,8 @@ Belanja mudah langsung WhatsApp
 </footer>
 
 <script>
+
+/* PRODUK */
 
 const produk=[
 
@@ -294,7 +296,17 @@ img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"
 
 ]
 
-let cart=[]
+/* LOAD CART */
+
+let cart=JSON.parse(localStorage.getItem("cart")) || []
+
+function simpanCart(){
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+}
+
+/* TAMPIL PRODUK */
 
 function tampilProduk(){
 
@@ -326,6 +338,8 @@ document.getElementById("produk").innerHTML=html
 
 }
 
+/* TAMBAH */
+
 function tambah(id){
 
 let item=cart.find(x=>x.id===id)
@@ -347,9 +361,12 @@ qty:1
 
 }
 
+simpanCart()
 updateCart()
 
 }
+
+/* MINUS */
 
 function minus(id){
 
@@ -358,12 +375,17 @@ let item=cart.find(x=>x.id===id)
 item.qty--
 
 if(item.qty<=0){
+
 cart=cart.filter(x=>x.id!==id)
+
 }
 
+simpanCart()
 updateCart()
 
 }
+
+/* PLUS */
 
 function plus(id){
 
@@ -371,9 +393,12 @@ let item=cart.find(x=>x.id===id)
 
 item.qty++
 
+simpanCart()
 updateCart()
 
 }
+
+/* UPDATE CART */
 
 function updateCart(){
 
@@ -418,11 +443,15 @@ document.getElementById("cartCount").innerText=jumlah
 
 }
 
+/* CART */
+
 function toggleCart(){
 
 document.getElementById("cartBox").classList.toggle("active")
 
 }
+
+/* CHECKOUT */
 
 function checkout(){
 
@@ -445,6 +474,8 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
+/* WA */
+
 function waDirect(){
 
 window.open("https://wa.me/6281220549530")
@@ -452,6 +483,7 @@ window.open("https://wa.me/6281220549530")
 }
 
 tampilProduk()
+updateCart()
 
 </script>
 
