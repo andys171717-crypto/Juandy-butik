@@ -41,10 +41,6 @@ border-radius:20px;
 cursor:pointer;
 }
 
-.cart span{
-margin-left:5px;
-}
-
 /* SEARCH */
 
 .search{
@@ -79,7 +75,6 @@ object-fit:cover;
 display:flex;
 gap:10px;
 padding:10px;
-overflow:auto;
 }
 
 .filter button{
@@ -88,10 +83,9 @@ border:none;
 color:white;
 padding:6px 12px;
 border-radius:20px;
-cursor:pointer;
 }
 
-/* PRODUK GRID */
+/* GRID */
 
 .container{
 padding:12px;
@@ -122,7 +116,7 @@ margin-top:8px;
 
 .harga{
 color:#ccc;
-margin-bottom:5px;
+margin-bottom:8px;
 }
 
 /* QTY */
@@ -144,10 +138,11 @@ border-radius:6px;
 }
 
 .qty input{
-width:50px;
+width:55px;
 text-align:center;
 border:none;
 border-radius:6px;
+font-size:16px;
 }
 
 /* CART PANEL */
@@ -194,7 +189,7 @@ color:white;
 margin-top:10px;
 }
 
-/* WHATSAPP FLOAT */
+/* WHATSAPP */
 
 .wa{
 position:fixed;
@@ -208,7 +203,6 @@ display:flex;
 justify-content:center;
 align-items:center;
 font-size:28px;
-cursor:pointer;
 }
 
 footer{
@@ -225,9 +219,7 @@ color:#aaa;
 
 <div class="header">
 
-<div class="logo">
-JUANDY BUTIK
-</div>
+<div class="logo">JUANDY BUTIK</div>
 
 <div class="cart" onclick="toggleCart()">
 <i class="fa-solid fa-cart-shopping"></i>
@@ -262,7 +254,7 @@ src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
 
 <div class="container" id="produk"></div>
 
-<!-- CART PANEL -->
+<!-- CART -->
 
 <div class="cartBox" id="cartBox">
 
@@ -297,37 +289,17 @@ Belanja mudah langsung WhatsApp
 
 let produk=[
 
-{
-id:1,
-nama:"Baju Fashion",
-harga:120000,
-kategori:"baju",
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
-},
+{ id:1,nama:"Baju Fashion",harga:120000,kategori:"baju",
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-{
-id:2,
-nama:"Tas Wanita",
-harga:150000,
-kategori:"tas",
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
-},
+{ id:2,nama:"Tas Wanita",harga:150000,kategori:"tas",
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-{
-id:3,
-nama:"Sepatu Trend",
-harga:200000,
-kategori:"sepatu",
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-},
+{ id:3,nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
 
-{
-id:4,
-nama:"Jaket Pria",
-harga:250000,
-kategori:"baju",
-img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"
-}
+{ id:4,nama:"Jaket Pria",harga:250000,kategori:"baju",
+img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 
 ]
 
@@ -355,7 +327,11 @@ html+=`
 
 <button onclick="minus(${p.id})">-</button>
 
-<input type="number" id="q${p.id}" value="0" min="0">
+<input type="text"
+id="q${p.id}"
+value="0"
+inputmode="numeric"
+oninput="ubahQty(${p.id},this.value)">
 
 <button onclick="plus(${p.id})">+</button>
 
@@ -373,14 +349,12 @@ document.getElementById("produk").innerHTML=html
 
 tampilProduk(produk)
 
-/* QTY */
+/* QTY BUTTON */
 
 function plus(id){
 
 let q=document.getElementById("q"+id)
-
-q.value++
-
+q.value=parseInt(q.value||0)+1
 updateCart()
 
 }
@@ -388,8 +362,25 @@ updateCart()
 function minus(id){
 
 let q=document.getElementById("q"+id)
+let v=parseInt(q.value||0)
 
-if(q.value>0) q.value--
+if(v>0)v--
+
+q.value=v
+
+updateCart()
+
+}
+
+/* QTY KETIK */
+
+function ubahQty(id,val){
+
+val=val.replace(/[^0-9]/g,'')
+
+if(val=="") val=0
+
+document.getElementById("q"+id).value=parseInt(val)
 
 updateCart()
 
@@ -404,17 +395,23 @@ let total=0
 
 produk.forEach(p=>{
 
-let qty=document.getElementById("q"+p.id)
+let q=document.getElementById("q"+p.id)
 
-if(qty && qty.value>0){
+if(q){
+
+let qty=parseInt(q.value)||0
+
+if(qty>0){
 
 cart.push({
 nama:p.nama,
 harga:p.harga,
-qty:qty.value
+qty:qty
 })
 
-total+=parseInt(qty.value)
+total+=qty
+
+}
 
 }
 
@@ -426,20 +423,20 @@ renderCart()
 
 }
 
-/* RENDER CART */
+/* CART LIST */
 
 function renderCart(){
 
 let html=""
 
-cart.forEach(item=>{
+cart.forEach(i=>{
 
 html+=`
 
 <div class="cartItem">
 
-${item.nama}<br>
-${item.qty} x Rp ${item.harga}
+${i.nama}<br>
+${i.qty} x Rp ${i.harga}
 
 </div>
 
@@ -466,7 +463,6 @@ function checkout(){
 if(cart.length==0){
 
 alert("Keranjang kosong")
-
 return
 
 }
@@ -518,9 +514,13 @@ tampilProduk(hasil)
 /* SLIDER */
 
 let banner=[
+
 "https://images.unsplash.com/photo-1607082349566-187342175e2f",
+
 "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a",
+
 "https://images.unsplash.com/photo-1445205170230-053b83016050"
+
 ]
 
 let i=0
