@@ -13,7 +13,7 @@ background:#111;
 color:white;
 }
 
-.header{
+header{
 background:black;
 padding:15px;
 display:flex;
@@ -30,7 +30,7 @@ padding:15px;
 
 .card{
 background:#1c1c1c;
-border-radius:12px;
+border-radius:10px;
 padding:10px;
 text-align:center;
 }
@@ -39,34 +39,20 @@ text-align:center;
 width:100%;
 height:150px;
 object-fit:cover;
-border-radius:10px;
+border-radius:8px;
 }
 
 button{
 background:#00c853;
 border:none;
-padding:10px;
-border-radius:8px;
+padding:8px 12px;
+border-radius:6px;
 color:white;
 margin-top:5px;
 }
 
-.login{
-text-align:center;
-margin-top:120px;
-}
-
-.login input{
-padding:10px;
-width:200px;
-margin:8px;
-border-radius:8px;
-border:none;
-}
-
 .cart{
 cursor:pointer;
-margin-left:10px;
 }
 
 .cartPage{
@@ -76,8 +62,8 @@ padding:20px;
 
 .total{
 font-size:20px;
-margin-top:10px;
 color:#00e676;
+margin-top:10px;
 }
 
 .wa{
@@ -103,56 +89,32 @@ width:35px;
 
 <body>
 
-<div id="loginPage" class="login">
-
-<h2>Login JUANDY BUTIK</h2>
-
-<input id="username" placeholder="Username"><br>
-<input id="password" type="password" placeholder="Password"><br>
-
-<button onclick="login()">Login</button>
-
-<p onclick="daftar()">Daftar</p>
-<p onclick="lupa()">Lupa Password</p>
-
-</div>
-
-<div id="shop" style="display:none">
-
-<div class="header">
-
+<header>
 <b>JUANDY BUTIK</b>
 
-<div>
-Hi <span id="namaUser"></span>
-
-<span class="cart" onclick="bukaCart()">🛒
-<span id="jumlahCart">0</span>
-</span>
-
-<button onclick="logout()">Logout</button>
-
+<div class="cart" onclick="bukaCart()">
+🛒 <span id="cartCount">0</span>
 </div>
 
-</div>
+</header>
 
-<div class="grid" id="produk"></div>
-
-</div>
+<div id="produk" class="grid"></div>
 
 <div id="cartPage" class="cartPage">
 
-<h2>Keranjang</h2>
+<h2>Keranjang Belanja</h2>
 
-<div id="listCart"></div>
+<div id="cartList"></div>
 
 <div class="total" id="totalHarga"></div>
+
+<br>
 
 <button onclick="checkout()">Checkout WhatsApp</button>
 
 <br><br>
 
-<button onclick="kembali()">Kembali</button>
+<button onclick="tutupCart()">Kembali</button>
 
 </div>
 
@@ -224,14 +186,13 @@ total+=p.pcs
 
 })
 
-document.getElementById("jumlahCart").innerText=total
+document.getElementById("cartCount").innerText=total
 
 }
 
 function bukaCart(){
 
-document.getElementById("shop").style.display="none"
-
+document.getElementById("produk").style.display="none"
 document.getElementById("cartPage").style.display="block"
 
 let html=""
@@ -255,17 +216,16 @@ html+=`
 
 })
 
-document.getElementById("listCart").innerHTML=html
+document.getElementById("cartList").innerHTML=html
 
 document.getElementById("totalHarga").innerText="Total Rp "+total
 
 }
 
-function kembali(){
+function tutupCart(){
 
+document.getElementById("produk").style.display="grid"
 document.getElementById("cartPage").style.display="none"
-
-document.getElementById("shop").style.display="block"
 
 }
 
@@ -295,97 +255,7 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-function login(){
-
-let u=document.getElementById("username").value
-
-let p=document.getElementById("password").value
-
-let data=JSON.parse(localStorage.getItem("akun"))
-
-if(!data){
-
-alert("Silakan daftar dulu")
-
-return
-
-}
-
-if(u==data.user && p==data.pass){
-
-document.getElementById("loginPage").style.display="none"
-
-document.getElementById("shop").style.display="block"
-
-document.getElementById("namaUser").innerText=u
-
 tampilProduk()
-
-}else{
-
-alert("Login salah")
-
-}
-
-}
-
-function daftar(){
-
-let u=prompt("Buat username")
-
-let p=prompt("Buat password minimal 5 karakter")
-
-if(p.length<5){
-
-alert("Password minimal 5 karakter")
-
-return
-
-}
-
-let q=prompt("Pertanyaan keamanan")
-
-let a=prompt("Jawaban")
-
-localStorage.setItem("akun",JSON.stringify({
-
-user:u,
-
-pass:p,
-
-q:q,
-
-a:a
-
-}))
-
-alert("Akun berhasil dibuat")
-
-}
-
-function lupa(){
-
-let data=JSON.parse(localStorage.getItem("akun"))
-
-let j=prompt(data.q)
-
-if(j==data.a){
-
-alert("Password kamu: "+data.pass)
-
-}else{
-
-alert("Jawaban salah")
-
-}
-
-}
-
-function logout(){
-
-location.reload()
-
-}
 
 </script>
 
