@@ -24,7 +24,7 @@ color:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px;
+padding:14px;
 background:black;
 position:sticky;
 top:0;
@@ -32,9 +32,11 @@ z-index:1000;
 }
 
 .logo{
-font-size:20px;
 font-weight:bold;
+font-size:18px;
 }
+
+/* CART BUTTON */
 
 .cartBtn{
 background:#25D366;
@@ -44,27 +46,13 @@ cursor:pointer;
 position:relative;
 }
 
-.cartBtn.shake{
-animation:shake .4s;
-}
-
-@keyframes shake{
-
-0%{transform:rotate(0)}
-25%{transform:rotate(10deg)}
-50%{transform:rotate(-10deg)}
-75%{transform:rotate(10deg)}
-100%{transform:rotate(0)}
-
-}
-
 .cartCount{
 position:absolute;
-top:-6px;
-right:-6px;
+top:-5px;
+right:-5px;
 background:red;
-font-size:12px;
 padding:2px 6px;
+font-size:12px;
 border-radius:50%;
 }
 
@@ -98,12 +86,7 @@ border:none;
 color:white;
 padding:8px 12px;
 border-radius:20px;
-cursor:pointer;
 white-space:nowrap;
-}
-
-.kategori button:hover{
-background:#25D366;
 }
 
 /* BANNER */
@@ -116,7 +99,7 @@ position:relative;
 
 .slider{
 display:flex;
-transition:transform .5s ease;
+transition:0.4s;
 }
 
 .slide{
@@ -143,7 +126,7 @@ gap:6px;
 .dot{
 width:8px;
 height:8px;
-background:#aaa;
+background:#bbb;
 border-radius:50%;
 }
 
@@ -155,61 +138,68 @@ background:#25D366;
 
 .container{
 display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:12px;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:10px;
+padding:10px;
 }
 
 .card{
-background:#1c1c1c;
-border-radius:15px;
+background:#1a1a1a;
+border-radius:12px;
 overflow:hidden;
-text-align:center;
-position:relative;
-}
-
-.sale{
-position:absolute;
-top:10px;
-left:10px;
-background:red;
-padding:4px 8px;
-font-size:12px;
-border-radius:5px;
+box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
 .card img{
 width:100%;
-height:150px;
+aspect-ratio:1/1;
 object-fit:cover;
 cursor:pointer;
 }
 
 .nama{
-font-weight:bold;
-margin-top:8px;
+font-size:14px;
+padding:6px 8px;
+height:36px;
+overflow:hidden;
 }
 
 .harga{
-color:#ccc;
+color:#00e676;
+font-weight:bold;
+padding:0 8px;
 }
 
 .rating{
-color:gold;
+font-size:12px;
+color:#fbc02d;
+padding:0 8px;
 }
+
+/* QTY */
 
 .qty{
 display:flex;
-justify-content:center;
-gap:10px;
-margin:10px;
+justify-content:space-between;
+align-items:center;
+padding:8px;
 }
 
 .qty button{
+width:26px;
+height:26px;
+border:none;
 background:#00c853;
+color:white;
+border-radius:6px;
+}
+
+.qtyInput{
+width:40px;
+text-align:center;
+background:#222;
 border:none;
 color:white;
-padding:6px 10px;
 border-radius:6px;
 }
 
@@ -219,12 +209,12 @@ border-radius:6px;
 position:fixed;
 top:0;
 right:0;
-transform:translateX(100%);
 width:320px;
 height:100%;
 background:#111;
-padding:20px;
+transform:translateX(100%);
 transition:.3s;
+padding:20px;
 overflow:auto;
 z-index:2000;
 }
@@ -232,6 +222,28 @@ z-index:2000;
 .cartBox.active{
 transform:translateX(0);
 }
+
+/* CART HEADER */
+
+.cartHeader{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:10px;
+}
+
+.backCart{
+background:#333;
+border:none;
+color:white;
+width:35px;
+height:35px;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+/* CART ITEM */
 
 .cartItem{
 display:flex;
@@ -248,24 +260,6 @@ object-fit:cover;
 border-radius:6px;
 }
 
-.cartInfo{
-flex:1;
-}
-
-.cartQty{
-display:flex;
-gap:10px;
-margin-top:5px;
-}
-
-.cartQty button{
-background:#00c853;
-border:none;
-padding:4px 8px;
-border-radius:5px;
-color:white;
-}
-
 .remove{
 background:red;
 border:none;
@@ -274,6 +268,8 @@ border-radius:4px;
 color:white;
 margin-top:5px;
 }
+
+/* BUTTON */
 
 .checkout{
 background:#25D366;
@@ -284,69 +280,6 @@ border-radius:8px;
 margin-top:10px;
 color:white;
 font-weight:bold;
-}
-
-.closeCart{
-background:#333;
-border:none;
-padding:12px;
-width:100%;
-border-radius:8px;
-margin-top:10px;
-color:white;
-}
-
-/* POPUP */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.8);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:3000;
-}
-
-.popupContent{
-background:#222;
-padding:20px;
-border-radius:10px;
-width:80%;
-max-width:320px;
-text-align:center;
-}
-
-.popupContent img{
-width:100%;
-border-radius:10px;
-}
-
-/* WA */
-
-.wa{
-position:fixed;
-bottom:90px;
-right:20px;
-background:#25D366;
-width:60px;
-height:60px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-}
-
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:20px;
-color:#aaa;
 }
 
 </style>
@@ -370,13 +303,10 @@ color:#aaa;
 </div>
 
 <div class="kategori">
-
 <button onclick="filterKategori('all')">Semua</button>
 <button onclick="filterKategori('baju')">Baju</button>
 <button onclick="filterKategori('tas')">Tas</button>
 <button onclick="filterKategori('sepatu')">Sepatu</button>
-<button onclick="filterKategori('jaket')">Jaket</button>
-
 </div>
 
 <!-- BANNER -->
@@ -386,15 +316,15 @@ color:#aaa;
 <div class="slider" id="slider">
 
 <div class="slide">
-<img loading="lazy" src="https://images.unsplash.com/photo-1445205170230-053b83016050">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
 
 <div class="slide">
-<img loading="lazy" src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
 </div>
 
 <div class="slide">
-<img loading="lazy" src="https://images.unsplash.com/photo-1521334884684-d80222895322">
+<img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
 </div>
 
 </div>
@@ -409,9 +339,19 @@ color:#aaa;
 
 <div class="container" id="produk"></div>
 
+<!-- CART -->
+
 <div class="cartBox" id="cartBox">
 
+<div class="cartHeader">
+
+<button class="backCart" onclick="toggleCart()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
 <h2>Keranjang</h2>
+
+</div>
 
 <div id="cartItems"></div>
 
@@ -419,37 +359,7 @@ color:#aaa;
 
 <button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
 
-<button class="closeCart" onclick="toggleCart()">Tutup</button>
-
 </div>
-
-<div class="popup" id="popup">
-
-<div class="popupContent">
-
-<img id="popupImg">
-
-<h3 id="popupNama"></h3>
-
-<p id="popupHarga"></p>
-
-<button onclick="tambahPopup()">Tambah ke Keranjang</button>
-
-<br><br>
-
-<button onclick="closePopup()">Tutup</button>
-
-</div>
-
-</div>
-
-<div class="wa" onclick="checkout()">
-<i class="fa-brands fa-whatsapp"></i>
-</div>
-
-<footer>
-© 2026 JUANDY BUTIK
-</footer>
 
 <script>
 
@@ -463,20 +373,15 @@ return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 
 let produk=[
 
-{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+{id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,sale:false,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,sale:true,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
-
-{id:4,nama:"Jaket Pria",kategori:"jaket",harga:250000,rating:4.4,sale:false,img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
+{id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"}
 
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
-let currentProduk=null
-
-/* RENDER PRODUK */
 
 function renderProduk(data){
 
@@ -488,9 +393,7 @@ html+=`
 
 <div class="card">
 
-${p.sale?'<div class="sale">SALE</div>':''}
-
-<img loading="lazy" src="${p.img}" onclick="detailProduk(${p.id})">
+<img src="${p.img}">
 
 <div class="nama">${p.nama}</div>
 
@@ -502,7 +405,7 @@ ${p.sale?'<div class="sale">SALE</div>':''}
 
 <button onclick="minus(${p.id})">-</button>
 
-<span>${cart[p.id]||0}</span>
+<input class="qtyInput" type="number" min="0" value="${cart[p.id]||0}" onchange="setQty(${p.id},this.value)">
 
 <button onclick="plus(${p.id})">+</button>
 
@@ -515,69 +418,29 @@ ${p.sale?'<div class="sale">SALE</div>':''}
 })
 
 document.getElementById("produk").innerHTML=html
+
 updateCart()
 
 }
 
 renderProduk(produk)
 
-/* SEARCH */
-
-function filterProduk(){
-
-let key=document.getElementById("searchInput").value.toLowerCase()
-
-let hasil=produk.filter(p=>
-p.nama.toLowerCase().includes(key)
-)
-
-renderProduk(hasil)
-
-}
-
-/* KATEGORI */
-
-function filterKategori(kat){
-
-if(kat=="all"){
-renderProduk(produk)
-return
-}
-
-let hasil=produk.filter(p=>p.kategori==kat)
-
-renderProduk(hasil)
-
-}
-
-/* QTY */
-
 function plus(id){
-
 cart[id]=(cart[id]||0)+1
-
-let cartBtn=document.querySelector(".cartBtn")
-cartBtn.classList.add("shake")
-
-setTimeout(()=>{
-cartBtn.classList.remove("shake")
-},400)
-
 save()
-
 }
 
 function minus(id){
-
-if(cart[id]>0)cart[id]--
-
+if(cart[id]>0) cart[id]--
 save()
-
 }
 
-function removeItem(id){
+function setQty(id,val){
 
-delete cart[id]
+val=parseInt(val)
+
+if(val<=0) delete cart[id]
+else cart[id]=val
 
 save()
 
@@ -591,13 +454,11 @@ renderProduk(produk)
 
 }
 
-/* UPDATE CART */
-
 function updateCart(){
 
-let html=""
 let total=0
 let jumlah=0
+let html=""
 
 produk.forEach(p=>{
 
@@ -607,37 +468,18 @@ if(q>0){
 
 let sub=q*p.harga
 
-jumlah+=q
 total+=sub
+jumlah+=q
 
 html+=`
-
 <div class="cartItem">
-
 <img src="${p.img}">
-
-<div class="cartInfo">
-
+<div>
 <b>${p.nama}</b>
-
-<div>${rupiah(p.harga)}</div>
-
-<div class="cartQty">
-
-<button onclick="minus(${p.id})">-</button>
-<span>${q}</span>
-<button onclick="plus(${p.id})">+</button>
-
-</div>
-
-<div>Subtotal : ${rupiah(sub)}</div>
-
+<div>${rupiah(sub)}</div>
 <button class="remove" onclick="removeItem(${p.id})">Hapus</button>
-
 </div>
-
 </div>
-
 `
 
 }
@@ -645,52 +487,28 @@ html+=`
 })
 
 document.getElementById("cartItems").innerHTML=html
-document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 document.getElementById("cartCount").innerText=jumlah
+document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 
 }
 
-/* CART */
+function removeItem(id){
 
-function toggleCart(){
-document.getElementById("cartBox").classList.toggle("active")
-}
-
-/* POPUP */
-
-function detailProduk(id){
-
-let p=produk.find(x=>x.id==id)
-
-currentProduk=id
-
-document.getElementById("popup").style.display="flex"
-document.getElementById("popupImg").src=p.img
-document.getElementById("popupNama").innerText=p.nama
-document.getElementById("popupHarga").innerText=rupiah(p.harga)
-
-}
-
-function tambahPopup(){
-
-cart[currentProduk]=(cart[currentProduk]||0)+1
+delete cart[id]
 
 save()
 
-closePopup()
-
 }
 
-function closePopup(){
-document.getElementById("popup").style.display="none"
-}
+function toggleCart(){
 
-/* CHECKOUT */
+document.getElementById("cartBox").classList.toggle("active")
+
+}
 
 function checkout(){
 
-let pesan="Halo saya ingin memesan:%0A%0A"
-let total=0
+let pesan="Halo saya ingin pesan:%0A%0A"
 
 produk.forEach(p=>{
 
@@ -698,76 +516,68 @@ let q=cart[p.id]||0
 
 if(q>0){
 
-let sub=q*p.harga
-
-pesan+=p.nama+" x "+q+" = "+rupiah(sub)+"%0A"
-
-total+=sub
+pesan+=p.nama+" x "+q+"%0A"
 
 }
 
 })
 
-pesan+="%0ATotal : "+rupiah(total)
-
 window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-/* SLIDER */
+/* SEARCH */
+
+function filterProduk(){
+
+let key=document.getElementById("searchInput").value.toLowerCase()
+
+let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
+
+renderProduk(hasil)
+
+}
+
+/* KATEGORI */
+
+function filterKategori(k){
+
+if(k=="all"){
+renderProduk(produk)
+return
+}
+
+let hasil=produk.filter(p=>p.kategori==k)
+
+renderProduk(hasil)
+
+}
+
+/* BANNER */
 
 let slider=document.getElementById("slider")
 let dots=document.querySelectorAll(".dot")
-
 let index=0
-let totalSlide=3
 
 function showSlide(){
 
 slider.style.transform="translateX(-"+index*100+"%)"
 
 dots.forEach(d=>d.classList.remove("active"))
+
 dots[index].classList.add("active")
 
 }
 
-function nextSlide(){
+setInterval(()=>{
 
 index++
 
-if(index>=totalSlide)index=0
+if(index>2) index=0
 
 showSlide()
 
-}
-
-setInterval(nextSlide,3000)
-
-/* SWIPE */
-
-let startX=0
-
-slider.addEventListener("touchstart",(e)=>{
-startX=e.touches[0].clientX
-})
-
-slider.addEventListener("touchend",(e)=>{
-
-let endX=e.changedTouches[0].clientX
-
-if(startX-endX>50){
-index++
-if(index>=totalSlide)index=0
-}
-
-if(endX-startX>50){
-index--
-if(index<0)index=totalSlide-1
-}
-
-showSlide()
-
-})
+},3000)
 
 </script>
 
