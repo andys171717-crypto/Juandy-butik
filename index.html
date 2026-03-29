@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>JUANDY BUTIK</title>
 
@@ -31,36 +31,62 @@ background:black;
 }
 
 .logo{
-font-size:20px;
 font-weight:bold;
+font-size:20px;
 }
 
-.cart{
-cursor:pointer;
+/* SEARCH */
+
+.search{
+padding:10px;
+background:#111;
+}
+
+.search input{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+}
+
+/* BANNER */
+
+.banner{
+width:100%;
+height:150px;
+overflow:hidden;
+}
+
+.banner img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+/* FILTER */
+
+.filter{
 display:flex;
-align-items:center;
-gap:6px;
+gap:10px;
+padding:10px;
+overflow:auto;
 }
 
-.cart span{
-background:#25D366;
-padding:4px 9px;
+.filter button{
+background:#222;
+border:none;
+color:white;
+padding:6px 12px;
 border-radius:20px;
-font-size:12px;
-transition:0.3s;
-}
-
-.cart span.bump{
-transform:scale(1.4);
 }
 
 /* GRID */
 
 .container{
-padding:15px;
+padding:10px;
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:15px;
+gap:12px;
 }
 
 /* CARD */
@@ -70,211 +96,77 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-animation:showCard 0.5s ease forwards;
-opacity:0;
-}
-
-.card:nth-child(1){animation-delay:0.1s}
-.card:nth-child(2){animation-delay:0.2s}
-.card:nth-child(3){animation-delay:0.3s}
-.card:nth-child(4){animation-delay:0.4s}
-
-.card:hover{
-transform:translateY(-6px);
-}
-
-.card:active{
-transform:scale(0.97);
+animation:fadeIn .4s ease;
 }
 
 .card img{
 width:100%;
-height:170px;
+height:160px;
 object-fit:cover;
 }
 
 .nama{
-margin-top:10px;
 font-weight:bold;
+margin-top:8px;
 }
 
 .harga{
 color:#ccc;
-margin-bottom:8px;
 }
-
-/* PILIHAN */
-
-.select{
-margin-bottom:8px;
-}
-
-.select select{
-padding:6px;
-border-radius:6px;
-border:none;
-}
-
-/* QTY */
 
 .qty{
 display:flex;
 justify-content:center;
-align-items:center;
-gap:8px;
-margin-bottom:12px;
+gap:6px;
+margin:10px;
 }
 
 .qty button{
 background:#00c853;
 border:none;
-padding:7px 12px;
-border-radius:7px;
 color:white;
-font-size:16px;
-transition:0.2s;
-}
-
-.qty button:active{
-transform:scale(0.9);
+padding:6px 10px;
+border-radius:6px;
 }
 
 .qty input{
-width:55px;
+width:50px;
 text-align:center;
 border:none;
-border-radius:8px;
-padding:8px;
-font-weight:bold;
-font-size:16px;
-background:#eee;
-color:#000;
+border-radius:6px;
 }
 
-/* CART PANEL */
+/* CART */
 
-.cartBox{
+.cart{
 position:fixed;
-top:0;
-right:-100%;
-width:330px;
-height:100%;
-background:#111;
-padding:20px;
-transition:0.4s;
-overflow:auto;
-}
-
-.cartBox.active{
-right:0;
-}
-
-.cartItem{
-display:flex;
-gap:10px;
-border-bottom:1px solid #333;
-padding:10px 0;
-}
-
-.cartItem img{
-width:60px;
-height:60px;
-object-fit:cover;
-border-radius:8px;
-}
-
-.qtyCart{
-display:flex;
-gap:6px;
-margin-top:5px;
-}
-
-.qtyCart button{
-background:#00c853;
-border:none;
-padding:4px 8px;
-border-radius:5px;
-color:white;
-}
-
-.remove{
-color:red;
-font-size:12px;
-cursor:pointer;
-}
-
-/* TOTAL */
-
-.total{
-margin-top:15px;
-font-weight:bold;
-font-size:18px;
-}
-
-.checkout{
+top:15px;
+right:15px;
 background:#25D366;
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-color:white;
-font-weight:bold;
+padding:8px 10px;
+border-radius:20px;
 }
 
-.kembali{
-background:#333;
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-color:white;
-}
-
-/* WHATSAPP FLOAT */
+/* WHATSAPP */
 
 .wa{
 position:fixed;
-bottom:90px;
+bottom:80px;
 right:20px;
 background:#25D366;
 width:60px;
 height:60px;
 border-radius:50%;
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:28px;
-cursor:pointer;
-animation:waGlow 2s infinite;
+justify-content:center;
+font-size:26px;
 }
-
-/* FOOTER */
 
 footer{
-background:#000;
 text-align:center;
 padding:20px;
-margin-top:40px;
 color:#aaa;
-}
-
-/* ANIMATION */
-
-@keyframes showCard{
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes waGlow{
-
-0%{box-shadow:0 0 0 rgba(37,211,102,0.7);}
-50%{box-shadow:0 0 20px rgba(37,211,102,0.9);}
-100%{box-shadow:0 0 0 rgba(37,211,102,0.7);}
-
 }
 
 </style>
@@ -289,39 +181,40 @@ transform:translateY(0);
 JUANDY BUTIK
 </div>
 
-<div class="cart" onclick="toggleCart()">
-
+<div class="cart">
 <i class="fa-solid fa-cart-shopping"></i>
-
 <span id="cartCount">0</span>
+</div>
 
 </div>
+
+<div class="search">
+
+<input type="text" id="search"
+placeholder="Cari produk..."
+onkeyup="cariProduk()">
+
+</div>
+
+<div class="banner">
+
+<img id="bannerImg"
+src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
+
+</div>
+
+<div class="filter">
+
+<button onclick="filter('all')">Semua</button>
+<button onclick="filter('baju')">Baju</button>
+<button onclick="filter('tas')">Tas</button>
+<button onclick="filter('sepatu')">Sepatu</button>
 
 </div>
 
 <div class="container" id="produk"></div>
 
-<div class="cartBox" id="cartBox">
-
-<h2>Keranjang</h2>
-
-<div id="cartItems"></div>
-
-<div class="total">
-Total: Rp <span id="totalHarga">0</span>
-</div>
-
-<button class="checkout" onclick="checkout()">
-Checkout WhatsApp
-</button>
-
-<button class="kembali" onclick="toggleCart()">
-Kembali Belanja
-</button>
-
-</div>
-
-<div class="wa" onclick="waDirect()">
+<div class="wa" onclick="checkout()">
 <i class="fa-brands fa-whatsapp"></i>
 </div>
 
@@ -334,59 +227,30 @@ Belanja mudah langsung WhatsApp
 
 <script>
 
-let cart=JSON.parse(localStorage.getItem("cart"))||[]
+/* DATA PRODUK */
 
-function saveCart(){
+let produk=[
 
-localStorage.setItem("cart",JSON.stringify(cart))
+{nama:"Baju Fashion",harga:120000,kategori:"baju",
+img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
 
-}
+{nama:"Tas Wanita",harga:150000,kategori:"tas",
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 
-const produk=[
-
-{
-id:1,
-nama:"Baju Fashion",
-harga:120000,
-img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-opsi:["S","M","L","XL"]
-},
-
-{
-id:2,
-nama:"Tas Wanita",
-harga:150000,
-img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",
-opsi:["Merah","Hitam","Cream"]
-},
-
-{
-id:3,
-nama:"Sepatu Trend",
-harga:200000,
-img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-opsi:["39","40","41","42","43"]
-},
-
-{
-id:4,
-nama:"Jaket Pria",
-harga:250000,
-img:"https://images.unsplash.com/photo-1548883354-7622d03aca27",
-opsi:["M","L","XL"]
-}
+{nama:"Sepatu Trend",harga:200000,kategori:"sepatu",
+img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"}
 
 ]
 
-function tampilProduk(){
+let cart=[]
+
+/* TAMPIL PRODUK */
+
+function tampil(data){
 
 let html=""
 
-produk.forEach(p=>{
-
-let item=cart.find(x=>x.id===p.id)
-
-let qty=item?item.qty:0
+data.forEach((p,i)=>{
 
 html+=`
 
@@ -398,26 +262,13 @@ html+=`
 
 <div class="harga">Rp ${p.harga}</div>
 
-<div class="select">
-
-<select id="opt${p.id}">
-
-${p.opsi.map(o=>`<option>${o}</option>`).join("")}
-
-</select>
-
-</div>
-
 <div class="qty">
 
-<button onclick="minusProduk(${p.id})">-</button>
+<button onclick="minus(${i})">-</button>
 
-<input type="number"
-value="${qty}"
-min="0"
-oninput="inputQty(${p.id},this.value)">
+<input value="0" id="q${i}">
 
-<button onclick="plusProduk(${p.id})">+</button>
+<button onclick="plus(${i})">+</button>
 
 </div>
 
@@ -431,192 +282,89 @@ document.getElementById("produk").innerHTML=html
 
 }
 
-function inputQty(id,value){
+tampil(produk)
 
-value=parseInt(value)
+/* SEARCH */
 
-if(isNaN(value)||value<0)value=0
+function cariProduk(){
 
-let item=cart.find(x=>x.id===id)
+let key=document.getElementById("search").value.toLowerCase()
 
-if(value===0){
+let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
 
-cart=cart.filter(x=>x.id!==id)
+tampil(hasil)
+
+}
+
+/* FILTER */
+
+function filter(k){
+
+if(k=="all"){
+
+tampil(produk)
 
 }else{
 
-if(item){
+let hasil=produk.filter(p=>p.kategori==k)
 
-item.qty=value
-
-}else{
-
-let p=produk.find(x=>x.id===id)
-
-cart.push({
-id:p.id,
-nama:p.nama,
-harga:p.harga,
-img:p.img,
-qty:value
-})
+tampil(hasil)
 
 }
 
 }
 
-saveCart()
+/* CART */
+
+function plus(i){
+
+let q=document.getElementById("q"+i)
+
+q.value++
+
 updateCart()
 
 }
 
-function plusProduk(id){
+function minus(i){
 
-let item=cart.find(x=>x.id===id)
+let q=document.getElementById("q"+i)
 
-if(item){
+if(q.value>0)q.value--
 
-item.qty++
-
-}else{
-
-let p=produk.find(x=>x.id===id)
-
-cart.push({
-id:p.id,
-nama:p.nama,
-harga:p.harga,
-img:p.img,
-qty:1
-})
-
-}
-
-saveCart()
-updateCart()
-
-}
-
-function minusProduk(id){
-
-let item=cart.find(x=>x.id===id)
-
-if(!item)return
-
-item.qty--
-
-if(item.qty<=0){
-
-cart=cart.filter(x=>x.id!==id)
-
-}
-
-saveCart()
 updateCart()
 
 }
 
 function updateCart(){
 
-let html=""
 let total=0
-let jumlah=0
 
-cart.forEach(item=>{
+document.querySelectorAll("input").forEach(i=>{
 
-let subtotal=item.harga*item.qty
-
-total+=subtotal
-jumlah+=item.qty
-
-html+=`
-
-<div class="cartItem">
-
-<img src="${item.img}">
-
-<div>
-
-${item.nama}<br>
-
-Rp ${item.harga} x ${item.qty}
-
-<div class="qtyCart">
-
-<button onclick="minusProduk(${item.id})">-</button>
-
-<span>${item.qty}</span>
-
-<button onclick="plusProduk(${item.id})">+</button>
-
-</div>
-
-<div class="remove" onclick="hapus(${item.id})">
-Hapus
-</div>
-
-</div>
-
-</div>
-
-`
+total+=parseInt(i.value)
 
 })
 
-document.getElementById("cartItems").innerHTML=html
-document.getElementById("totalHarga").innerText=total
-
-let badge=document.getElementById("cartCount")
-
-badge.innerText=jumlah
-
-badge.classList.add("bump")
-
-setTimeout(()=>{
-
-badge.classList.remove("bump")
-
-},200)
-
-tampilProduk()
+document.getElementById("cartCount").innerText=total
 
 }
 
-function hapus(id){
-
-cart=cart.filter(x=>x.id!==id)
-
-saveCart()
-updateCart()
-
-}
-
-function toggleCart(){
-
-document.getElementById("cartBox").classList.toggle("active")
-
-}
+/* CHECKOUT */
 
 function checkout(){
 
-if(cart.length==0){
-
-alert("Keranjang kosong")
-
-return
-
-}
-
 let pesan="Halo saya ingin memesan:%0A%0A"
 
-cart.forEach(item=>{
+document.querySelectorAll(".card").forEach((c,i)=>{
 
-let select=document.getElementById("opt"+item.id)
+let qty=document.getElementById("q"+i)
 
-let pilihan=select?select.value:""
+if(qty && qty.value>0){
 
-pesan+=item.nama+" ("+pilihan+") x "+item.qty+
-" = Rp "+(item.harga*item.qty)+"%0A"
+pesan+=produk[i].nama+" x "+qty.value+"%0A"
+
+}
 
 })
 
@@ -624,14 +372,25 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 
 }
 
-function waDirect(){
+/* SLIDER */
 
-window.open("https://wa.me/6281220549530")
+let banner=[
+"https://images.unsplash.com/photo-1607082349566-187342175e2f",
+"https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a",
+"https://images.unsplash.com/photo-1445205170230-053b83016050"
+]
 
-}
+let i=0
 
-tampilProduk()
-updateCart()
+setInterval(()=>{
+
+i++
+
+if(i>=banner.length)i=0
+
+document.getElementById("bannerImg").src=banner[i]
+
+},3000)
 
 </script>
 
