@@ -42,7 +42,6 @@ background:#1c1c1c;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
-box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
 
 .card img{
@@ -70,7 +69,6 @@ border-radius:8px;
 color:white;
 cursor:pointer;
 margin-bottom:15px;
-font-weight:bold;
 }
 
 /* CART */
@@ -135,7 +133,7 @@ margin-top:10px;
 font-weight:bold;
 }
 
-/* WA BUTTON */
+/* WA FLOAT */
 
 .wa-float{
 position:fixed;
@@ -151,7 +149,6 @@ align-items:center;
 font-size:30px;
 color:white;
 cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 /* FOOTER */
@@ -182,8 +179,6 @@ JUANDY BUTIK
 
 <div class="container" id="produk"></div>
 
-<!-- CART -->
-
 <div class="cart-box" id="cartBox">
 
 <div class="cart-header">
@@ -202,8 +197,6 @@ Checkout WhatsApp
 </button>
 
 </div>
-
-<!-- WA FLOAT -->
 
 <div class="wa-float" onclick="waDirect()">
 <i class="fa-brands fa-whatsapp"></i>
@@ -248,17 +241,13 @@ img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"
 
 ]
 
-let cart=JSON.parse(localStorage.getItem("cart")) || []
-
-function saveCart(){
-localStorage.setItem("cart",JSON.stringify(cart))
-}
+let cart=[]
 
 function tampilProduk(){
 
 let html=""
 
-produk.forEach((p)=>{
+produk.forEach(p=>{
 
 html+=`
 
@@ -284,42 +273,47 @@ document.getElementById("produk").innerHTML=html
 
 function tambah(id){
 
-let item=cart.find(x=>x.id==id)
+let item=cart.find(x=>x.id===id)
 
 if(item){
-item.qty++
+item.qty+=1
 }else{
-let produkDipilih=produk.find(x=>x.id==id)
-cart.push({...produkDipilih,qty:1})
+
+let produkDipilih=produk.find(x=>x.id===id)
+
+cart.push({
+id:produkDipilih.id,
+nama:produkDipilih.nama,
+harga:produkDipilih.harga,
+qty:1
+})
+
 }
 
-saveCart()
 updateCart()
 
 }
 
 function minus(id){
 
-let item=cart.find(x=>x.id==id)
+let item=cart.find(x=>x.id===id)
 
 item.qty--
 
 if(item.qty<=0){
-cart=cart.filter(x=>x.id!=id)
+cart=cart.filter(x=>x.id!==id)
 }
 
-saveCart()
 updateCart()
 
 }
 
 function plus(id){
 
-let item=cart.find(x=>x.id==id)
+let item=cart.find(x=>x.id===id)
 
 item.qty++
 
-saveCart()
 updateCart()
 
 }
@@ -332,7 +326,9 @@ let jumlah=0
 
 cart.forEach(item=>{
 
-total+=item.harga*item.qty
+let subtotal=item.harga*item.qty
+
+total+=subtotal
 jumlah+=item.qty
 
 html+=`
@@ -368,20 +364,27 @@ document.getElementById("cart-count").innerText=jumlah
 }
 
 function toggleCart(){
+
 document.getElementById("cartBox").classList.toggle("active")
+
 }
 
 function checkout(){
 
-if(cart.length==0){
+if(cart.length===0){
+
 alert("Keranjang kosong")
+
 return
+
 }
 
 let pesan="Halo saya ingin memesan:%0A%0A"
 
 cart.forEach(item=>{
+
 pesan+=item.nama+" x "+item.qty+" = Rp "+(item.harga*item.qty)+"%0A"
+
 })
 
 window.open("https://wa.me/6281220549530?text="+pesan)
@@ -389,11 +392,12 @@ window.open("https://wa.me/6281220549530?text="+pesan)
 }
 
 function waDirect(){
+
 window.open("https://wa.me/6281220549530")
+
 }
 
 tampilProduk()
-updateCart()
 
 </script>
 
