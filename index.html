@@ -50,6 +50,8 @@ border-radius:20px;
 border:none;
 }
 
+/* CART */
+
 .cartBtn{
 background:#25D366;
 width:40px;
@@ -62,6 +64,16 @@ position:relative;
 cursor:pointer;
 }
 
+.cartCount{
+position:absolute;
+top:-5px;
+right:-5px;
+background:red;
+font-size:11px;
+padding:2px 6px;
+border-radius:50%;
+}
+
 .cartBtn.shake{
 animation:shake .4s;
 }
@@ -72,16 +84,6 @@ animation:shake .4s;
 50%{transform:rotate(-10deg)}
 75%{transform:rotate(10deg)}
 100%{transform:rotate(0)}
-}
-
-.cartCount{
-position:absolute;
-top:-5px;
-right:-5px;
-background:red;
-font-size:11px;
-padding:2px 5px;
-border-radius:50%;
 }
 
 /* KATEGORI */
@@ -100,7 +102,6 @@ color:white;
 padding:8px 14px;
 border-radius:20px;
 cursor:pointer;
-white-space:nowrap;
 }
 
 /* BANNER */
@@ -109,11 +110,14 @@ white-space:nowrap;
 padding:10px;
 }
 
+.sliderWrap{
+overflow:hidden;
+border-radius:12px;
+}
+
 .slider{
 display:flex;
-transition:transform .5s;
-border-radius:10px;
-overflow:hidden;
+transition:transform .5s ease;
 }
 
 .slide{
@@ -132,13 +136,13 @@ object-fit:cover;
 display:flex;
 justify-content:center;
 gap:6px;
-margin-top:5px;
+margin-top:6px;
 }
 
 .dot{
 width:8px;
 height:8px;
-background:#888;
+background:#777;
 border-radius:50%;
 }
 
@@ -213,7 +217,7 @@ border-radius:5px;
 color:white;
 }
 
-/* CART */
+/* CART PANEL */
 
 .cartBox{
 position:fixed;
@@ -336,18 +340,14 @@ font-size:28px;
 
 <div class="banner">
 
+<div class="sliderWrap">
+
 <div class="slider" id="slider">
 
-<div class="slide">
-<img src="https://images.unsplash.com/photo-1521334884684-d80222895322">
-</div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1521334884684-d80222895322"></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b"></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1445205170230-053b83016050"></div>
 
-<div class="slide">
-<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
-</div>
-
-<div class="slide">
-<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
 </div>
 
 </div>
@@ -409,18 +409,18 @@ return "Rp "+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 let produk=[
 
 {id:1,nama:"Baju Fashion",kategori:"baju",harga:120000,rating:4.5,sale:true,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
-
 {id:2,nama:"Tas Wanita",kategori:"tas",harga:150000,rating:4.8,sale:false,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-
 {id:3,nama:"Sepatu Trend",kategori:"sepatu",harga:200000,rating:4.6,sale:true,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
-
 {id:4,nama:"Jaket Pria",kategori:"jaket",harga:250000,rating:4.4,sale:false,img:"https://images.unsplash.com/photo-1548883354-7622d03aca27"}
 
 ]
 
 let cart=JSON.parse(localStorage.getItem("cart"))||{}
-
 let currentProduk=null
+
+function saveCart(){
+localStorage.setItem("cart",JSON.stringify(cart))
+}
 
 /* RENDER PRODUK */
 
@@ -449,9 +449,7 @@ ${p.sale?'<div class="sale">SALE</div>':''}
 <div class="qty">
 
 <button onclick="minus(${p.id})">-</button>
-
 <span>${cart[p.id]||0}</span>
-
 <button onclick="plus(${p.id})">+</button>
 
 </div>
@@ -465,37 +463,14 @@ ${p.sale?'<div class="sale">SALE</div>':''}
 })
 
 document.getElementById("produk").innerHTML=html
+
 updateCart()
 
 }
 
 renderProduk(produk)
 
-/* SEARCH */
-
-function filterProduk(){
-
-let key=document.getElementById("searchInput").value.toLowerCase()
-
-let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
-
-renderProduk(hasil)
-
-}
-
-/* KATEGORI */
-
-function filterKategori(k){
-
-if(k=="all"){renderProduk(produk);return}
-
-let hasil=produk.filter(p=>p.kategori==k)
-
-renderProduk(hasil)
-
-}
-
-/* QTY */
+/* CART */
 
 function plus(id){
 
@@ -504,20 +479,24 @@ cart[id]=(cart[id]||0)+1
 document.querySelector(".cartBtn").classList.add("shake")
 
 setTimeout(()=>{
-
 document.querySelector(".cartBtn").classList.remove("shake")
-
 },400)
 
-save()
+saveCart()
+
+renderProduk(produk)
 
 }
 
 function minus(id){
 
-if(cart[id]>0)cart[id]--
+if(cart[id]>0){
+cart[id]--
+}
 
-save()
+saveCart()
+
+renderProduk(produk)
 
 }
 
@@ -525,13 +504,7 @@ function removeItem(id){
 
 delete cart[id]
 
-save()
-
-}
-
-function save(){
-
-localStorage.setItem("cart",JSON.stringify(cart))
+saveCart()
 
 renderProduk(produk)
 
@@ -590,7 +563,7 @@ document.getElementById("totalHarga").innerText="Total : "+rupiah(total)
 
 }
 
-/* CART */
+/* CART PANEL */
 
 function toggleCart(){
 document.getElementById("cartBox").classList.toggle("active")
@@ -615,7 +588,9 @@ function tambahPopup(){
 
 cart[currentProduk]=(cart[currentProduk]||0)+1
 
-save()
+saveCart()
+
+renderProduk(produk)
 
 closePopup()
 
@@ -623,6 +598,30 @@ closePopup()
 
 function closePopup(){
 document.getElementById("popup").style.display="none"
+}
+
+/* SEARCH */
+
+function filterProduk(){
+
+let key=document.getElementById("searchInput").value.toLowerCase()
+
+let hasil=produk.filter(p=>p.nama.toLowerCase().includes(key))
+
+renderProduk(hasil)
+
+}
+
+/* KATEGORI */
+
+function filterKategori(k){
+
+if(k=="all"){renderProduk(produk);return}
+
+let hasil=produk.filter(p=>p.kategori==k)
+
+renderProduk(hasil)
+
 }
 
 /* CHECKOUT */
@@ -661,11 +660,11 @@ let slider=document.getElementById("slider")
 let dots=document.querySelectorAll(".dot")
 
 let index=0
-let totalSlide=3
+let slides=document.querySelectorAll(".slide").length
 
 function showSlide(){
 
-slider.style.transform="translateX(-"+index*100+"%)"
+slider.style.transform="translateX(-"+(index*100)+"%)"
 
 dots.forEach(d=>d.classList.remove("active"))
 
@@ -673,17 +672,17 @@ dots[index].classList.add("active")
 
 }
 
-function nextSlide(){
+setInterval(()=>{
 
 index++
 
-if(index>=totalSlide)index=0
+if(index>=slides){
+index=0
+}
 
 showSlide()
 
-}
-
-setInterval(nextSlide,3000)
+},3000)
 
 /* SWIPE */
 
@@ -699,12 +698,12 @@ let endX=e.changedTouches[0].clientX
 
 if(startX-endX>50){
 index++
-if(index>=totalSlide)index=0
+if(index>=slides)index=0
 }
 
 if(endX-startX>50){
 index--
-if(index<0)index=totalSlide-1
+if(index<0)index=slides-1
 }
 
 showSlide()
