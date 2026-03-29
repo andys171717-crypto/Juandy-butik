@@ -80,9 +80,8 @@ border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:28px;
+font-size:30px;
 cursor:pointer;
-box-shadow:0 0 10px rgba(0,0,0,0.7);
 }
 
 </style>
@@ -108,30 +107,30 @@ const produk=[
 {
 nama:"Baju Fashion",
 harga:120000,
-img:"https://cdn.pixabay.com/photo/2016/03/27/19/31/t-shirt-1289575_1280.jpg"
+img:"https://i.imgur.com/3Q3ZQZQ.jpg"
 },
 
 {
 nama:"Tas Wanita",
 harga:150000,
-img:"https://cdn.pixabay.com/photo/2016/11/29/03/53/bag-1868731_1280.jpg"
+img:"https://i.imgur.com/4KXGQ0H.jpg"
 },
 
 {
 nama:"Sepatu Trend",
 harga:200000,
-img:"https://cdn.pixabay.com/photo/2016/11/29/12/30/shoes-1867450_1280.jpg"
+img:"https://i.imgur.com/qVZ4GQK.jpg"
 },
 
 {
 nama:"Jaket Pria",
 harga:250000,
-img:"https://cdn.pixabay.com/photo/2017/08/06/22/01/jacket-2591981_1280.jpg"
+img:"https://i.imgur.com/3mO7B6F.jpg"
 }
 
 ]
 
-let cart = JSON.parse(localStorage.getItem("cart")) || []
+let cart=[]
 
 function tampilProduk(){
 
@@ -152,24 +151,16 @@ html+=`
 
 document.getElementById("produk").innerHTML=html
 
-updateCart()
-
 }
 
 function tambah(i){
 
 cart.push(produk[i])
 
-localStorage.setItem("cart",JSON.stringify(cart))
-
-updateCart()
+document.getElementById("cart").innerText=cart.length
 
 alert("Produk ditambahkan ke keranjang")
 
-}
-
-function updateCart(){
-document.getElementById("cart").innerText=cart.length
 }
 
 function checkout(){
@@ -179,7 +170,7 @@ alert("Keranjang kosong")
 return
 }
 
-let pesan="Halo saya ingin memesan:%0A%0A"
+let pesan="Halo saya ingin memesan:%0A"
 
 cart.forEach(item=>{
 pesan+=item.nama+" - Rp "+item.harga+"%0A"
